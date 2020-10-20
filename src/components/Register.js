@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { axiosWithAuth } from '../utils/axiosWithAuth'
+import { Link, useHistory } from 'react-router-dom'
 import * as yup from 'yup'
 import styled from 'styled-components'
 
 const StyledRegister = styled.div`
+
   height: 80vh;
   width: 100%;
   background-color: #D95D39;
@@ -59,12 +60,16 @@ const schema = yup.object().shape({
 function Register()
 {
 
-    const [registerForm, setRegisterForm] = useState({
-        username: "",
-        password: ""
-    })
-    const [disabled, setDisabled] = useState(true)
-    const [errors, setErrors] = useState({ username: "", password: "" })
+
+  const history = useHistory()
+
+  const [registerForm, setRegisterForm] = useState({
+    username: "",
+    password: ""
+  })
+
+  const [disabled, setDisabled] = useState(true)
+  const [errors, setErrors] = useState({  username: "", password: "" })
 
     const setFormErrors = (name, value) =>
     {
@@ -83,24 +88,35 @@ function Register()
         })
     }
 
-    useEffect(() =>
-    {
-        schema.isValid(registerForm).then(valid => setDisabled(!valid))
-    }, [registerForm])
 
-    function submit(e)
-    {
-        e.preventDefault()
-        axios.get('https://somerequesthere.com')
-            .then(res =>
-            {
-                //Do Some Stuff
-            })
-            .catch(err =>
-            {
-                console.log(err)
-            })
-    }
+  useEffect(() => {
+    schema
+      .isValid(registerForm)
+      .then(valid => setDisabled(!valid))
+  }, [registerForm])
+
+  function submit(e) {
+
+    e.preventDefault()
+
+    axiosWithAuth()
+      .post('/api/auth/register', {
+        username: registerForm.username.trim(),
+        password: registerForm.password.trim()
+      })
+      .then(res => {
+        console.log(res)
+        localStorage.setItem('token', res.data.payload)
+        history.push('/login')
+      })
+      .catch(err => {
+        console.log(err)
+      })
+      setRegisterForm({
+        username: '',
+        password: '',
+      })
+  }
 
     return (
         <StyledRegister>
@@ -110,13 +126,14 @@ function Register()
                     <div>
                         <label> Username
               <input name="username" value={registerForm.username} onChange={handleChange} />
-                        </label>
-                        <div className="error" style={{ color: "red" }}>
-                            {errors.username}
-                        </div>
-                    </div>
-                    <div>
-                        <label> Password
+
+            </label>
+            <div className="error" style={{ color: "red" }}>
+              {errors.username}
+            </div>
+          </div>
+          <div>
+            <label> Password   
               <input name="password" type="password" value={registerForm.password} onChange={handleChange} />
                         </label>
                         <div className="error" style={{ color: "red" }}>
