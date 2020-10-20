@@ -3,18 +3,22 @@ import React, { useState, useEffect } from 'react';
 //Components
 import Header from './components/Header'
 import Register from './components/Register'
+
 import EventList from './components/EventList'
 import AddEvent from './components/AddEvent'
 import UpdateEvent from './components/UpdateEvent'
 import Event from './components/Event'
 
 //Utils
+
+import Login from './components/Login'
+
 import { Route, Switch } from 'react-router-dom'
 import PrivateRoute from './utils/PrivateRoute'
 import axios from 'axios'
 
 function App() {
-
+  
   const [loggedIn, setLoggedIn] = useState(false)
   const [eventList, setEventList] = useState([]);
 
@@ -54,7 +58,7 @@ function App() {
         </Route>
 
         <Route exact path="/login"> {/* setLoggedIn should passed in here */}
-          <div>Login Component Here</div>
+          <div><Login /></div>
         </Route>
 
         <Route exact path='/events'> {/* change this to privateRoute */}
