@@ -14,21 +14,21 @@ import Login from './components/Login'
 
 import { Route, Switch } from 'react-router-dom'
 import PrivateRoute from './utils/PrivateRoute'
-import axios from 'axios'
+import { axiosWithAuth } from './utils/axiosWithAuth'
 
 function App() {
   
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem('token'))
   const [eventList, setEventList] = useState([]);
 
-  console.log(loggedIn)
-
-  // useEffect(() => {
-  //   axios
-  //     .get('http://https://bw-potluck-planner-tt50.herokuapp.com/api/events')
-  //     .then(res => setEventList(res.data))
-  //     .catch(err => console.log(err.response));
-  // },[])
+  useEffect(() => {
+    axiosWithAuth()
+      .get('/api/events')
+      .then(res => {
+        console.log(res)
+        setEventList(res.data)
+      })
+  },[])
 
 
   const deleteFromEventList = (events) => {
@@ -64,7 +64,7 @@ function App() {
         </Route>
 
         <PrivateRoute exact path='/events'> {/* change this to privateRoute */}
-          <Event deleteFromEventList={deleteFromEventList}/>
+          <Event eventList={eventList} deleteFromEventList={deleteFromEventList}/>
         </PrivateRoute>
 
         <Route exact path='/update-event/:id'>

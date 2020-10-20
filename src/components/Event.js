@@ -10,15 +10,6 @@ function Event({ deleteFromEventList, eventList }) {
    const params = useParams()
    const history = useHistory()
 
-   useEffect(() => {
-      axios
-         .get(`https://bw-potluck-planner-tt50.herokuapp.com/api/events/${params.id}`)
-         .then(res => {
-            setPotEvent(res.data)
-            console.log(res.data)
-         })
-   },[params.id])
-
    const deleteEvent = (id) => {
 
       axios
@@ -32,10 +23,6 @@ function Event({ deleteFromEventList, eventList }) {
   
     }
 
-
-   if(!potEvent){
-      return <div>Loading events....</div>
-   }
    return (
       <div className="save-wrapper">
          {
