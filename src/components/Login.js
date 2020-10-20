@@ -13,7 +13,7 @@ const errorStrings = {
     password: "",
 };
 
-export default function Form()
+function Login()
 {
     const [userData, setUserData] = useState(blankData);
     const [formErrors, setFormErrors] = useState(errorStrings);
@@ -125,3 +125,4 @@ export default function Form()
         </>
     );
 }
+export default Login 

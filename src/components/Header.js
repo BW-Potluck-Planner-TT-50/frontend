@@ -14,6 +14,13 @@ const StyledHeader = styled.div`
     align-items: center;
     padding: 2% 5%;
   }
+  .nav-container {
+    width: 70%;
+    nav {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
   .active {
       font-weight: bold;
       text-decoration: underline;
@@ -27,9 +34,7 @@ const StyledHeader = styled.div`
     color: white;
     text-decoration: none;
     padding: 3% 5%;
-
   }
-  
 `
 
 function Header(props) {
@@ -41,7 +46,7 @@ function Header(props) {
         <div className="logoContainer">
           <img src={Potluck} alt="Potluck Planner Logo"/>
         </div>
-        <div>
+        <div className="nav-container">
           <nav>
             <NavLink to="/events" activeClassName="active">Events</NavLink>
             <NavLink to="/plan" activeClassName="active">Plan</NavLink>
@@ -52,10 +57,11 @@ function Header(props) {
         <div className="logoContainer">
           <img src={Potluck} alt="Potluck Planner Logo"/>
         </div>
-        <div>
+        <div className="nav-container">
           <nav>
             <NavLink to="/login" activeClassName="active">Login</NavLink>
             <NavLink to="/register" activeClassName="active">Register</NavLink>
+            <NavLink to="/join-event" activeClassName="active">Join An Event</NavLink>
           </nav>
         </div>
       </div>

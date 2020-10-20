@@ -20,7 +20,7 @@ function App()
                     <Register />
                 </Route>
                 <Route path="/login">
-                    <div>Login Component Here</div>
+                    <div><Login /> </div>
                 </Route>
             </Switch>
         </div>
