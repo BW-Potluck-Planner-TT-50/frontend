@@ -13,7 +13,7 @@ const errorStrings = {
     password: "",
 };
 
-function Login()
+function Login({ setLoggedIn })
 {
     const [userData, setUserData] = useState(blankData);
     const [formErrors, setFormErrors] = useState(errorStrings);
@@ -36,17 +36,10 @@ function Login()
             .then((res) =>
             {
                 localStorage.setItem("token", res.data.token);
-                history.push("/protected");
+                setLoggedIn(true)
+                setUserData(blankData)
+                history.push("/events");
             })
-            .catch((err) =>
-            {
-                console.log(err);
-            })
-            .finally(() =>
-            {
-                setUserData(blankData);
-                window.location.reload()
-            });
     };
 
     // const addUser = () => {
