@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Header from './components/Header'
 import Register from './components/Register'
+import EventGuest from './components/EventGuest'
 import { Route, Switch } from 'react-router-dom'
 
 function App() {
@@ -19,6 +20,9 @@ function App() {
         </Route>
         <Route path="/login">
           <div>Login Component Here</div>
+        </Route>
+        <Route path="/join-event">
+          <EventGuest />
         </Route>
       </Switch>
     </div>
