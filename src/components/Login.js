@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { axiosWithAuth } from "../../utils/axiosWithAuth";
+import { axiosWithAuth } from "../utils/axiosWithAuth";
 import { useHistory } from "react-router";
-import schema from "./logValidate";
+import schema from "./loginValidation";
 import * as yup from "yup";
 
 const blankData = {

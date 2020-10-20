@@ -50,12 +50,14 @@ const StyledEventGuest = styled.div`
 `
 
 const schema = yup.object().shape({
-  eventCode: yup.string().required("You Must Enter An Event Code To Continue").min(7, "Must be at least 7 characters")
+  eventCode: yup.string().required("You Must Enter An Event Code To Continue").min(7, "Must be at least 7 characters"),
+  name: yup.string().required("You must enter your name")
 })
 
 function EventGuest() {
   const [form, setForm] = useState({
-    eventCode: ""
+    eventCode: "",
+    name: ""
   })
   const [disabled, setDisabled] = useState(true)
   const [errors, setErrors] = useState({  eventCode: "" })
@@ -98,6 +100,10 @@ function EventGuest() {
         <h1>Join An Event!</h1>
         <form onSubmit={handleSubmit}>
           <h2>Enter Event Code Below</h2>
+          <div className="errors">{errors.name}</div>
+          <div>
+            <input autoComplete="off" name="name" value={form.name} onChange={handleChange} />
+          </div>
           <div className="errors">{errors.eventCode}</div>
           <div>
             <input autoComplete="off" name="eventCode" value={form.eventCode} onChange={handleChange} />

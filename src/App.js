@@ -8,6 +8,7 @@ import EventList from './components/EventList'
 import AddEvent from './components/AddEvent'
 import UpdateEvent from './components/UpdateEvent'
 import Event from './components/Event'
+import EventGuest from './components/EventGuest'
 
 //Utils
 
@@ -55,6 +56,10 @@ function App() {
 
         <Route exact path="/register">
           <Register />
+        </Route>
+
+        <Route exact path="/join-event">
+          <EventGuest />
         </Route>
 
         <Route exact path="/login"> {/* setLoggedIn should passed in here */}
