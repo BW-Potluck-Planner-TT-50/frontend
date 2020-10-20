@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useHistory } from 'react-router-dom'
 import Potluck from '../images/potluck.png'
 import styled from 'styled-components'
 
@@ -38,6 +38,9 @@ const StyledHeader = styled.div`
 `
 
 function Header(props) {
+
+  const history = useHistory()
+
   return(
     <StyledHeader>
       {
@@ -50,6 +53,11 @@ function Header(props) {
           <nav>
             <NavLink to="/events" activeClassName="active">Events</NavLink>
             <NavLink to="/plan" activeClassName="active">Plan</NavLink>
+            <button onClick={() => {
+                localStorage.removeItem('token')
+                history.push('/login')
+                props.setLoggedIn(false)  
+            }}>Logout</button>
           </nav>
         </div>
       </div> : 
