@@ -52,80 +52,87 @@ const StyledRegister = styled.div`
 `
 
 const schema = yup.object().shape({
-  username: yup.string().required('Name is required').min(5, 'Name needs to be 5 chars min'),
-  password: yup.string().required('Password is required').min(8, 'Password needs to be 8 chars min').matches( /[A-Z]/, 'Passwords must include an uppercase letter').matches( /[a-z]/, 'Passwords must include a lowercase letter').matches( /\d/, 'Passwords must include a number').matches( /\W/, 'Passwords must include a special character')
+    username: yup.string().required('Name is required').min(5, 'Name needs to be 5 chars min'),
+    password: yup.string().required('Password is required').min(8, 'Password needs to be 8 chars min').matches(/[A-Z]/, 'Passwords must include an uppercase letter').matches(/[a-z]/, 'Passwords must include a lowercase letter').matches(/\d/, 'Passwords must include a number').matches(/\W/, 'Passwords must include a special character')
 })
 
-function Register() {
+function Register()
+{
 
-  const [registerForm, setRegisterForm] = useState({
-    username: "",
-    password: ""
-  })
-  const [disabled, setDisabled] = useState(true)
-  const [errors, setErrors] = useState({  username: "", password: "" })
-
-  const setFormErrors = (name, value) => {
-    yup.reach(schema, name).validate(value)
-    .then(() => setErrors({...errors, [name]: ''}))
-    .catch(err => setErrors({...errors, [name]: err.errors[0]}))
-  }
-
-  function handleChange(e) {
-    const {value, name} = e.target
-    setFormErrors(name, value)
-    setRegisterForm({
-      ...registerForm,
-      [name]: value
+    const [registerForm, setRegisterForm] = useState({
+        username: "",
+        password: ""
     })
-  }
+    const [disabled, setDisabled] = useState(true)
+    const [errors, setErrors] = useState({ username: "", password: "" })
 
-  useEffect(() => {
-    schema.isValid(registerForm).then(valid => setDisabled(!valid))
-  }, [registerForm])
+    const setFormErrors = (name, value) =>
+    {
+        yup.reach(schema, name).validate(value)
+            .then(() => setErrors({ ...errors, [name]: '' }))
+            .catch(err => setErrors({ ...errors, [name]: err.errors[0] }))
+    }
 
-  function submit(e) {
-    e.preventDefault()
-    axios.get('https://somerequesthere.com')
-    .then(res => {
-      //Do Some Stuff
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  }
+    function handleChange(e)
+    {
+        const { value, name } = e.target
+        setFormErrors(name, value)
+        setRegisterForm({
+            ...registerForm,
+            [name]: value
+        })
+    }
 
-  return (
-    <StyledRegister>
-      <div className="register-container">
-        <form onSubmit={submit}>
-          <h1>Register</h1>
-          <div>
-            <label> Username
+    useEffect(() =>
+    {
+        schema.isValid(registerForm).then(valid => setDisabled(!valid))
+    }, [registerForm])
+
+    function submit(e)
+    {
+        e.preventDefault()
+        axios.get('https://somerequesthere.com')
+            .then(res =>
+            {
+                //Do Some Stuff
+            })
+            .catch(err =>
+            {
+                console.log(err)
+            })
+    }
+
+    return (
+        <StyledRegister>
+            <div className="register-container">
+                <form onSubmit={submit}>
+                    <h1>Register</h1>
+                    <div>
+                        <label> Username
               <input name="username" value={registerForm.username} onChange={handleChange} />
-            </label>
-            <div className="error" style={{color: "red"}}>
-              {errors.username}
-            </div>
-          </div>
-          <div>
-            <label> Password
+                        </label>
+                        <div className="error" style={{ color: "red" }}>
+                            {errors.username}
+                        </div>
+                    </div>
+                    <div>
+                        <label> Password
               <input name="password" type="password" value={registerForm.password} onChange={handleChange} />
-            </label>
-            <div className="error" style={{color: "red"}}>
-              {errors.password}
+                        </label>
+                        <div className="error" style={{ color: "red" }}>
+                            {errors.password}
+                        </div>
+                    </div>
+                    <div>
+                        <button id="submit" disabled={disabled}>Submit</button>
+                    </div>
+                    <Link to="/login">Already Have An Account? Click Here To Login</Link>
+                </form>
+
             </div>
-          </div>
-          <div>
-            <button id="submit" disabled={disabled}>Submit</button>
-          </div>
-          <Link to="/login">Already Have An Account? Click Here To Login</Link>
-        </form>
-        
-      </div>
-      
-    </StyledRegister>
-  )
+
+        </StyledRegister>
+    )
 }
 
 export default Register
