@@ -27,6 +27,8 @@ const StyledRegister = styled.div`
         input {
           margin: 3%;
           padding: 2%;
+          text-align: center;
+          font-size: 1.5rem;
         }
         .error {
           min-height: 20px;
@@ -119,34 +121,23 @@ function Register()
 
     return (
         <StyledRegister>
-            <div className="register-container">
-                <form onSubmit={submit}>
-                    <h1>Register</h1>
-                    <div>
-                        <label> Username
-              <input name="username" value={registerForm.username} onChange={handleChange} />
-
-            </label>
-            <div className="error" style={{ color: "red" }}>
-              {errors.username}
-            </div>
+          <div className="register-container">
+            <form onSubmit={submit}>
+              <h1>Register</h1>
+              <div>
+                <input autoComplete="off" placeholder="Username" name="username" value={registerForm.username} onChange={handleChange} />
+                <div className="error" style={{ color: "red" }}>{errors.username}</div>
+              </div>
+              <div> 
+                <input autoComplete="off" name="password" placeholder="Password" type="password" value={registerForm.password} onChange={handleChange} />
+                <div className="error" style={{ color: "red" }}>{errors.password}</div>
+              </div>
+              <div>
+                  <button id="submit" disabled={disabled}>Submit</button>
+              </div>
+              <Link to="/login">Already Have An Account? Click Here To Login</Link>
+            </form>
           </div>
-          <div>
-            <label> Password   
-              <input name="password" type="password" value={registerForm.password} onChange={handleChange} />
-                        </label>
-                        <div className="error" style={{ color: "red" }}>
-                            {errors.password}
-                        </div>
-                    </div>
-                    <div>
-                        <button id="submit" disabled={disabled}>Submit</button>
-                    </div>
-                    <Link to="/login">Already Have An Account? Click Here To Login</Link>
-                </form>
-
-            </div>
-
         </StyledRegister>
     )
 }
