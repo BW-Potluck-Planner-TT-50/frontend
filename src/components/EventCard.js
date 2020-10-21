@@ -1,19 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { axiosWithAuth } from '../utils/axiosWithAuth'
 
-const EventCard = ({ potEvent }) => {
+const EventCard = () => {
+
+   const params = useParams()
+   const [potEvent, setPotEvent] = useState('')
+
+   useEffect(() => {
+      axiosWithAuth()
+         .get(`/api/events/${params.id}`)
+         .then(res => {
+            setPotEvent(res.data)
+         })
+   },[params.id])
+
 
    return (
       <div className='event___card'>
-         <h2>{potEvent.eventName}</h2>
-         <h3>Date: {potEvent.date}</h3>
-         <h3>Time: {potEvent.time}</h3>
-         <h3>Location: {potEvent.location}</h3>
-         <h3>Confirmed Foods</h3>
-         {
-            potEvent.foodList.map(eachFood => (
-               <div key={eachFood} className='pot___food'>{eachFood}</div>
-            ))
-         }
+         <h2>{potEvent.name}</h2>
+         <p>Date: {potEvent.date}</p>
+         <p>Time: {potEvent.time}</p>
+         <p>Location: {potEvent.location}</p>
       </div>
    )
 }

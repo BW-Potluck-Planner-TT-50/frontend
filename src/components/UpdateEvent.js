@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
-import axios from 'axios'
+import { axiosWithAuth } from '../utils/axiosWithAuth'
 
 export default function UpdateEvent({eventList, setEventList}){
    const params = useParams()
    const history = useHistory()
 
    const [events, setEvents] = useState({
-      eventName: '',
+      name: '',
       date:'',
       time: '',
       location: '',
    })
 
+
+   console.log(params)
+
    useEffect(() => {
-      axios
-         .get(`https://bw-potluck-planner-tt50.herokuapp.com/api/events/${params.id}`)
+      axiosWithAuth()
+         .get(`/api/events/${params.id}`)
          .then(res => {
             setEvents(res.data)
          })
-   })
+   },[params.id])
 
    const handleChange = (e) => {
       setEvents({
@@ -31,8 +34,8 @@ export default function UpdateEvent({eventList, setEventList}){
    const handleSubmit = (e) => {
       e.preventDefault()
 
-      axios
-         .put(`https://bw-potluck-planner-tt50.herokuapp.com/api/events/${params.id}`, events)
+      axiosWithAuth()
+         .put(`/api/events/${params.id}`, events)
          .then(res => {
             const newEventList = eventList.map(eachEvent => {
                if(eachEvent.id === events.id){
@@ -42,16 +45,17 @@ export default function UpdateEvent({eventList, setEventList}){
                }
             })
             setEventList(newEventList)
-            history.push('/events-list')
+            history.push('/events')
          })
    }
 
    return (
       <div className='update___events'>
+         <h2>Update Events</h2>
          <form onSubmit={handleSubmit}>
-            <label htmlFor='eventName'>
+            <label htmlFor='name'>
                <p>Event Name</p>
-               <input name='eventName' value={events.eventName} onChange={handleChange} />
+               <input name='name' value={events.name} onChange={handleChange} />
             </label>
             <label htmlFor='date'>
                <p>Date</p>
@@ -65,11 +69,7 @@ export default function UpdateEvent({eventList, setEventList}){
                <p>Location</p>
                <input name='location' value={events.location} onChange={handleChange} />
             </label>
-            <label htmlFor='foodList'>
-               <p>Confirmed Foods</p>
-               <input name='foodList' value={events.foodList} onChange={handleChange} />
-            </label>
-            <button type='submit'>Add</button>
+            <button type='submit'>Update</button>
          </form>
       </div>
    )

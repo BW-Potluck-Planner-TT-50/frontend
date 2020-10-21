@@ -4,41 +4,47 @@ import React, { useState, useEffect } from 'react';
 import Header from './components/Header'
 import Register from './components/Register'
 import EventGuest from './components/EventGuest'
+import EventCard from './components/EventCard'
 import AddEvent from './components/AddEvent'
 import UpdateEvent from './components/UpdateEvent'
 import Event from './components/Event'
+import Login from './components/Login'
 
 //Utils
 
-import Login from './components/Login'
 
 import { Route, Switch } from 'react-router-dom'
 import PrivateRoute from './utils/PrivateRoute'
-import axios from 'axios'
+import { axiosWithAuth } from './utils/axiosWithAuth'
 
 function App() {
   
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem('token'))
   const [eventList, setEventList] = useState([]);
+  
 
-  console.log(loggedIn)
+  useEffect(() => {
+    axiosWithAuth()
+      .get('/api/events')
+      .then(res => {
+        setEventList(res.data)
+      })
+  },[])
 
-  // useEffect(() => {
-  //   axios
-  //     .get('http://https://bw-potluck-planner-tt50.herokuapp.com/api/events')
-  //     .then(res => setEventList(res.data))
-  //     .catch(err => console.log(err.response));
-  // },[])
 
-
-  const deleteFromEventList = (events) => {
-    setEventList(eventList.filter((eachEvent) => {
-      return eachEvent.id !== events.id
-    }))
+  const deleteFromEventList = (id) => {
+    axiosWithAuth()
+        .get(`/api/events/`)
+        .then(res => {
+           console.log(res)
+           setEventList(eventList.filter( eachEvent => {
+             return eachEvent.id !== id
+           }))
+        })
   }
 
   const addToEventList = (events) => {
-    setEventList(events)
+    setEventList([...eventList, events])
   }
 
   return (
@@ -59,13 +65,13 @@ function App() {
           <EventGuest />
         </Route>
 
-        <Route exact path="/login"> {/* setLoggedIn should passed in here */}
+        <Route exact path="/login">
           <Login setLoggedIn={setLoggedIn}/>
         </Route>
 
-        <PrivateRoute exact path='/events'> {/* change this to privateRoute */}
-          <Event deleteFromEventList={deleteFromEventList}/>
-        </PrivateRoute>
+        <Route exact path='/events'>
+          <Event eventList={eventList} deleteFromEventList={deleteFromEventList}/>
+        </Route>
 
         <Route exact path='/update-event/:id'>
           <UpdateEvent eventList={eventList} setEventList={setEventList} />
@@ -73,6 +79,10 @@ function App() {
 
         <Route exact path='/add-events'>
           <AddEvent addToEventList={addToEventList}/>
+        </Route>
+
+        <Route exact path='/view-events/:id'>
+          <EventCard />
         </Route>
 
       </Switch>
