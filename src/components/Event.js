@@ -1,7 +1,61 @@
 import React from "react";
 import { axiosWithAuth } from '../utils/axiosWithAuth'
-import { NavLink, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import moment from 'moment'
+import styled from 'styled-components'
 
+const StyledEvents = styled.div`
+  background-color: #202C59;
+  padding: 5%;
+  .event-box {
+    background-color: #581F18;
+    box-shadow: 3px 3px 5px black;
+    margin-bottom: 2%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    height: 100%;
+    padding: 1%;
+    .name-container {
+      width: 100%;
+      text-align: center;
+      h2 {
+        margin-top: 0px;
+      }
+    }
+    a {
+      color: white;
+      display: flex;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      width: 70%;
+      height: 100px;
+      font-size: 2rem;
+    }
+    .view-button {
+      background-color: #D95D39;
+      box-shadow: inset 3px 3px 5px black;
+    }
+    .edit-button {
+      background-color: #F0A202;
+      box-shadow: inset 3px 3px 5px black;
+    }
+    .delete-button {
+      background-color: #F18805;
+      box-shadow: inset 3px 3px 5px black;
+      display: flex;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      width: 70%;
+      height: 100px;
+      text-decoration: underline;
+      font-size: 2rem;
+    }
+  }
+`
 
 function Event({ deleteFromEventList, eventList }) {
 
@@ -18,22 +72,23 @@ function Event({ deleteFromEventList, eventList }) {
   }
 
    return (
-      <div className="save-wrapper">
+      <StyledEvents className="save-wrapper">
 
          {
             eventList.map((eachEvent) => (
-               <div key={eachEvent.id} className='each___events'>
+              <div key={eachEvent.id} className='each___events event-box'>
+                <div className="name-container">
                   <h2>{eachEvent.name}</h2>
-                  <Link to={`/view-events/${eachEvent.id}`}>View</Link>
-                  <NavLink className='edit-button' to={`/update-event/${eachEvent.id}`}>Edit</NavLink>
-                  <div className='delete-button' onClick={()=> deleteEvent(eachEvent.id)}>
-                     Delete
-                  </div> 
-               </div>
+                  <p>{moment(eachEvent.date).format("dddd, MMMM Do YYYY")}</p>
+                </div>
+                <Link className="view-button" to={`/view-events/${eachEvent.id}`}>View</Link>
+                <Link className='edit-button' to={`/update-event/${eachEvent.id}`}>Edit</Link>
+                <div className='delete-button' onClick={()=> deleteEvent(eachEvent.id)}>Delete</div>
+              </div>
             ))
          }
 
-      </div>
+      </StyledEvents>
    )
 }
 

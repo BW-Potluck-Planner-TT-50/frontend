@@ -35,6 +35,16 @@ const StyledHeader = styled.div`
     text-decoration: none;
     padding: 3% 5%;
   }
+  .logout-button {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    padding: 3% 5%;
+    background-color: unset;
+    border: unset;
+    font-family: 'Times New Roman'
+  }
 `
 
 function Header(props) {
@@ -54,7 +64,7 @@ function Header(props) {
             <NavLink to="/events" activeClassName="active">Events</NavLink>
             <NavLink to="/plan" activeClassName="active">Plan</NavLink>
             <NavLink to='/add-events' activeClassName='active'>Add Event</NavLink>
-            <button onClick={() => {
+            <button className="logout-button" onClick={() => {
                 localStorage.removeItem('token')
                 history.push('/login')
                 props.setLoggedIn(false)  
