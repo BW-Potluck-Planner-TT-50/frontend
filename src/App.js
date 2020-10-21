@@ -11,10 +11,7 @@ import Event from './components/Event'
 import Login from './components/Login'
 
 //Utils
-
-
 import { Route, Switch } from 'react-router-dom'
-import PrivateRoute from './utils/PrivateRoute'
 import { axiosWithAuth } from './utils/axiosWithAuth'
 
 function App() {
@@ -27,9 +24,10 @@ function App() {
     axiosWithAuth()
       .get('/api/events')
       .then(res => {
+        console.log(res)
         setEventList(res.data)
       })
-  },[])
+  },[loggedIn])
 
 
   const deleteFromEventList = (id) => {

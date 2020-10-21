@@ -105,7 +105,6 @@ function Register()
         password: registerForm.password.trim()
       })
       .then(res => {
-        console.log(res)
         localStorage.setItem('token', res.data.payload)
         history.push('/login')
       })
