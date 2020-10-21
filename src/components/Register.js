@@ -5,24 +5,29 @@ import * as yup from 'yup'
 import styled from 'styled-components'
 
 const StyledRegister = styled.div`
-
+  background-color: #D95D39;
   height: 80vh;
   width: 100%;
-  background-color: #D95D39;
     .register-container {
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100%;
       text-align: center;
-
       form {
-        padding: 3%;
-        box-shadow: 3px 3px 3px black;
         background-color: #202C59;
+        box-shadow: 3px 3px 3px black;
+        padding: 3%;
+        min-width: 35%;
         color: white;
-        label {
-          font-size: 2rem;
+        text-shadow: 1px 1px 1px black;
+        .errors {
+          height: 20px;
+          color: red;
+          font-weight: bold;
+          font-size: 1.2rem;
+          width: 400px;
+          margin: 0px auto;
         }
         input {
           margin: 3%;
@@ -30,18 +35,18 @@ const StyledRegister = styled.div`
           text-align: center;
           font-size: 1.5rem;
         }
-        .error {
-          min-height: 20px;
-        }
         button {
           padding: 2% 5%;
           font-size: 2rem;
-          cursor: pointer;
-          margin-bottom: 4%;
+          background-color: #581F18;
           color: white;
-          &:hover {
-            background-color: #581F18;
-          }
+          margin-bottom: 4%;
+        }
+        .disabled {
+          color: rgba(16, 16, 16, 0.3);
+          background-color: rgba(239, 239, 239, 0.3);
+          border: 0px solid transparent;
+          box-shadow: 0px 0px 0px black;
         }
         a {
           display: inline-block;
@@ -59,10 +64,7 @@ const schema = yup.object().shape({
     password: yup.string().required('Password is required').min(8, 'Password needs to be 8 chars min').matches(/[A-Z]/, 'Passwords must include an uppercase letter').matches(/[a-z]/, 'Passwords must include a lowercase letter').matches(/\d/, 'Passwords must include a number').matches(/\W/, 'Passwords must include a special character')
 })
 
-function Register()
-{
-
-
+function Register() {
   const history = useHistory()
 
   const [registerForm, setRegisterForm] = useState({
@@ -94,7 +96,11 @@ function Register()
   useEffect(() => {
     schema
       .isValid(registerForm)
-      .then(valid => setDisabled(!valid))
+      .then(valid => {
+        const submit = document.querySelector('#submit')
+        !valid ? submit.classList.add('disabled') : submit.classList.remove('disabled')
+        setDisabled(!valid)
+      })
   }, [registerForm])
 
   function submit(e) {
