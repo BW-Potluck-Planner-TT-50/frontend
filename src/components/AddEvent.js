@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import {useHistory} from 'react-router-dom'
-import axios from 'axios'
+import { axiosWithAuth } from '../utils/axiosWithAuth'
 
 function AddEvent({ addToEventList }) {
 
    const history = useHistory()
 
    const [events, setEvents] = useState({
-      eventName: '',
+      name: '',
       date:'',
       time: '',
       location: '',
@@ -24,26 +24,27 @@ function AddEvent({ addToEventList }) {
    const handleSubmit = (e) => {
       e.preventDefault()
 
-      axios
-         .post(`https://bw-potluck-planner-tt50.herokuapp.com/api/events`, events)
+      axiosWithAuth()
+         .post('/api/events', events)
          .then(res => {
+            console.log(res)
             addToEventList(res.data)
             setEvents({
-               eventName: '',
+               name: '',
                date:'',
                time: '',
                location: '',
             })
-            history.push('/events-list')
+            history.push('/events')
          })
    }
 
    return (
       <div className='add___events'>
       <form onSubmit={handleSubmit}>
-         <label htmlFor='eventName'>
+         <label htmlFor='name'>
             <p>Event Name</p>
-            <input name='eventName' value={events.eventName} onChange={handleChange} />
+            <input name='name' value={events.name} onChange={handleChange} />
          </label>
          <label htmlFor='date'>
             <p>Date</p>
@@ -56,10 +57,6 @@ function AddEvent({ addToEventList }) {
          <label htmlFor='location'>
             <p>Location</p>
             <input name='location' value={events.location} onChange={handleChange} />
-         </label>
-         <label htmlFor='foodList'>
-            <p>Confirmed Foods</p>
-            <input name='foodList' value={events.foodList} onChange={handleChange} />
          </label>
          <button type='submit'>Add</button>
       </form>

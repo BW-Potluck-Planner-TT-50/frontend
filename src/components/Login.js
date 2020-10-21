@@ -71,13 +71,14 @@ function Login({ setLoggedIn })
                 });
             });
     };
-    useEffect(() =>
-    {
-        schema.isValid(userData).then((valid) =>
-        {
-            setDisabled(!valid);
-        });
-    }, [userData]);
+
+    // useEffect(() =>
+    // {
+    //     schema.isValid(userData).then((valid) =>
+    //     {
+    //         setDisabled(!valid);
+    //     });
+    // }, [userData]);
 
     return (
         <>

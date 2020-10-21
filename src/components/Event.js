@@ -1,44 +1,41 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { axiosWithAuth } from '../utils/axiosWithAuth'
 import { useHistory, useParams, NavLink, Link } from "react-router-dom";
-import EventCard from './EventCard'
 
 
 function Event({ deleteFromEventList, eventList }) {
 
-   const [potEvent, setPotEvent] = useState(null)
    const params = useParams()
    const history = useHistory()
 
    const deleteEvent = (id) => {
 
-      axios
-        .delete(`https://bw-potluck-planner-tt50.herokuapp.com/api/events/${id}`)
+      axiosWithAuth()
+        .delete(`/api/events/${id}`)
         .then(res => {
-          console.log(res)
-          setPotEvent(null)
-          deleteFromEventList(potEvent)
-          history.push('/events-list')
+          console.log(res.data)
         })
-  
-    }
+ 
+      deleteFromEventList(id)
+
+  }
 
    return (
       <div className="save-wrapper">
+
          {
             eventList.map((eachEvent) => (
-            <>
-               <h2>{eachEvent.name}</h2>
-               <Link key={eachEvent.id} to={`events/${eachEvent.id}`}>
-                  View
-               </Link>
-               <NavLink className='edit-button' to={`/update-event/${params.id}`}>Edit</NavLink>
-               <div className='delete-button' onClick={()=> deleteEvent(params.id)}>
-                  Delete
-               </div> 
-            </>
+               <div key={eachEvent.id} className='each___events'>
+                  <h2>{eachEvent.name}</h2>
+                  <Link to={`/view-events/${eachEvent.id}`}>View</Link>
+                  <NavLink className='edit-button' to={`/update-event/${eachEvent.id}`}>Edit</NavLink>
+                  <div className='delete-button' onClick={()=> deleteEvent(eachEvent.id)}>
+                     Delete
+                  </div> 
+               </div>
             ))
          }
+
       </div>
    )
 }

@@ -53,6 +53,7 @@ function Header(props) {
           <nav>
             <NavLink to="/events" activeClassName="active">Events</NavLink>
             <NavLink to="/plan" activeClassName="active">Plan</NavLink>
+            <NavLink to='/add-events' activeClassName='active'>Add Event</NavLink>
             <button onClick={() => {
                 localStorage.removeItem('token')
                 history.push('/login')
