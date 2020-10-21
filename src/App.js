@@ -24,7 +24,6 @@ function App() {
     axiosWithAuth()
       .get('/api/events')
       .then(res => {
-        console.log(res)
         setEventList(res.data)
       })
   },[loggedIn])

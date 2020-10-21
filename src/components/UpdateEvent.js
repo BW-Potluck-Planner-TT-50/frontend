@@ -14,8 +14,6 @@ export default function UpdateEvent({eventList, setEventList}){
    })
 
 
-   console.log(params)
-
    useEffect(() => {
       axiosWithAuth()
          .get(`/api/events/${params.id}`)
