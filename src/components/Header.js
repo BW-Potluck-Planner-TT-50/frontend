@@ -34,16 +34,27 @@ const StyledHeader = styled.div`
     color: white;
     text-decoration: none;
     padding: 3% 5%;
+    transition: all .3s;
+    text-shadow: 1px 1px 3px black;
+    &:hover {
+      text-shadow: 3px 3px 5px black;
+    }
   }
   .logout-button {
     font-size: 1.5rem;
     font-weight: bold;
     color: white;
+    cursor: pointer;
     text-decoration: none;
     padding: 3% 5%;
     background-color: unset;
     border: unset;
-    font-family: 'Times New Roman'
+    font-family: 'Times New Roman';
+    transition: all .3s;
+    text-shadow: 1px 1px 3px black;
+    &:hover {
+      text-shadow: 3px 3px 5px black;
+    }
   }
 `
 
@@ -62,7 +73,6 @@ function Header(props) {
         <div className="nav-container">
           <nav>
             <NavLink to="/events" activeClassName="active">Events</NavLink>
-            <NavLink to="/plan" activeClassName="active">Plan</NavLink>
             <NavLink to='/add-events' activeClassName='active'>Add Event</NavLink>
             <button className="logout-button" onClick={() => {
                 localStorage.removeItem('token')

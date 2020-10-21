@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
+import styled from 'styled-components'
+
+const StyledEventCard = styled.div`
+
+`
 
 const EventCard = () => {
 
@@ -8,7 +13,7 @@ const EventCard = () => {
    const [potEvent, setPotEvent] = useState('')
 
    const [food, setFood] = useState({
-      id: params.id,
+      event_id: params.id,
       name: '',
    })
    const [foodList, setFoodList] = useState([])
@@ -70,7 +75,8 @@ const EventCard = () => {
    }
 
    return (
-      <div className='event___card'>
+     <StyledEventCard>
+       <div className='event___card'>
          <h2>{potEvent.name}</h2>
          <p>Date: {potEvent.date}</p>
          <p>Time: {potEvent.time}</p>
@@ -93,6 +99,7 @@ const EventCard = () => {
             })
          }
       </div>
+     </StyledEventCard>
    )
 }
 
