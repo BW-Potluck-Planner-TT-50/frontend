@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { axiosWithAuth } from '../utils/axiosWithAuth'
-import { useHistory, useParams, NavLink, Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 
 function Event({ deleteFromEventList, eventList }) {
-
-   const params = useParams()
-   const history = useHistory()
 
    const deleteEvent = (id) => {
 
