@@ -61,6 +61,7 @@ const StyledHeader = styled.div`
 function Header(props)
 {
 
+
     const history = useHistory()
     console.log(localStorage.getItem('organizer'))
 

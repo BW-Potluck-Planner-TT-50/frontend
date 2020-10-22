@@ -114,6 +114,7 @@ function Guest() {
 
    const handleSubmit = (e) => {
       e.preventDefault()
+
       // const guestId = parseInt(localStorage.getItem('id'))
 
       const food = { rsvp: info.rsvp, foodId: info.foodId }

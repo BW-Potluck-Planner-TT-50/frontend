@@ -68,7 +68,6 @@ function Login({ setLoggedIn, setIsOrganizer })
     const [disabled, setDisabled] = useState(true);
     const [formErrors, setFormErrors] = useState({ username: "", password: "" });
 
-
     let history = useHistory();
 
     const change = (e) =>
