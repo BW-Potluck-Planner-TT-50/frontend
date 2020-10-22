@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
-import axios from 'axios'
+import { axiosWithAuth } from '../utils/axiosWithAuth'
 import * as yup from 'yup'
 
 const StyledEventGuest = styled.div`
@@ -58,17 +59,21 @@ const StyledEventGuest = styled.div`
 `
 
 const schema = yup.object().shape({
-  eventCode: yup.string().required("You Must Enter An Event Code To Continue").min(7, "Must be at least 7 characters"),
+  invite_code: yup.string().required("You Must Enter An Event Code To Continue").min(7, "Must be at least 7 characters"),
   name: yup.string().required("You must enter your name")
 })
 
-function EventGuest() {
+function EventGuest({ setInviteCode }) {
+
   const [form, setForm] = useState({
-    eventCode: "",
-    name: ""
+    name: "",
+    invite_code: "",
   })
+
+  const history = useHistory()
+
   const [disabled, setDisabled] = useState(true)
-  const [errors, setErrors] = useState({  eventCode: "" })
+  const [errors, setErrors] = useState({  invite_code: "" })
   
   const setFormErrors = (name, value) => {
     yup.reach(schema, name).validate(value)
@@ -92,15 +97,16 @@ function EventGuest() {
 
   function handleSubmit(e) {
     e.preventDefault()
-    console.log(form.eventCode)
-    // axios.post('https://dosomestuff.com', {form})
-    // .then(res => {
-    //   //Do some stuff
-    // })
-    // .catch(err => {
-    //   console.log(err)
-    // })
-  }
+    axiosWithAuth()
+      .post("/api/auth-guest/login", form)
+      .then((res) =>
+      {
+        localStorage.setItem("token", res.data.token);
+        setInviteCode(form.invite_code)
+        history.push("/guest");
+      })
+  };
+  
 
   return (
     <StyledEventGuest>
@@ -112,9 +118,9 @@ function EventGuest() {
           <div>
             <input autoComplete="off" placeholder="Name" name="name" value={form.name} onChange={handleChange} />
           </div>
-          <div className="errors">{errors.eventCode}</div>
+          <div className="errors">{errors.invite_code}</div>
           <div>
-            <input autoComplete="off" placeholder="Event Code" name="eventCode" value={form.eventCode} onChange={handleChange} />
+            <input autoComplete="off" placeholder="Event Code" name="invite_code" value={form.invite_code} onChange={handleChange} />
           </div>
           <button disabled={disabled} id="submit">Submit</button>
         </form>

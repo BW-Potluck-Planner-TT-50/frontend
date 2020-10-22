@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import {useHistory} from 'react-router-dom'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 
-function AddEvent({ addToEventList }) {
+function AddEvent(rest) {
+
+   console.log('REST: \n', rest)
 
    const history = useHistory()
 
@@ -28,7 +30,7 @@ function AddEvent({ addToEventList }) {
          .post('/api/events', events)
          .then(res => {
             console.log(res)
-            addToEventList(res.data)
+            rest.addToEventList(res.data)
             setEvents({
                name: '',
                date:'',
