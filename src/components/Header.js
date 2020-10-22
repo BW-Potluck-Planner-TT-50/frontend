@@ -78,7 +78,8 @@ function Header(props) {
             <NavLink to="/join-event" activeClassName="active">Join An Event</NavLink>
           </nav>
         </div>
-      </div> : ((localStorage.getItem("organizer") === "false") ?
+
+      </div> : ((!props.isOrganizer) ?
       <div className="header-container">
         <div className="logoContainer">
           <img src={Potluck} alt="Potluck Planner Logo"/>
@@ -103,6 +104,7 @@ function Header(props) {
           <nav>
             <NavLink to="/events" activeClassName="active">Events</NavLink>
             <NavLink to="/plan" activeClassName="active">My Event</NavLink>
+
             <NavLink to='/add-events' activeClassName='active'>Add Event</NavLink>
             <button className="logout-button" onClick={() => {
                 localStorage.removeItem('token')
