@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import styled from 'styled-components'
-import * as yup from 'yup'
+import { useHistory } from 'react-router-dom'
 
 const StyledGuest = styled.div`
   background-color: #202C59;
@@ -66,7 +66,7 @@ const StyledGuest = styled.div`
 `
 
 function Guest() {
-
+  const history = useHistory();
    const [info, setInfo] = useState({
       rsvp: false,
       // guest_id: '',
@@ -114,8 +114,6 @@ function Guest() {
 
    const handleSubmit = (e) => {
       e.preventDefault()
-      e.persist()
-
       // const guestId = parseInt(localStorage.getItem('id'))
 
       const food = { rsvp: info.rsvp, foodId: info.foodId }
@@ -126,11 +124,10 @@ function Guest() {
          .then(res => {
             console.log(res)
             setErrors("")
+            history.push("/success")
          })
          .catch(err => {
             setErrors("You must confirm attendance and select a food")
-         })
-         .catch(err => {
             console.log(err)
          })
    }
@@ -164,25 +161,25 @@ function Guest() {
    return (
       <StyledGuest className='guest'>
         <div className="guest-select-box">
-        <h1>Welcome Suzanne</h1>
+          <h1>Welcome {guestInfo.name}</h1>
           <form onSubmit={handleSubmit}>
             {/* RSVP STATUS */}
             <div className="input-container">
-              <label htmlFor='termStatus'>
+              <label htmlFor='rsvp'>
                 I will be attending the event 
-                <input id='termStatus' type='checkbox' name='termStatus' checked={info.termStatus} onChange={handleChange} />
+                <input id='rsvp' type='checkbox' name='rsvp' checked={info.rsvp} onChange={handleChange} />
               </label>
             </div>
             {/* DROP DOWN FOOD ITEMS */}
             <div className="input-container">
-              <label htmlFor='foodItems'>
+              <label htmlFor='foodId'>
                 I will be bringing 
-                <select id='foodItems' name='foodItems' onChange={handleChange} value={info.foodItems}>
+                <select id='foodId' name='foodId' onChange={handleChange}>
                   <option value=''>-- Select Food Item --</option>
                   {
                     foodList.map((eachFood) => {
                       return (
-                        <option key={eachFood.id} value={eachFood.name}>{eachFood.name}</option>
+                        <option key={eachFood.id} id={eachFood.id} value={eachFood.id}>{eachFood.name}</option>
                       )
                     })
                   }
@@ -191,7 +188,7 @@ function Guest() {
             </div>
                 <div className="login-error">{errors}</div>
             <div className="input-container">
-              <button>Confirm</button>
+              <button type="submit">Confirm</button>
             </div>
           </form>
         </div>
