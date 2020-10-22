@@ -294,7 +294,7 @@ const EventCard = () => {
             }
           </div>
           <form onSubmit={handleGuestSubmit}>
-            <input autoComplete="off" name='name' onChange={handleGuestChange} value={guest.name}/>
+            <input autoComplete="off" placeholder="Guest Name" name='name' onChange={handleGuestChange} value={guest.name}/>
             <button>Add Guest</button>
           </form>
         </div>
@@ -312,7 +312,7 @@ const EventCard = () => {
             }
           </div>
           <form onSubmit={handleFoodSubmit}>
-            <input autoComplete="off" name='name' onChange={handleFoodChange} value={food.name}/>
+            <input autoComplete="off" placeholder="Food Name" name='name' onChange={handleFoodChange} value={food.name}/>
             <button>Add Food</button>
           </form>
         </div>

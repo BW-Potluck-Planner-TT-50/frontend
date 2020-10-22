@@ -13,7 +13,7 @@ const errorStrings = {
     password: "",
 };
 
-function Login({ setLoggedIn })
+function Login({ setLoggedIn, setIsOrganizer })
 {
     const [userData, setUserData] = useState(blankData);
     const [formErrors, setFormErrors] = useState(errorStrings);
@@ -36,7 +36,9 @@ function Login({ setLoggedIn })
             .then((res) =>
             {
                 localStorage.setItem("token", res.data.token);
+                localStorage.setItem("organizer", true);
                 setLoggedIn(true)
+                setIsOrganizer(true)
                 setUserData(blankData)
                 history.push("/events");
             })

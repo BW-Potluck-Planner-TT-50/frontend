@@ -65,7 +65,35 @@ function Header(props) {
   return(
     <StyledHeader>
       {
-      props.loggedIn ? 
+      !props.loggedIn ? 
+      <div className="header-container">
+        <div className="logoContainer">
+          <img src={Potluck} alt="Potluck Planner Logo"/>
+        </div>
+        <div className="nav-container">
+          <nav>
+            <NavLink to="/login" activeClassName="active">Login</NavLink>
+            <NavLink to="/register" activeClassName="active">Register</NavLink>
+            <NavLink to="/join-event" activeClassName="active">Join An Event</NavLink>
+          </nav>
+        </div>
+      </div> : ((!props.isOrganizer) ?
+      <div className="header-container">
+        <div className="logoContainer">
+          <img src={Potluck} alt="Potluck Planner Logo"/>
+        </div>
+        <div className="nav-container">
+          <nav>
+            <NavLink to="/plan" activeClassName="active">My Event</NavLink>
+            <button className="logout-button" onClick={() => {
+                localStorage.removeItem('token')
+                localStorage.removeItem("organizer")
+                history.push('/login')
+                props.setLoggedIn(false)  
+            }}>Logout</button>
+          </nav>
+        </div>
+      </div> :
       <div className="header-container">
         <div className="logoContainer">
           <img src={Potluck} alt="Potluck Planner Logo"/>
@@ -79,24 +107,13 @@ function Header(props) {
             <NavLink to='/add-events' activeClassName='active'>Add Event</NavLink>
             <button className="logout-button" onClick={() => {
                 localStorage.removeItem('token')
+                localStorage.removeItem("organizer")
                 history.push('/login')
                 props.setLoggedIn(false)  
             }}>Logout</button>
           </nav>
         </div>
-      </div> : 
-      <div className="header-container">
-        <div className="logoContainer">
-          <img src={Potluck} alt="Potluck Planner Logo"/>
-        </div>
-        <div className="nav-container">
-          <nav>
-            <NavLink to="/login" activeClassName="active">Login</NavLink>
-            <NavLink to="/register" activeClassName="active">Register</NavLink>
-            <NavLink to="/join-event" activeClassName="active">Join An Event</NavLink>
-          </nav>
-        </div>
-      </div>
+      </div>)
       }
     </StyledHeader>
   )
