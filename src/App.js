@@ -10,6 +10,7 @@ import UpdateEvent from './components/UpdateEvent'
 import Event from './components/Event'
 import Login from './components/Login'
 import Guest from './components/Guest'
+import HomePage from './components/HomePage'
 
 //Utils
 import PrivateRoute from './utils/PrivateRoute'
@@ -58,7 +59,7 @@ function App() {
       <Switch>
 
         <Route exact path="/">
-          <div>Homepage Component Goes Here</div>
+          <HomePage />
         </Route>
 
         <Route exact path="/register">
