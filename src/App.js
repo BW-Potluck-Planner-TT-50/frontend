@@ -19,7 +19,7 @@ import { axiosWithAuth } from './utils/axiosWithAuth'
 function App() {
   
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem('token'))
-  const [inviteCode, setInviteCode] = useState('')
+  const [isOrganizer, setIsOrganizer] = useState(JSON.parse(localStorage.getItem('organizer')))
   const [eventList, setEventList] = useState([]);
   
 
@@ -51,7 +51,8 @@ function App() {
     <div className="App">
       <Header 
         loggedIn={loggedIn} 
-        setLoggedIn={setLoggedIn} 
+        setLoggedIn={setLoggedIn}
+        isOrganizer={isOrganizer}
       />
 
       <Switch>
@@ -65,15 +66,15 @@ function App() {
         </Route>
 
         <Route exact path='/join-event'>
-          <EventGuest />
+          <EventGuest setIsOrganizer={setIsOrganizer} setLoggedIn={setLoggedIn}/>
         </Route>
 
         <Route exact path='/plan'>
-          <Guest inviteCode={inviteCode}/>
+          <Guest />
         </Route>
 
         <Route exact path="/login">
-          <Login setLoggedIn={setLoggedIn}/>
+          <Login setLoggedIn={setLoggedIn} setIsOrganizer={setIsOrganizer}/>
         </Route>
 
         <Route exact path='/events'>
