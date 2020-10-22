@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
+import styled from 'styled-components'
+
+const StyledUpdateEvent = styled.div`
+
+`
 
 export default function UpdateEvent({eventList, setEventList}){
    const params = useParams()
    const history = useHistory()
-
    const [events, setEvents] = useState({
       name: '',
       date:'',
       time: '',
       location: '',
    })
-
 
    useEffect(() => {
       axiosWithAuth()
@@ -48,7 +51,7 @@ export default function UpdateEvent({eventList, setEventList}){
    }
 
    return (
-      <div className='update___events'>
+      <StyledUpdateEvent className='update___events'>
          <h2>Update Events</h2>
          <form onSubmit={handleSubmit}>
             <label htmlFor='name'>
@@ -69,6 +72,6 @@ export default function UpdateEvent({eventList, setEventList}){
             </label>
             <button type='submit'>Update</button>
          </form>
-      </div>
+      </StyledUpdateEvent>
    )
 }
