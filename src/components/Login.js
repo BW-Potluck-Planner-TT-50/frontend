@@ -36,6 +36,7 @@ function Login({ setLoggedIn })
             .then((res) =>
             {
                 localStorage.setItem("token", res.data.token);
+                localStorage.setItem('organizer', true)
                 setLoggedIn(true)
                 setUserData(blankData)
                 history.push("/events");

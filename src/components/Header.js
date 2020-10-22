@@ -61,30 +61,12 @@ const StyledHeader = styled.div`
 function Header(props) {
 
   const history = useHistory()
+  console.log(localStorage.getItem('organizer'))
 
   return(
     <StyledHeader>
       {
-      props.loggedIn ? 
-      <div className="header-container">
-        <div className="logoContainer">
-          <img src={Potluck} alt="Potluck Planner Logo"/>
-        </div>
-        <div className="nav-container">
-          <nav>
-            <NavLink to="/events" activeClassName="active">Events</NavLink>
-
-            <NavLink to="/plan" activeClassName="active">My Event</NavLink>
-
-            <NavLink to='/add-events' activeClassName='active'>Add Event</NavLink>
-            <button className="logout-button" onClick={() => {
-                localStorage.removeItem('token')
-                history.push('/login')
-                props.setLoggedIn(false)  
-            }}>Logout</button>
-          </nav>
-        </div>
-      </div> : 
+      !props.loggedIn ? 
       <div className="header-container">
         <div className="logoContainer">
           <img src={Potluck} alt="Potluck Planner Logo"/>
@@ -96,7 +78,41 @@ function Header(props) {
             <NavLink to="/join-event" activeClassName="active">Join An Event</NavLink>
           </nav>
         </div>
-      </div>
+      </div> : ((localStorage.getItem("organizer") === "false") ?
+      <div className="header-container">
+        <div className="logoContainer">
+          <img src={Potluck} alt="Potluck Planner Logo"/>
+        </div>
+        <div className="nav-container">
+          <nav>
+            <NavLink to="/plan" activeClassName="active">My Event</NavLink>
+            <button className="logout-button" onClick={() => {
+                localStorage.removeItem('token')
+                localStorage.removeItem("organizer")
+                history.push('/login')
+                props.setLoggedIn(false)  
+            }}>Logout</button>
+          </nav>
+        </div>
+      </div> :
+      <div className="header-container">
+        <div className="logoContainer">
+          <img src={Potluck} alt="Potluck Planner Logo"/>
+        </div>
+        <div className="nav-container">
+          <nav>
+            <NavLink to="/events" activeClassName="active">Events</NavLink>
+            <NavLink to="/plan" activeClassName="active">My Event</NavLink>
+            <NavLink to='/add-events' activeClassName='active'>Add Event</NavLink>
+            <button className="logout-button" onClick={() => {
+                localStorage.removeItem('token')
+                localStorage.removeItem("organizer")
+                history.push('/login')
+                props.setLoggedIn(false)  
+            }}>Logout</button>
+          </nav>
+        </div>
+      </div>)
       }
     </StyledHeader>
   )

@@ -63,7 +63,7 @@ const schema = yup.object().shape({
   name: yup.string().required("You must enter your name")
 })
 
-function EventGuest({ setInviteCode }) {
+function EventGuest({ setIsOrganizer }) {
 
   const [form, setForm] = useState({
     name: "",
@@ -102,8 +102,8 @@ function EventGuest({ setInviteCode }) {
       .then((res) =>
       {
         localStorage.setItem("token", res.data.token);
-        setInviteCode(form.invite_code)
-        history.push("/guest");
+        localStorage.setItem('organizer', false)
+        history.push("/plan");
       })
   };
   
