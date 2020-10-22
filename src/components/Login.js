@@ -17,7 +17,7 @@ function Login({ setLoggedIn, setIsOrganizer })
 {
     const [userData, setUserData] = useState(blankData);
     const [formErrors, setFormErrors] = useState(errorStrings);
-    const [disabled, setDisabled] = useState(false);
+    const [disabled, setDisabled] = useState(true);
     // const [userList, setUserList] = useState([]);
     let history = useHistory();
 
@@ -63,6 +63,7 @@ function Login({ setLoggedIn, setIsOrganizer })
                     ...formErrors,
                     [name]: "",
                 });
+                setDisabled(false)
             })
 
             .catch((err) =>
@@ -71,6 +72,7 @@ function Login({ setLoggedIn, setIsOrganizer })
                     ...formErrors,
                     [name]: err.errors[0],
                 });
+                setDisabled(true)
             });
     };
 

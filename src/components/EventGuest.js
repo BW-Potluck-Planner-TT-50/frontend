@@ -38,6 +38,14 @@ const StyledEventGuest = styled.div`
         text-align: center;
         font-size: 1.5rem;
       }
+      .login-error {
+        height: 20px;
+        width: 350px;
+        color: red;
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin: 0px auto;
+      }
       button {
         padding: 2% 5%;
         font-size: 2rem;
@@ -55,7 +63,6 @@ const StyledEventGuest = styled.div`
       }
     }
   }
- 
 `
 
 const schema = yup.object().shape({
@@ -74,12 +81,12 @@ function EventGuest({ setIsOrganizer, setLoggedIn }) {
   const history = useHistory()
 
   const [disabled, setDisabled] = useState(true)
-  const [errors, setErrors] = useState({  invite_code: "" })
+  const [errors, setErrors] = useState({  invite_code: "", incorrectLogin: "" })
   
   const setFormErrors = (name, value) => {
     yup.reach(schema, name).validate(value)
-    .then(() => setErrors({...errors, [name]: ''}))
-    .catch(err => setErrors({...errors, [name]: err.errors[0]}))
+    .then(() => setErrors({...errors, [name]: '', incorrectLogin: ""}))
+    .catch(err => setErrors({...errors, [name]: err.errors[0], incorrectLogin: ""}))
   }
 
   function handleChange(e) {
@@ -102,13 +109,22 @@ function EventGuest({ setIsOrganizer, setLoggedIn }) {
       .post("/api/auth-guest/login", form)
       .then((res) =>
       {
+        setErrors({
+          ...errors,
+          incorrectLogin: ""
+        })
         localStorage.setItem("token", res.data.token);
-
         localStorage.setItem("organizer", false);
         setLoggedIn(true)
         setIsOrganizer(false)
         
         history.push("/plan");
+      })
+      .catch(err => {
+        setErrors({
+          ...errors,
+          incorrectLogin: "Invalid name or event code"
+        })
       })
   };
   
@@ -127,6 +143,7 @@ function EventGuest({ setIsOrganizer, setLoggedIn }) {
           <div>
             <input autoComplete="off" placeholder="Event Code" name="invite_code" value={form.invite_code} onChange={handleChange} />
           </div>
+          <div className="login-error">{errors.incorrectLogin}</div>
           <button disabled={disabled} id="submit">Submit</button>
         </form>
       </div>
