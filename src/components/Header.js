@@ -61,6 +61,7 @@ const StyledHeader = styled.div`
 function Header(props) {
 
   const history = useHistory()
+  console.log(localStorage.getItem('organizer'))
 
   return(
     <StyledHeader>
@@ -77,6 +78,7 @@ function Header(props) {
             <NavLink to="/join-event" activeClassName="active">Join An Event</NavLink>
           </nav>
         </div>
+
       </div> : ((!props.isOrganizer) ?
       <div className="header-container">
         <div className="logoContainer">
@@ -101,7 +103,6 @@ function Header(props) {
         <div className="nav-container">
           <nav>
             <NavLink to="/events" activeClassName="active">Events</NavLink>
-
             <NavLink to="/plan" activeClassName="active">My Event</NavLink>
 
             <NavLink to='/add-events' activeClassName='active'>Add Event</NavLink>

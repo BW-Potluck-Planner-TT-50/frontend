@@ -63,6 +63,7 @@ const schema = yup.object().shape({
   name: yup.string().required("You must enter your name")
 })
 
+
 function EventGuest({ setIsOrganizer, setLoggedIn }) {
 
   const [form, setForm] = useState({
@@ -102,6 +103,7 @@ function EventGuest({ setIsOrganizer, setLoggedIn }) {
       .then((res) =>
       {
         localStorage.setItem("token", res.data.token);
+
         localStorage.setItem("organizer", false);
         setLoggedIn(true)
         setIsOrganizer(false)
