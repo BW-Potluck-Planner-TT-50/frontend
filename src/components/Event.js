@@ -33,6 +33,10 @@ const StyledEvents = styled.div`
       width: 70%;
       height: 100px;
       font-size: 2rem;
+      text-shadow: 1px 1px 3px black;
+      &:hover {
+        text-shadow: 3px 3px 5px black;
+      }
     }
     .view-button {
       background-color: #D95D39;
@@ -53,6 +57,11 @@ const StyledEvents = styled.div`
       height: 100px;
       text-decoration: underline;
       font-size: 2rem;
+      cursor: pointer;
+      text-shadow: 1px 1px 3px black;
+      &:hover {
+        text-shadow: 3px 3px 5px black;
+      }
     }
   }
 `
@@ -73,21 +82,19 @@ function Event({ deleteFromEventList, eventList }) {
 
    return (
       <StyledEvents className="save-wrapper">
-
-         {
-            eventList.map((eachEvent) => (
-              <div key={eachEvent.id} className='each___events event-box'>
-                <div className="name-container">
-                  <h2>{eachEvent.name}</h2>
-                  <p>{moment(eachEvent.date).format("dddd, MMMM Do YYYY")}</p>
-                </div>
-                <Link className="view-button" to={`/view-events/${eachEvent.id}`}>View</Link>
-                <Link className='edit-button' to={`/update-event/${eachEvent.id}`}>Edit</Link>
-                <div className='delete-button' onClick={()=> deleteEvent(eachEvent.id)}>Delete</div>
+        {
+          eventList.map((eachEvent) => (
+            <div key={eachEvent.id} className='each___events event-box'>
+              <div className="name-container">
+                <h2>{eachEvent.name}</h2>
+                <p>{moment(eachEvent.date).format("dddd, MMMM Do YYYY")}</p>
               </div>
-            ))
-         }
-
+              <Link className="view-button" to={`/view-events/${eachEvent.id}`}>View</Link>
+              <Link className="edit-button" to={`/update-event/${eachEvent.id}`}>Edit</Link>
+              <div className="delete-button" onClick={()=> deleteEvent(eachEvent.id)}>Delete</div>
+            </div>
+          ))
+        }
       </StyledEvents>
    )
 }
