@@ -15,7 +15,7 @@ const StyledEventGuest = styled.div`
     height: 100%;
     text-align: center;
     form {
-      background-color: #F0A202;
+      background-color: #8B475D;
       box-shadow: 3px 3px 5px black;
       padding: 3%;
       min-width: 35%;
@@ -66,19 +66,20 @@ const StyledEventGuest = styled.div`
 `
 
 const schema = yup.object().shape({
-  invite_code: yup.string().required("You Must Enter An Event Code To Continue").min(7, "Must be at least 7 characters"),
-  name: yup.string().required("You must enter your name")
+    invite_code: yup.string().required("You Must Enter An Event Code To Continue").min(7, "Must be at least 7 characters"),
+    name: yup.string().required("You must enter your name")
 })
 
 
-function EventGuest({ setIsOrganizer, setLoggedIn }) {
+function EventGuest({ setIsOrganizer, setLoggedIn })
+{
 
-  const [form, setForm] = useState({
-    name: "",
-    invite_code: "",
-  })
+    const [form, setForm] = useState({
+        name: "",
+        invite_code: "",
+    })
 
-  const history = useHistory()
+    const history = useHistory()
 
   const [disabled, setDisabled] = useState(true)
   const [errors, setErrors] = useState({  invite_code: "", incorrectLogin: "" })
@@ -89,12 +90,13 @@ function EventGuest({ setIsOrganizer, setLoggedIn }) {
     .catch(err => setErrors({...errors, [name]: err.errors[0], incorrectLogin: ""}))
   }
 
-  function handleChange(e) {
-    const { value, name} = e.target
-    setFormErrors(name, value)
-    setForm({ ...form, [name]: value})
-  }
 
+    const setFormErrors = (name, value) =>
+    {
+        yup.reach(schema, name).validate(value)
+            .then(() => setErrors({ ...errors, [name]: '' }))
+            .catch(err => setErrors({ ...errors, [name]: err.errors[0] }))
+    }
   useEffect(() => {
     schema.isValid(form).then(valid => {
       const submit = document.querySelector('#submit')

@@ -65,37 +65,64 @@ const StyledGuest = styled.div`
   }
 `
 
-function Guest({ inviteCode }) {
+function Guest() {
 
    const [info, setInfo] = useState({
-      termStatus: false,
-      foodItems: '',
+      rsvp: false,
+      // guest_id: '',
+      foodId: null,
    })
+
+   const [food, setFood] = useState('')
+
+   const [guestInfo, setGuestInfo] = useState('')
    const [foodList, setFoodList] = useState([])
    const [errors, setErrors] = useState("")
 
    useEffect(() => {
+
+      axiosWithAuth()
+         .get('/api/guest')
+         .then(res => {
+            setGuestInfo(res.data[0])
+            localStorage.setItem('id',res.data[0].id)
+         })
+         .catch(err => {
+            console.log(err)
+         })
+
       axiosWithAuth()
          .get('/api/guest/food')
          .then(res => {
             setFoodList(res.data)
          })
+         .catch(err => {
+            console.log(err)
+         })
+
+      // Not working
+      axiosWithAuth()
+         .get('/api/guest/events')
+         .then(res => {
+            console.log(res.data)
+         })
+         .catch(err => {
+            console.log(err)
+         })
+
    },[])
-
-   const handleChange = (e) => {
-      setErrors("")
-      // Check if the current targeting input is checkbox or not
-      let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
-
-      setInfo({...info, [e.target.name]: value })
-   }
 
    const handleSubmit = (e) => {
       e.preventDefault()
       e.persist()
 
+      // const guestId = parseInt(localStorage.getItem('id'))
+
+      const food = { rsvp: info.rsvp, foodId: info.foodId }
+  
+      // Not working
       axiosWithAuth()
-         .put('/api/guest', info)
+         .put('/api/guest', food)
          .then(res => {
             console.log(res)
             setErrors("")
@@ -103,43 +130,74 @@ function Guest({ inviteCode }) {
          .catch(err => {
             setErrors("You must confirm attendance and select a food")
          })
+         .catch(err => {
+            console.log(err)
+         })
+   }
+
+   const handleFoodChange = e => {
+      setInfo({ ...info, [e.target.name]: parseInt(e.target.value) })
+   }
+ 
+
+   const handleChange = (e) => {
+      e.persist()
+
+      if(e.target.name === 'foodId'){
+
+         handleFoodChange(e)
+
+      } else {
+
+         // Check if the current targeting input is checkbox or not
+         let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
+   
+         // const selectedFood = foodList.find((eachFood) => value === eachFood.name)
+         
+         setInfo({...info, [e.target.name]: value })
+         // selectedFood ? setInfo({...info, [e.target.name]: selectedFood.id}) :
+      }
+      
+      
    }
 
    return (
-      <StyledGuest className='guest'>
-        <div className="guest-select-box">
-        <h1>Welcome Suzanne</h1>
-          <form onSubmit={handleSubmit}>
+      <div className='guest'>
+         <h1>Welcome {guestInfo.name}</h1>
+         <form onSubmit={handleSubmit}>
             {/* RSVP STATUS */}
-            <div className="input-container">
-              <label htmlFor='termStatus'>
-                I will be attending the event 
-                <input id='termStatus' type='checkbox' name='termStatus' checked={info.termStatus} onChange={handleChange} />
-              </label>
-            </div>
+            <label htmlFor='rsvp'>
+               RSVP
+               <input
+                  id='rsvp' 
+                  type='checkbox' 
+                  name='rsvp' 
+                  checked={info.rsvp}
+                  onChange={handleChange}
+               />
+            </label>
+
             {/* DROP DOWN FOOD ITEMS */}
-            <div className="input-container">
-              <label htmlFor='foodItems'>
-                I will be bringing 
-                <select id='foodItems' name='foodItems' onChange={handleChange} value={info.foodItems}>
-                  <option value=''>-- Select Food Item --</option>
+            <label htmlFor='foodId'>
+               Choose food item to bring
+               <select 
+                  id='foodId' 
+                  name='foodId' 
+                  onChange={handleChange}
+               >
+                  <option value=''>---------select---------</option>
                   {
-                    foodList.map((eachFood) => {
-                      return (
-                        <option key={eachFood.id} value={eachFood.name}>{eachFood.name}</option>
-                      )
-                    })
+                     foodList.map((eachFood) => {
+                        return (
+                           <option key={eachFood.id} id={eachFood.id} value={eachFood.id}>{eachFood.name}</option>
+                        )
+                     })
                   }
-                </select>
-              </label>
-            </div>
-                <div className="login-error">{errors}</div>
-            <div className="input-container">
-              <button>Confirm</button>
-            </div>
-          </form>
-        </div>
-      </StyledGuest>
+               </select>
+            </label>
+            <button type='submit'>Confirm</button>
+         </form>
+      </div>
    )
 }
 
