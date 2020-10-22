@@ -29,7 +29,10 @@ function App() {
       .then(res => {
         setEventList(res.data)
       })
-  },[loggedIn])
+      .catch(err => {
+        console.log(err)
+      })
+  },[])
 
 
   const deleteFromEventList = (id) => {
