@@ -9,14 +9,17 @@ import AddEvent from './components/AddEvent'
 import UpdateEvent from './components/UpdateEvent'
 import Event from './components/Event'
 import Login from './components/Login'
+import Guest from './components/Guest'
 
 //Utils
+import PrivateRoute from './utils/PrivateRoute'
 import { Route, Switch } from 'react-router-dom'
 import { axiosWithAuth } from './utils/axiosWithAuth'
 
 function App() {
   
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem('token'))
+  const [inviteCode, setInviteCode] = useState('')
   const [eventList, setEventList] = useState([]);
   
 
@@ -46,7 +49,10 @@ function App() {
 
   return (
     <div className="App">
-      <Header setLoggedIn={setLoggedIn} loggedIn={loggedIn} />
+      <Header 
+        loggedIn={loggedIn} 
+        setLoggedIn={setLoggedIn} 
+      />
 
       <Switch>
 
@@ -62,6 +68,10 @@ function App() {
           <EventGuest />
         </Route>
 
+        <Route exact path='/plan'>
+          <Guest inviteCode={inviteCode}/>
+        </Route>
+
         <Route exact path="/login">
           <Login setLoggedIn={setLoggedIn}/>
         </Route>
@@ -74,9 +84,7 @@ function App() {
           <UpdateEvent eventList={eventList} setEventList={setEventList} />
         </Route>
 
-        <Route exact path='/add-events'>
-          <AddEvent addToEventList={addToEventList}/>
-        </Route>
+        <PrivateRoute exact path='/add-events' component={AddEvent} addToEventList={addToEventList}/>
 
         <Route exact path='/view-events/:id'>
           <EventCard />
