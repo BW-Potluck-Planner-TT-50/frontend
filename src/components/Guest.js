@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import styled from 'styled-components'
-import * as yup from 'yup'
+import { useHistory } from 'react-router-dom'
 
 const StyledGuest = styled.div`
   background-color: #202C59;
@@ -66,7 +66,7 @@ const StyledGuest = styled.div`
 `
 
 function Guest() {
-
+  const history = useHistory();
    const [info, setInfo] = useState({
       rsvp: false,
       // guest_id: '',
@@ -114,7 +114,6 @@ function Guest() {
 
    const handleSubmit = (e) => {
       e.preventDefault()
-      e.persist()
 
       // const guestId = parseInt(localStorage.getItem('id'))
 
@@ -126,11 +125,10 @@ function Guest() {
          .then(res => {
             console.log(res)
             setErrors("")
+            history.push("/success")
          })
          .catch(err => {
             setErrors("You must confirm attendance and select a food")
-         })
-         .catch(err => {
             console.log(err)
          })
    }
@@ -162,42 +160,40 @@ function Guest() {
    }
 
    return (
-      <div className='guest'>
-         <h1>Welcome {guestInfo.name}</h1>
-         <form onSubmit={handleSubmit}>
+      <StyledGuest className='guest'>
+        <div className="guest-select-box">
+          <h1>Welcome {guestInfo.name}</h1>
+          <form onSubmit={handleSubmit}>
             {/* RSVP STATUS */}
-            <label htmlFor='rsvp'>
-               RSVP
-               <input
-                  id='rsvp' 
-                  type='checkbox' 
-                  name='rsvp' 
-                  checked={info.rsvp}
-                  onChange={handleChange}
-               />
-            </label>
-
+            <div className="input-container">
+              <label htmlFor='rsvp'>
+                I will be attending the event 
+                <input id='rsvp' type='checkbox' name='rsvp' checked={info.rsvp} onChange={handleChange} />
+              </label>
+            </div>
             {/* DROP DOWN FOOD ITEMS */}
-            <label htmlFor='foodId'>
-               Choose food item to bring
-               <select 
-                  id='foodId' 
-                  name='foodId' 
-                  onChange={handleChange}
-               >
-                  <option value=''>---------select---------</option>
+            <div className="input-container">
+              <label htmlFor='foodId'>
+                I will be bringing 
+                <select id='foodId' name='foodId' onChange={handleChange}>
+                  <option value=''>-- Select Food Item --</option>
                   {
-                     foodList.map((eachFood) => {
-                        return (
-                           <option key={eachFood.id} id={eachFood.id} value={eachFood.id}>{eachFood.name}</option>
-                        )
-                     })
+                    foodList.map((eachFood) => {
+                      return (
+                        <option key={eachFood.id} id={eachFood.id} value={eachFood.id}>{eachFood.name}</option>
+                      )
+                    })
                   }
-               </select>
-            </label>
-            <button type='submit'>Confirm</button>
-         </form>
-      </div>
+                </select>
+              </label>
+            </div>
+                <div className="login-error">{errors}</div>
+            <div className="input-container">
+              <button type="submit">Confirm</button>
+            </div>
+          </form>
+        </div>
+      </StyledGuest>
    )
 }
 

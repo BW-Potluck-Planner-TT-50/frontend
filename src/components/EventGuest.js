@@ -90,6 +90,12 @@ function EventGuest({ setIsOrganizer, setLoggedIn })
     .catch(err => setErrors({...errors, [name]: err.errors[0], incorrectLogin: ""}))
   }
 
+    function handleChange(e)
+    {
+        const { value, name } = e.target
+        setFormErrors(name, value)
+        setForm({ ...form, [name]: value })
+    }
 
     const setFormErrors = (name, value) =>
     {
