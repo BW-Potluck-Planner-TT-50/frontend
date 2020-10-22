@@ -112,9 +112,9 @@ function Login({ setLoggedIn, setIsOrganizer })
                             </div>
                             <p className="errorMsg">{formErrors.password}</p>
                             <div className="itemSub">
-                                <button id="subutton" disabled={disabled}>
+                                <button id="subutton"disabled={disabled}>
                                     Login
-                </button>
+                                </button>
                             </div>
                         </form>
                     </div>

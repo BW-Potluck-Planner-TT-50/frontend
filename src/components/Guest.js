@@ -65,37 +65,64 @@ const StyledGuest = styled.div`
   }
 `
 
-function Guest({ inviteCode }) {
+function Guest() {
 
    const [info, setInfo] = useState({
-      termStatus: false,
-      foodItems: '',
+      rsvp: false,
+      // guest_id: '',
+      foodId: null,
    })
+
+   const [food, setFood] = useState('')
+
+   const [guestInfo, setGuestInfo] = useState('')
    const [foodList, setFoodList] = useState([])
    const [errors, setErrors] = useState("")
 
    useEffect(() => {
+
+      axiosWithAuth()
+         .get('/api/guest')
+         .then(res => {
+            setGuestInfo(res.data[0])
+            localStorage.setItem('id',res.data[0].id)
+         })
+         .catch(err => {
+            console.log(err)
+         })
+
       axiosWithAuth()
          .get('/api/guest/food')
          .then(res => {
             setFoodList(res.data)
          })
+         .catch(err => {
+            console.log(err)
+         })
+
+      // Not working
+      axiosWithAuth()
+         .get('/api/guest/events')
+         .then(res => {
+            console.log(res.data)
+         })
+         .catch(err => {
+            console.log(err)
+         })
+
    },[])
-
-   const handleChange = (e) => {
-      setErrors("")
-      // Check if the current targeting input is checkbox or not
-      let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
-
-      setInfo({...info, [e.target.name]: value })
-   }
 
    const handleSubmit = (e) => {
       e.preventDefault()
       e.persist()
 
+      // const guestId = parseInt(localStorage.getItem('id'))
+
+      const food = { rsvp: info.rsvp, foodId: info.foodId }
+  
+      // Not working
       axiosWithAuth()
-         .put('/api/guest', info)
+         .put('/api/guest', food)
          .then(res => {
             console.log(res)
             setErrors("")
@@ -103,6 +130,35 @@ function Guest({ inviteCode }) {
          .catch(err => {
             setErrors("You must confirm attendance and select a food")
          })
+         .catch(err => {
+            console.log(err)
+         })
+   }
+
+   const handleFoodChange = e => {
+      setInfo({ ...info, [e.target.name]: parseInt(e.target.value) })
+   }
+ 
+
+   const handleChange = (e) => {
+      e.persist()
+
+      if(e.target.name === 'foodId'){
+
+         handleFoodChange(e)
+
+      } else {
+
+         // Check if the current targeting input is checkbox or not
+         let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
+   
+         // const selectedFood = foodList.find((eachFood) => value === eachFood.name)
+         
+         setInfo({...info, [e.target.name]: value })
+         // selectedFood ? setInfo({...info, [e.target.name]: selectedFood.id}) :
+      }
+      
+      
    }
 
    return (
