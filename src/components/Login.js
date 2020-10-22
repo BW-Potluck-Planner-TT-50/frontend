@@ -136,10 +136,10 @@ function Login({ setLoggedIn, setIsOrganizer })
 
 
     return (
-
         <Container className=".logincontainer">
             <Col>
-                <Card className='loginCard'>            <h1 className='loginHeader'>Sign in to your account</h1>
+                <Card className='loginCard'>            
+                    <h1 className='loginHeader'>Sign in to your account</h1>
                     <Form onSubmit={submit}>
                         <Input
                             type='text'
