@@ -38,6 +38,14 @@ const StyledEventGuest = styled.div`
         text-align: center;
         font-size: 1.5rem;
       }
+      .login-error {
+        height: 20px;
+        width: 350px;
+        color: red;
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin: 0px auto;
+      }
       button {
         padding: 2% 5%;
         font-size: 2rem;
@@ -55,7 +63,6 @@ const StyledEventGuest = styled.div`
       }
     }
   }
- 
 `
 
 const schema = yup.object().shape({
@@ -74,8 +81,15 @@ function EventGuest({ setIsOrganizer, setLoggedIn })
 
     const history = useHistory()
 
-    const [disabled, setDisabled] = useState(true)
-    const [errors, setErrors] = useState({ invite_code: "" })
+  const [disabled, setDisabled] = useState(true)
+  const [errors, setErrors] = useState({  invite_code: "", incorrectLogin: "" })
+  
+  const setFormErrors = (name, value) => {
+    yup.reach(schema, name).validate(value)
+    .then(() => setErrors({...errors, [name]: '', incorrectLogin: ""}))
+    .catch(err => setErrors({...errors, [name]: err.errors[0], incorrectLogin: ""}))
+  }
+
 
     const setFormErrors = (name, value) =>
     {
@@ -83,62 +97,61 @@ function EventGuest({ setIsOrganizer, setLoggedIn })
             .then(() => setErrors({ ...errors, [name]: '' }))
             .catch(err => setErrors({ ...errors, [name]: err.errors[0] }))
     }
+  useEffect(() => {
+    schema.isValid(form).then(valid => {
+      const submit = document.querySelector('#submit')
+      !valid ? submit.classList.add('disabled') : submit.classList.remove('disabled')
+      setDisabled(!valid)
+    })
+  }, [form])
 
-    function handleChange(e)
-    {
-        const { value, name } = e.target
-        setFormErrors(name, value)
-        setForm({ ...form, [name]: value })
-    }
-
-    useEffect(() =>
-    {
-        schema.isValid(form).then(valid =>
-        {
-            const submit = document.querySelector('#submit')
-            !valid ? submit.classList.add('disabled') : submit.classList.remove('disabled')
-            setDisabled(!valid)
+  function handleSubmit(e) {
+    e.preventDefault()
+    axiosWithAuth()
+      .post("/api/auth-guest/login", form)
+      .then((res) =>
+      {
+        setErrors({
+          ...errors,
+          incorrectLogin: ""
         })
-    }, [form])
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("organizer", false);
+        setLoggedIn(true)
+        setIsOrganizer(false)
+        
+        history.push("/plan");
+      })
+      .catch(err => {
+        setErrors({
+          ...errors,
+          incorrectLogin: "Invalid name or event code"
+        })
+      })
+  };
+  
 
-    function handleSubmit(e)
-    {
-        e.preventDefault()
-        axiosWithAuth()
-            .post("/api/auth-guest/login", form)
-            .then((res) =>
-            {
-                localStorage.setItem("token", res.data.token);
-
-                localStorage.setItem("organizer", false);
-                setLoggedIn(true)
-                setIsOrganizer(false)
-
-                history.push("/plan");
-            })
-    };
-
-
-    return (
-        <StyledEventGuest>
-            <div className="form-container">
-                <form onSubmit={handleSubmit}>
-                    <h1>Join An Event!</h1>
-                    <h2>Enter Your Name and Event Code Below</h2>
-                    <div className="errors">{errors.name}</div>
-                    <div>
-                        <input autoComplete="off" placeholder="Name" name="name" value={form.name} onChange={handleChange} />
-                    </div>
-                    <div className="errors">{errors.invite_code}</div>
-                    <div>
-                        <input autoComplete="off" placeholder="Event Code" name="invite_code" value={form.invite_code} onChange={handleChange} />
-                    </div>
-                    <button disabled={disabled} id="submit">Submit</button>
-                </form>
-            </div>
-
-        </StyledEventGuest>
-    )
+  return (
+    <StyledEventGuest>
+      <div className="form-container">
+        <form onSubmit={handleSubmit}>
+          <h1>Join An Event!</h1>
+          <h2>Enter Your Name and Event Code Below</h2>
+          <div className="errors">{errors.name}</div>
+          <div>
+            <input autoComplete="off" placeholder="Name" name="name" value={form.name} onChange={handleChange} />
+          </div>
+          <div className="errors">{errors.invite_code}</div>
+          <div>
+            <input autoComplete="off" placeholder="Event Code" name="invite_code" value={form.invite_code} onChange={handleChange} />
+          </div>
+          <div className="login-error">{errors.incorrectLogin}</div>
+          <button disabled={disabled} id="submit">Submit</button>
+        </form>
+      </div>
+      
+    </StyledEventGuest>
+  )
 }
 
 export default EventGuest

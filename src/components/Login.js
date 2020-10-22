@@ -68,7 +68,6 @@ function Login({ setLoggedIn, setIsOrganizer })
     const [disabled, setDisabled] = useState(true);
     const [formErrors, setFormErrors] = useState({ username: "", password: "" });
 
-
     let history = useHistory();
 
     const change = (e) =>
@@ -112,6 +111,7 @@ function Login({ setLoggedIn, setIsOrganizer })
                     ...formErrors,
                     [name]: "",
                 });
+                setDisabled(false)
             })
 
             .catch((err) =>
@@ -120,6 +120,7 @@ function Login({ setLoggedIn, setIsOrganizer })
                     ...formErrors,
                     [name]: err.errors[0],
                 });
+                setDisabled(true)
             });
     };
 
