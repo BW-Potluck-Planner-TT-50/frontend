@@ -63,7 +63,6 @@ function AddEvent(rest) {
       axiosWithAuth()
          .post('/api/events', events)
          .then(res => {
-            console.log(res)
             rest.addToEventList(res.data)
             setEvents({
                name: '',

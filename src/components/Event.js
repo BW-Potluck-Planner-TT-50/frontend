@@ -74,7 +74,7 @@ function Event({ deleteFromEventList, eventList }) {
       axiosWithAuth()
         .delete(`/api/events/${id}`)
         .then(res => {
-          console.log(res.data)
+          console.log("Event Deleted")
         })
  
       deleteFromEventList(id)

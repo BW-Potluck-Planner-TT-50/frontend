@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
-import * as yup from 'yup'
 
 const StyledGuest = styled.div`
   background-color: #202C59;
@@ -76,14 +75,11 @@ function Guest({ setLoggedIn }) {
       foodId: null,
    })
 
-   const [food, setFood] = useState('')
-
    const [guestInfo, setGuestInfo] = useState('')
    const [foodList, setFoodList] = useState([])
    const [errors, setErrors] = useState("")
-   console.log(foodList)
+   
    useEffect(() => {
-
       axiosWithAuth()
          .get('/api/guest')
          .then(res => {
@@ -119,19 +115,15 @@ function Guest({ setLoggedIn }) {
       e.preventDefault()
       e.persist()
 
-      // const guestId = parseInt(localStorage.getItem('id'))
-
       const food = { rsvp: info.rsvp, foodId: info.foodId }
   
       axiosWithAuth()
          .put('/api/guest', food)
          .then(res => {
-            console.log(res)
             setErrors("")
             setLoggedIn(false)
             localStorage.removeItem('token')
-
-            history.push(`/success?name=${guestInfo.name}&food=`)
+            history.push('/success')
          })
          .catch(err => {
             setErrors("You must confirm attendance and select a food")
@@ -140,7 +132,7 @@ function Guest({ setLoggedIn }) {
             console.log(err)
          })
    }
-// fe73Z2UNc
+
    const handleFoodChange = e => {
       setInfo({ ...info, [e.target.name]: parseInt(e.target.value) })
    }
@@ -150,9 +142,7 @@ function Guest({ setLoggedIn }) {
       e.persist()
 
       if(e.target.name === 'foodId'){
-
          handleFoodChange(e)
-
       } else {
 
          // Check if the current targeting input is checkbox or not

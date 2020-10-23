@@ -185,8 +185,6 @@ const EventCard = () => {
       }
     })
 
-   console.log(rsvp_guest)
-
    // fetch initial food and guest list
    useEffect(() => {
 

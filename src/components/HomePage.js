@@ -8,6 +8,7 @@ import erica from '../images/erica.png'
 import joon from '../images/joon.jpg'
 import guests from '../images/guests.png'
 import manage from '../images/manage.png'
+import addEvent from '../images/addevent.png'
 
 const StyledHomePage = styled.main`
   background-color: #202C59;
@@ -195,7 +196,7 @@ function HomePage() {
       <h2 className="get-started">What We Offer</h2>
       <div className="marketing-section">
         <div className="marketing-item">
-          <img src="#" alt="..." />
+          <img src={addEvent} alt="Create a new event page" />
           <div className="marketing-item-content">
             <h4>Create Events</h4>
             <p>It has never been easier to create a new event, all you need to do is provide some basic event information and then you are off and running with the capability to manage the event listing or create as many other events as you need!</p>
