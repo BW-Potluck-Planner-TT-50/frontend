@@ -171,8 +171,6 @@ const EventCard = () => {
    const [guestList, setGuestList] = useState([])
    const [foodList, setFoodList] = useState([])
 
-   console.log(guestList, foodList)
-
    const rsvp_guest = guestList.map((eachGuest) => {
 
       if(eachGuest.rsvp === true){
@@ -201,12 +199,14 @@ const EventCard = () => {
          .get(`/api/events/${params.id}/food`)
          .then(res => {
             setFoodList(res.data)
+          
          })
 
       axiosWithAuth()
          .get(`/api/events/${params.id}/guest-list`)
          .then(res => {
             setGuestList(res.data)
+           
          })
 
    },[params.id])
