@@ -230,7 +230,7 @@ const EventCard = () => {
       })
    }
 
-   const handleFoodSubmit = (e, id) => {
+   const handleFoodSubmit = (e) => {
 
       e.preventDefault()
       // add food to the list of food
@@ -268,14 +268,13 @@ const EventCard = () => {
    const handleGuestSubmit = (e) => {
 
       e.preventDefault()
-      // add food to the list of food
+    
       axiosWithAuth()
          .post(`/api/events/${params.id}/guest-list`, guest)
          .then(res => {
            setGuestList([...guestList, res.data])
          })
       
-      // reset food state
       setGuest({
          ...guest,
          name: '',
