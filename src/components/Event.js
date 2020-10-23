@@ -103,9 +103,9 @@ function Event({ deleteFromEventList, eventList }) {
     deleteFromEventList(id)
     
   }
-  
+  console.log(eventList)
   const eventConfirmation = (id) => {
-    const result = window.confirm('Are you sure to delete?') 
+    const result = window.confirm('Are you sure to delete ?')
     if(result){
       deleteEvent(id)
     }
