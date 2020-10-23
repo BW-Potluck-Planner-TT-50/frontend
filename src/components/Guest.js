@@ -14,6 +14,9 @@ function Guest() {
    const [guestInfo, setGuestInfo] = useState('')
    const [foodList, setFoodList] = useState([])
 
+   console.log(foodList)
+
+   console.log(foodList)
    useEffect(() => {
 
       axiosWithAuth()
@@ -37,7 +40,7 @@ function Guest() {
 
       // Not working
       axiosWithAuth()
-         .get('/api/guest/events')
+         .get('/api/guest/events', { eventId: '' })
          .then(res => {
             console.log(res.data)
          })
@@ -65,7 +68,7 @@ function Guest() {
             console.log(err)
          })
    }
-
+// fe73Z2UNc
    const handleFoodChange = e => {
       setInfo({ ...info, [e.target.name]: parseInt(e.target.value) })
    }
@@ -119,9 +122,11 @@ function Guest() {
                   <option value=''>---------select---------</option>
                   {
                      foodList.map((eachFood) => {
-                        return (
-                           <option key={eachFood.id} id={eachFood.id} value={eachFood.id}>{eachFood.name}</option>
-                        )
+                        if(eachFood.guest_id === null){
+                           return (
+                              <option key={eachFood.id} id={eachFood.id} value={eachFood.id}>{eachFood.name}</option>
+                           )
+                        }
                      })
                   }
                </select>
