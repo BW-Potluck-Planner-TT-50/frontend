@@ -346,7 +346,7 @@ const EventCard = () => {
           <div className="food">
             {
               foodList.map((eachFood) => {
-                if(eachFood.guest_id !== null){
+                if(eachFood.guest_id === null){
                   return (
                     <div className="dynamic-info" key={eachFood.name}>
                       <div>{eachFood.name}</div>
