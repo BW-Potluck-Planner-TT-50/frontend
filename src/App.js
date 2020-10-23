@@ -69,20 +69,20 @@ function App() {
           <HomePage />
         </Route>
 
-        <GuestPrivateRoute exact path='/register' component={Register}/>
-        {/* <Route exact path="/register">
+        {/* <GuestPrivateRoute exact path='/register' component={Register}/> */}
+        <Route exact path="/register">
           <Register />
-        </Route> */}
+        </Route>
 
-        <GuestPrivateRoute 
+        {/* <GuestPrivateRoute 
           exact path='/join-event' 
           component={EventGuest} 
           setIsOrganizer={setIsOrganizer} 
           setLoggedIn={setLoggedIn}
-        />
-        {/* <Route exact path='/join-event'>
+        /> */}
+        <Route exact path='/join-event'>
           <EventGuest setIsOrganizer={setIsOrganizer} setLoggedIn={setLoggedIn}/>
-        </Route> */}
+        </Route>
 
         <Route exact path='/plan'>
           <Guest setLoggedIn={setLoggedIn} />
@@ -92,16 +92,16 @@ function App() {
           <Success />
         </Route>
 
-        <GuestPrivateRoute 
+        {/* <GuestPrivateRoute 
           exact path='/login' 
           component={Login} 
           setLoggedIn={setLoggedIn} 
           setIsOrganizer={setIsOrganizer}
-        />
+        /> */}
 
-        {/* <Route exact path="/login">
+        <Route exact path="/login">
           <Login setLoggedIn={setLoggedIn} setIsOrganizer={setIsOrganizer}/>
-        </Route> */}
+        </Route>
 
         <Route exact path='/events'>
           <Event 
