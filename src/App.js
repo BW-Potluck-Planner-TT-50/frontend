@@ -14,7 +14,7 @@ import HomePage from './components/HomePage'
 import Success from './components/Success'
 
 //Utils
-import PrivateRoute from './utils/PrivateRoute'
+import { GuestPrivateRoute } from './utils/PrivateRoute'
 import { Route, Switch } from 'react-router-dom'
 import { axiosWithAuth } from './utils/axiosWithAuth'
 
@@ -69,12 +69,12 @@ function App() {
           <HomePage />
         </Route>
 
-        <PrivateRoute exact path='/register' component={Register}/>
+        <GuestPrivateRoute exact path='/register' component={Register}/>
         {/* <Route exact path="/register">
           <Register />
         </Route> */}
 
-        <PrivateRoute 
+        <GuestPrivateRoute 
           exact path='/join-event' 
           component={EventGuest} 
           setIsOrganizer={setIsOrganizer} 
@@ -92,7 +92,7 @@ function App() {
           <Success />
         </Route>
 
-        <PrivateRoute 
+        <GuestPrivateRoute 
           exact path='/login' 
           component={Login} 
           setLoggedIn={setLoggedIn} 
