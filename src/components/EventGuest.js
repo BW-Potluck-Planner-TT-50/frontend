@@ -71,7 +71,7 @@ const schema = yup.object().shape({
 })
 
 
-function EventGuest({ setIsOrganizer, setLoggedIn }) {
+function EventGuest(rest) {
 
   const [form, setForm] = useState({
     name: "",
@@ -79,6 +79,7 @@ function EventGuest({ setIsOrganizer, setLoggedIn }) {
   })
 
   const history = useHistory()
+  const { setIsOrganizer, setLoggedIn } = rest
 
   const [disabled, setDisabled] = useState(true)
   const [errors, setErrors] = useState({  invite_code: "", incorrectLogin: "" })

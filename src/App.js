@@ -19,21 +19,24 @@ import { Route, Switch } from 'react-router-dom'
 import { axiosWithAuth } from './utils/axiosWithAuth'
 
 function App() {
-  
+
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem('token'))
   const [isOrganizer, setIsOrganizer] = useState(JSON.parse(localStorage.getItem('organizer')))
   const [eventList, setEventList] = useState([]);
   
 
   useEffect(() => {
-    axiosWithAuth()
-      .get('/api/events')
-      .then(res => {
-        setEventList(res.data)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    
+
+      axiosWithAuth()
+        .get('/api/events')
+        .then(res => {
+          setEventList(res.data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    
   },[loggedIn])
 
 
@@ -51,7 +54,7 @@ function App() {
   const addToEventList = (events) => {
     setEventList([...eventList, events])
   }
-
+  
   return (
     <div className="App">
       <Header 
@@ -66,13 +69,20 @@ function App() {
           <HomePage />
         </Route>
 
-        <Route exact path="/register">
+        <PrivateRoute exact path='/register' component={Register}/>
+        {/* <Route exact path="/register">
           <Register />
-        </Route>
+        </Route> */}
 
-        <Route exact path='/join-event'>
+        <PrivateRoute 
+          exact path='/join-event' 
+          component={EventGuest} 
+          setIsOrganizer={setIsOrganizer} 
+          setLoggedIn={setLoggedIn}
+        />
+        {/* <Route exact path='/join-event'>
           <EventGuest setIsOrganizer={setIsOrganizer} setLoggedIn={setLoggedIn}/>
-        </Route>
+        </Route> */}
 
         <Route exact path='/plan'>
           <Guest setLoggedIn={setLoggedIn} />
@@ -82,9 +92,16 @@ function App() {
           <Success />
         </Route>
 
-        <Route exact path="/login">
+        <PrivateRoute 
+          exact path='/login' 
+          component={Login} 
+          setLoggedIn={setLoggedIn} 
+          setIsOrganizer={setIsOrganizer}
+        />
+
+        {/* <Route exact path="/login">
           <Login setLoggedIn={setLoggedIn} setIsOrganizer={setIsOrganizer}/>
-        </Route>
+        </Route> */}
 
         <Route exact path='/events'>
           <Event eventList={eventList} deleteFromEventList={deleteFromEventList}/>
@@ -104,5 +121,6 @@ function App() {
     </div>
   );
 }
+
 
 export default App;
