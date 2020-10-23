@@ -13,8 +13,9 @@ const errorStrings = {
     password: "",
 };
 
-function Login({ setLoggedIn, setIsOrganizer })
+function Login(rest)
 {
+    const { setLoggedIn , setIsOrganizer } = rest
     const [userData, setUserData] = useState(blankData);
     const [formErrors, setFormErrors] = useState(errorStrings);
     const [disabled, setDisabled] = useState(true);

@@ -171,6 +171,7 @@ const EventCard = () => {
    const [guestList, setGuestList] = useState([])
    const [foodList, setFoodList] = useState([])
 
+   console.log(guestList, foodList)
 
    const rsvp_guest = guestList.map((eachGuest) => {
 
@@ -181,11 +182,9 @@ const EventCard = () => {
             return {id: eachGuest.id, name: eachGuest.name, food: foodList[i].name}
           }
         }
-
       }
+      return ''
     })
-
-   console.log(rsvp_guest)
 
    // fetch initial food and guest list
    useEffect(() => {
@@ -250,6 +249,7 @@ const EventCard = () => {
    // Guest CRUD
 
    const deleteGuest = (id) => {
+     console.log(id)
       axiosWithAuth()
         .delete(`/api/events/guest-list/${id}`)
         .then(res => {
@@ -287,9 +287,10 @@ const EventCard = () => {
         <div className='RSVP-guest'>
           {
             rsvp_guest.map((eachGuest) => {
-              if(eachGuest !== undefined){
+              if(eachGuest){
                 return (<p key={eachGuest.id}>{`${eachGuest.name} is bringing a ${eachGuest.food}`}</p>)
               }
+              return''
             })
           }
         </div>
@@ -304,6 +305,13 @@ const EventCard = () => {
           <div className="guests">
             {
               guestList.map((eachGuest) => {
+                if(eachGuest.rsvp === true){
+                  return (
+                    <div className="dynamic-info" key={eachGuest.name}>
+                      <div>{eachGuest.name}</div>
+                    </div>
+                  )
+                }
                 return (
                     <div className="dynamic-info" key={eachGuest.name}>
                       <div>{eachGuest.name}</div>
@@ -322,6 +330,13 @@ const EventCard = () => {
           <div className="food">
             {
               foodList.map((eachFood) => {
+                if(eachFood.guest_id !== null){
+                  return (
+                    <div className="dynamic-info" key={eachFood.name}>
+                      <div>{eachFood.name}</div>
+                    </div>
+                  )
+                }
                 return (
                   <div className="dynamic-info" key={eachFood.name}>
                     <div>{eachFood.name}</div>

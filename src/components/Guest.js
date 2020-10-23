@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
-import * as yup from 'yup'
 
 const StyledGuest = styled.div`
   background-color: #202C59;
@@ -73,14 +72,15 @@ function Guest({ setLoggedIn }) {
    const [info, setInfo] = useState({
       rsvp: false,
       // guest_id: '',
-      foodId: null,
+      foodId: '',
    })
-
-   const [food, setFood] = useState('')
 
    const [guestInfo, setGuestInfo] = useState('')
    const [foodList, setFoodList] = useState([])
    const [errors, setErrors] = useState("")
+
+   // const eventInfo = { eventId: parseInt(guestInfo.event_id) }
+   console.log(guestInfo)
 
    useEffect(() => {
 
@@ -88,7 +88,6 @@ function Guest({ setLoggedIn }) {
          .get('/api/guest')
          .then(res => {
             setGuestInfo(res.data[0])
-            localStorage.setItem('id',res.data[0].id)
          })
          .catch(err => {
             console.log(err)
@@ -103,17 +102,16 @@ function Guest({ setLoggedIn }) {
             console.log(err)
          })
 
-      // Not working
-      axiosWithAuth()
-         .get('/api/guest/events', { eventId: '' })
-         .then(res => {
-            console.log(res.data)
-         })
-         .catch(err => {
-            console.log(err)
-         })
+      // axiosWithAuth()
+      //    .get('/api/guest/events', eventInfo)
+      //    .then(res => {
+      //       console.log(res.data)
+      //    })
+      //    .catch(err => {
+      //       console.log(err)
+      //    })
 
-   },[])
+   },[info])
 
    const handleSubmit = (e) => {
       e.preventDefault()
@@ -139,7 +137,7 @@ function Guest({ setLoggedIn }) {
             console.log(err)
          })
    }
-// fe73Z2UNc
+
    const handleFoodChange = e => {
       setInfo({ ...info, [e.target.name]: parseInt(e.target.value) })
    }
@@ -191,6 +189,7 @@ function Guest({ setLoggedIn }) {
                               <option key={eachFood.id} id={eachFood.id} value={eachFood.id}>{eachFood.name}</option>
                            )
                         }
+                        return null
                      })
 
                   }
