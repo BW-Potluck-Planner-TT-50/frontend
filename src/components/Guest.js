@@ -167,20 +167,20 @@ function Guest() {
    return (
       <StyledGuest className='guest'>
         <div className="guest-select-box">
-        <h1>Welcome Suzanne</h1>
+        <h1>Welcome {guestInfo.name}</h1>
           <form onSubmit={handleSubmit}>
             {/* RSVP STATUS */}
             <div className="input-container">
-              <label htmlFor='termStatus'>
+              <label htmlFor='rsvp'>
                 I will be attending the event 
-                <input id='termStatus' type='checkbox' name='termStatus' checked={info.termStatus} onChange={handleChange} />
+                <input id='rsvp' type='checkbox' name='rsvp' checked={info.rsvp} onChange={handleChange} />
               </label>
             </div>
             {/* DROP DOWN FOOD ITEMS */}
             <div className="input-container">
-              <label htmlFor='foodItems'>
+              <label htmlFor='foodId'>
                 I will be bringing 
-                <select id='foodItems' name='foodItems' onChange={handleChange} value={info.foodItems}>
+                <select id='foodId' name='foodId' onChange={handleChange} value={info.foodId}>
                   <option value=''>-- Select Food Item --</option>
                   {
                      foodList.map((eachFood) => {
