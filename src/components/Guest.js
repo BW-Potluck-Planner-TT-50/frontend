@@ -134,6 +134,13 @@ function Guest({ setLoggedIn }) {
          })
    }
 
+   const confirmation = (e) => {
+      const result = window.confirm('You will not be able to make any changes after the confirmation. \nAre you sure to confirm?')
+      e.persist()
+      if(result){
+         handleSubmit(e)
+      }
+   }
    const handleFoodChange = e => {
       setInfo({ ...info, [e.target.name]: parseInt(e.target.value) })
    }
@@ -162,7 +169,7 @@ function Guest({ setLoggedIn }) {
       <StyledGuest className='guest'>
         <div className="guest-select-box">
         <h1>Welcome {guestInfo.name}</h1>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={confirmation}>
             {/* RSVP STATUS */}
             <div className="input-container">
               <label htmlFor='rsvp'>

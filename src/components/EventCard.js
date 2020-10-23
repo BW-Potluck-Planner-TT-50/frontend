@@ -229,6 +229,13 @@ const EventCard = () => {
       })
    }
 
+   const foodConfirmation = (id) => {
+     const result = window.confirm('Are you sure to delete?')
+     if(result){
+       deleteFood(id)
+     }
+   }
+
    const handleFoodSubmit = (e) => {
 
       e.preventDefault()
@@ -248,7 +255,9 @@ const EventCard = () => {
 
    // Guest CRUD
 
-   const deleteGuest = (id) => {
+   
+
+  const deleteGuest = (id) => {
      console.log(id)
       axiosWithAuth()
         .delete(`/api/events/guest-list/${id}`)
@@ -258,12 +267,19 @@ const EventCard = () => {
         setGuestList(guestList.filter((eachGuest) => eachGuest.id !== id))
    }
 
-   const handleGuestChange = (e) => {
+  const handleGuestChange = (e) => {
       setGuest({
          ...guest,
          [e.target.name]: e.target.value
       })
    }
+
+  const guestConfirmation = (id) => {
+    const result = window.confirm('Are you sure to delete?') 
+    if(result){
+      deleteGuest(id)
+    }
+  }
 
    const handleGuestSubmit = (e) => {
 
@@ -315,7 +331,7 @@ const EventCard = () => {
                 return (
                     <div className="dynamic-info" key={eachGuest.name}>
                       <div>{eachGuest.name}</div>
-                      <div className="delete-button" onClick={() => deleteGuest(eachGuest.id)}>X</div>
+                      <div className="delete-button" onClick={() => guestConfirmation(eachGuest.id)}>X</div>
                     </div>
                 )
               })
@@ -340,7 +356,7 @@ const EventCard = () => {
                 return (
                   <div className="dynamic-info" key={eachFood.name}>
                     <div>{eachFood.name}</div>
-                    <div className="delete-button" onClick={() => deleteFood(eachFood.id)}>X</div>
+                    <div className="delete-button" onClick={() => foodConfirmation(eachFood.id)}>X</div>
                   </div>
                 )
               })

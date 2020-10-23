@@ -69,18 +69,25 @@ const StyledEvents = styled.div`
 
 function Event({ deleteFromEventList, eventList }) {
 
-   const deleteEvent = (id) => {
-
-      axiosWithAuth()
-        .delete(`/api/events/${id}`)
-        .then(res => {
-          console.log("Event Deleted")
-        })
- 
-      deleteFromEventList(id)
-
+  
+  const deleteEvent = (id) => {
+    
+    axiosWithAuth()
+    .delete(`/api/events/${id}`)
+    .then(res => {
+      console.log(res.data)
+    })
+    
+    deleteFromEventList(id)
+    
   }
-
+  
+  const eventConfirmation = (id) => {
+    const result = window.confirm('Are you sure to delete?') 
+    if(result){
+      deleteEvent(id)
+    }
+  }
    return (
       <StyledEvents className="save-wrapper">
         {
@@ -93,7 +100,7 @@ function Event({ deleteFromEventList, eventList }) {
               </div>
               <Link className="view-button" to={`/view-events/${eachEvent.id}`}>View</Link>
               <Link className="edit-button" to={`/update-event/${eachEvent.id}`}>Edit</Link>
-              <div className="delete-button" onClick={()=> deleteEvent(eachEvent.id)}>Delete</div>
+              <div className="delete-button" onClick={()=> eventConfirmation(eachEvent.id)}>Delete</div>
             </div>
           )) : <div>Welcome</div>
         }

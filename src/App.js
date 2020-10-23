@@ -111,7 +111,9 @@ function App() {
           <UpdateEvent eventList={eventList} setEventList={setEventList} />
         </Route>
 
-        <PrivateRoute exact path='/add-events' component={AddEvent} addToEventList={addToEventList}/>
+        <Route exact path='/add-events'>
+          <AddEvent addToEventList={addToEventList} />
+        </Route>  
 
         <Route exact path='/view-events/:id'>
           <EventCard />
