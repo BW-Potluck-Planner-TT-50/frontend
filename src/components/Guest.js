@@ -81,7 +81,7 @@ function Guest({ setLoggedIn }) {
    const [guestInfo, setGuestInfo] = useState('')
    const [foodList, setFoodList] = useState([])
    const [errors, setErrors] = useState("")
-
+   console.log(foodList)
    useEffect(() => {
 
       axiosWithAuth()
@@ -130,7 +130,8 @@ function Guest({ setLoggedIn }) {
             setErrors("")
             setLoggedIn(false)
             localStorage.removeItem('token')
-            history.push('/success')
+
+            history.push(`/success?name=${guestInfo.name}&food=`)
          })
          .catch(err => {
             setErrors("You must confirm attendance and select a food")

@@ -7,6 +7,7 @@ import styled from 'styled-components'
 const StyledEvents = styled.div`
   background-color: #202C59;
   padding: 5%;
+  min-height: 80vh;
   .event-box {
     background-color: #581F18;
     box-shadow: 3px 3px 5px black;

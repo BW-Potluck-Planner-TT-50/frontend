@@ -3,6 +3,62 @@ import { axiosWithAuth } from "../utils/axiosWithAuth";
 import { useHistory } from "react-router";
 import schema from "./loginValidation";
 import * as yup from "yup";
+import { Link } from 'react-router-dom'
+import styled from 'styled-components'
+
+const StyledLogin = styled.div`
+  background-color: #D95D39;
+  min-height: 80vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+      form {
+        text-align: center;
+        background-color: #202C59;
+        box-shadow: 3px 3px 3px black;
+        padding: 3%;
+        min-width: 35%;
+        color: white;
+        text-shadow: 1px 1px 1px black;
+        .errors {
+          height: 20px;
+          color: red;
+          font-weight: bold;
+          font-size: 1.2rem;
+          width: 400px;
+          margin: 0px auto;
+        }
+        input {
+          margin: 3%;
+          padding: 2%;
+          text-align: center;
+          font-size: 1.5rem;
+        }
+        button {
+          padding: 2% 5%;
+          font-size: 2rem;
+          background-color: #581F18;
+          color: white;
+          margin-bottom: 4%;
+          cursor: pointer;
+        }
+        .disabled {
+          color: rgba(16, 16, 16, 0.3);
+          background-color: rgba(239, 239, 239, 0.3);
+          border: 0px solid transparent;
+          box-shadow: 0px 0px 0px black;
+          cursor: unset;
+        }
+        a {
+          display: inline-block;
+          color: #F0A202;
+          font-size: 1.2rem;
+          width: 350px;
+          margin: 0 auto;
+        }
+      }
+`
 
 const blankData = {
     username: "",
@@ -18,7 +74,6 @@ function Login({ setLoggedIn, setIsOrganizer })
     const [userData, setUserData] = useState(blankData);
     const [formErrors, setFormErrors] = useState(errorStrings);
     const [disabled, setDisabled] = useState(true);
-    // const [userList, setUserList] = useState([]);
     let history = useHistory();
 
     const change = (evt) =>
@@ -44,14 +99,6 @@ function Login({ setLoggedIn, setIsOrganizer })
             })
     };
 
-    // const addUser = () => {
-    //   setUserList([...userList, userData]);
-    // };
-
-    // useEffect(() => {
-
-    // }, [userList]);
-
     const validate = (name, value) =>
     {
         yup
@@ -63,6 +110,8 @@ function Login({ setLoggedIn, setIsOrganizer })
                     ...formErrors,
                     [name]: "",
                 });
+                const submitBtnStyle = document.querySelector('#submit')
+                submitBtnStyle.classList.remove('disabled')
                 setDisabled(false)
             })
 
@@ -72,55 +121,30 @@ function Login({ setLoggedIn, setIsOrganizer })
                     ...formErrors,
                     [name]: err.errors[0],
                 });
+                const submitBtnStyle = document.querySelector('#submit')
+                submitBtnStyle.classList.add('disabled')
                 setDisabled(true)
             });
     };
 
-    // useEffect(() =>
-    // {
-    //     schema.isValid(userData).then((valid) =>
-    //     {
-    //         setDisabled(!valid);
-    //     });
-    // }, [userData]);
-
     return (
-        <>
-            <div className="formBG">
-                <div className="loginBox">
-                    <div className="mainForm">
-                        <h2>Login</h2>
-                        <form onSubmit={submit}>
-                            <div className="item">
-                                <input
-                                    type="text"
-                                    name="username"
-                                    placeholder="Username"
-                                    value={userData.username}
-                                    onChange={change}
-                                />
-                            </div>
-                            <p className="errorMsg">{formErrors.username}</p>
-                            <div className="item">
-                                <input
-                                    type="text"
-                                    name="password"
-                                    placeholder="Password"
-                                    value={userData.password}
-                                    onChange={change}
-                                />
-                            </div>
-                            <p className="errorMsg">{formErrors.password}</p>
-                            <div className="itemSub">
-                                <button id="subutton"disabled={disabled}>
-                                    Login
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+        <StyledLogin>
+          <form onSubmit={submit}>
+            <h1>Login</h1>
+            <div>
+              <input type="text" name="username" placeholder="Username" value={userData.username} onChange={change} />
+              <div className="error" style={{ color: "red" }}>{formErrors.username}</div>
             </div>
-        </>
+            <div> 
+              <input type="password" name="password" placeholder="Password" value={userData.password} onChange={change} />
+              <div className="error" style={{ color: "red" }}>{formErrors.password}</div>
+            </div>
+            <div>
+                <button id="submit" className="disabled" disabled={disabled}>Submit</button>
+            </div>
+            <Link to="/register">Don't have an account? Click Here To Create One</Link>
+          </form>
+      </StyledLogin>
     );
 }
 export default Login 
