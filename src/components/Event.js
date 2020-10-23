@@ -83,6 +83,7 @@ function Event({ deleteFromEventList, eventList }) {
    return (
       <StyledEvents className="save-wrapper">
         {
+          eventList.length !== 0 ?
           eventList.map((eachEvent) => (
             <div key={eachEvent.id} className='each___events event-box'>
               <div className="name-container">
@@ -93,7 +94,7 @@ function Event({ deleteFromEventList, eventList }) {
               <Link className="edit-button" to={`/update-event/${eachEvent.id}`}>Edit</Link>
               <div className="delete-button" onClick={()=> deleteEvent(eachEvent.id)}>Delete</div>
             </div>
-          ))
+          )) : <div>Welcome</div>
         }
       </StyledEvents>
    )
