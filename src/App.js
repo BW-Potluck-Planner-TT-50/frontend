@@ -11,6 +11,7 @@ import Event from './components/Event'
 import Login from './components/Login'
 import Guest from './components/Guest'
 import HomePage from './components/HomePage'
+import Success from './components/Success'
 
 //Utils
 import PrivateRoute from './utils/PrivateRoute'
@@ -74,7 +75,11 @@ function App() {
         </Route>
 
         <Route exact path='/plan'>
-          <Guest />
+          <Guest setLoggedIn={setLoggedIn} />
+        </Route>
+
+        <Route exact path='/success'>
+          <Success />
         </Route>
 
         <Route exact path="/login">
