@@ -171,6 +171,7 @@ const EventCard = () => {
    const [guestList, setGuestList] = useState([])
    const [foodList, setFoodList] = useState([])
 
+
    const rsvp_guest = guestList.map((eachGuest) => {
 
       if(eachGuest.rsvp === true){
@@ -220,7 +221,7 @@ const EventCard = () => {
          .then(res => {
             console.log(res)
          })
-      setFoodList(foodList.filter((eachFood) => eachFood.id !== id))
+        setFoodList(foodList.filter((eachFood) => eachFood.id !== id))
    }
 
    const handleFoodChange = (e) => {
@@ -251,11 +252,11 @@ const EventCard = () => {
 
    const deleteGuest = (id) => {
       axiosWithAuth()
-         .delete(`/api/events/guest-list/${id}`)
-         .then(res => {
-            console.log(res)
-         })
-      setGuestList(guestList.filter((eachGuest) => eachGuest.id !== id))
+        .delete(`/api/events/guest-list/${id}`)
+        .then(res => {
+          console.log(res)
+        })
+        setGuestList(guestList.filter((eachGuest) => eachGuest.id !== id))
    }
 
    const handleGuestChange = (e) => {
