@@ -86,17 +86,12 @@ function Login({ setLoggedIn, setIsOrganizer })
             .then((res) =>
             {
                 localStorage.setItem("token", res.data.token);
-                history.push("/protected");
+                history.push("/events");
             })
             .catch((err) =>
             {
                 console.log(err);
             })
-            .finally(() =>
-            {
-                setUserData('');
-                window.location.reload()
-            });
     };
 
 
