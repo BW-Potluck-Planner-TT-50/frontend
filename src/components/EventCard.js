@@ -171,6 +171,22 @@ const EventCard = () => {
    const [guestList, setGuestList] = useState([])
    const [foodList, setFoodList] = useState([])
 
+
+   const rsvp_guest = guestList.map((eachGuest) => {
+
+      if(eachGuest.rsvp === true){
+
+        for(let i = 0; i < foodList.length; i++){
+          if(foodList[i].guest_id === eachGuest.id){
+            return {id: eachGuest.id, name: eachGuest.name, food: foodList[i].name}
+          }
+        }
+
+      }
+    })
+
+   console.log(rsvp_guest)
+
    // fetch initial food and guest list
    useEffect(() => {
 
@@ -191,6 +207,7 @@ const EventCard = () => {
       axiosWithAuth()
          .get(`/api/events/${params.id}/guest-list`)
          .then(res => {
+            console.log(res)
             setGuestList(res.data)
          })
 
@@ -269,6 +286,15 @@ const EventCard = () => {
   return (
     <StyledEventCard>
       <div className='event___card event-box'>
+        <div className='RSVP-guest'>
+          {
+            rsvp_guest.map((eachGuest) => {
+              if(eachGuest !== undefined){
+                return (<p key={eachGuest.id}>{`${eachGuest.name} is bringing a ${eachGuest.food}`}</p>)
+              }
+            })
+          }
+        </div>
         <div className="event-info">
           <h2>{potEvent.name}</h2>
           <h3><strong>Date:</strong>  {moment(potEvent.date).format("dddd, MMMM Do YYYY")}</h3>
