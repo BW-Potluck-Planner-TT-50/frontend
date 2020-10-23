@@ -97,12 +97,6 @@ function EventGuest({ setIsOrganizer, setLoggedIn })
         setForm({ ...form, [name]: value })
     }
 
-    const setFormErrors = (name, value) =>
-    {
-        yup.reach(schema, name).validate(value)
-            .then(() => setErrors({ ...errors, [name]: '' }))
-            .catch(err => setErrors({ ...errors, [name]: err.errors[0] }))
-    }
   useEffect(() => {
     schema.isValid(form).then(valid => {
       const submit = document.querySelector('#submit')
