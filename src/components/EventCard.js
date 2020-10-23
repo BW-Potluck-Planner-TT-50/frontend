@@ -186,6 +186,7 @@ const EventCard = () => {
 
    console.log(rsvp_guest)
 
+
    // fetch initial food and guest list
    useEffect(() => {
 
@@ -220,7 +221,7 @@ const EventCard = () => {
          .then(res => {
             console.log(res)
          })
-      setFoodList(foodList.filter((eachFood) => eachFood.id !== id))
+        setFoodList(foodList.filter((eachFood) => eachFood.id !== id))
    }
 
    const handleFoodChange = (e) => {
@@ -251,11 +252,11 @@ const EventCard = () => {
 
    const deleteGuest = (id) => {
       axiosWithAuth()
-         .delete(`/api/events/guest-list/${id}`)
-         .then(res => {
-            console.log(res)
-         })
-      setGuestList(guestList.filter((eachGuest) => eachGuest.id !== id))
+        .delete(`/api/events/guest-list/${id}`)
+        .then(res => {
+          console.log(res)
+        })
+        setGuestList(guestList.filter((eachGuest) => eachGuest.id !== id))
    }
 
    const handleGuestChange = (e) => {

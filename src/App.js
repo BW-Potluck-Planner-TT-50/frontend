@@ -10,6 +10,9 @@ import UpdateEvent from './components/UpdateEvent'
 import Event from './components/Event'
 import Login from './components/Login'
 import Guest from './components/Guest'
+import HomePage from './components/HomePage'
+import Success from './components/Success'
+
 
 //Utils
 import PrivateRoute from './utils/PrivateRoute'
@@ -61,7 +64,7 @@ function App() {
       <Switch>
 
         <Route exact path="/">
-          <div>Homepage Component Goes Here</div>
+          <HomePage />
         </Route>
 
         <Route exact path="/register">
@@ -74,6 +77,10 @@ function App() {
 
         <Route exact path='/plan'>
           <Guest />
+        </Route>
+
+        <Route exact path='/success'>
+          <Success />
         </Route>
 
         <Route exact path="/login">
