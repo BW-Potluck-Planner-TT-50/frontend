@@ -207,7 +207,6 @@ const EventCard = () => {
       axiosWithAuth()
          .get(`/api/events/${params.id}/guest-list`)
          .then(res => {
-            console.log(res)
             setGuestList(res.data)
          })
 
