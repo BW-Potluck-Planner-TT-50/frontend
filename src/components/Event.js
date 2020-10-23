@@ -1,13 +1,37 @@
 import React from "react";
 import { axiosWithAuth } from '../utils/axiosWithAuth'
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 import moment from 'moment'
 import styled from 'styled-components'
 
 const StyledEvents = styled.div`
   background-color: #202C59;
+  box-sizing: border-box;
   padding: 5%;
   min-height: 80vh;
+  .no-events {
+    background-color: #581F18;
+    box-shadow: 3px 3px 5px black;
+    margin-bottom: 2%;
+    text-align: center;
+    color: white;
+    padding: 3%;
+    h2 {
+      margin-bottom: 2%;
+    }
+    div {
+      padding: 3%;
+      a {
+        background-color: #F0A202;
+        padding: 3% 5%;
+        box-shadow: 3px 3px 5px black;
+        color: white;
+        text-shadow: 1px 1px 3px black;
+        text-decoration: none;
+        font-size: 1.5rem;
+      }
+    }
+  }
   .event-box {
     background-color: #581F18;
     box-shadow: 3px 3px 5px black;
@@ -16,7 +40,6 @@ const StyledEvents = styled.div`
     justify-content: space-between;
     align-items: center;
     color: white;
-    height: 100%;
     padding: 1%;
     .name-container {
       width: 100%;
@@ -69,7 +92,6 @@ const StyledEvents = styled.div`
 
 function Event({ deleteFromEventList, eventList }) {
 
-  
   const deleteEvent = (id) => {
     
     axiosWithAuth()
@@ -102,7 +124,15 @@ function Event({ deleteFromEventList, eventList }) {
               <Link className="edit-button" to={`/update-event/${eachEvent.id}`}>Edit</Link>
               <div className="delete-button" onClick={()=> eventConfirmation(eachEvent.id)}>Delete</div>
             </div>
-          )) : <div>Welcome</div>
+          )) : 
+          <div className="no-events">
+            <h1>You Haven't Created Any Events Yet</h1>
+            <h2>To Get Started Just Click The Event Below</h2>
+            <div>
+              <Link to="/add-events">Add Events</Link>
+            </div>
+
+          </div>
         }
       </StyledEvents>
    )

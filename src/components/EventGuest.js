@@ -54,6 +54,7 @@ const StyledEventGuest = styled.div`
         transform: all .2s;
         box-shadow: 3px 3px 5px black;
         margin-top: 3%;
+        cursor: pointer;
       }
       .disabled {
         color: rgba(16, 16, 16, 0.3);

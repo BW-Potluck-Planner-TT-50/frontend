@@ -13,8 +13,7 @@ import addEvent from '../images/addevent.png'
 const StyledHomePage = styled.main`
   background-color: #202C59;
   padding: 2% 5%;
-  height: 80vh;
-  overflow-y: auto;
+  min-height: 80vh;
   .hero {
     display: flex;
     justify-content: center;
