@@ -104,7 +104,10 @@ function App() {
         </Route> */}
 
         <Route exact path='/events'>
-          <Event eventList={eventList} deleteFromEventList={deleteFromEventList}/>
+          <Event 
+            eventList={eventList} 
+            deleteFromEventList={deleteFromEventList}
+          />
         </Route>
 
         <Route exact path='/update-event/:id'>
@@ -116,7 +119,7 @@ function App() {
         </Route>  
 
         <Route exact path='/view-events/:id'>
-          <EventCard />
+          <EventCard /> 
         </Route>
 
       </Switch>

@@ -3,9 +3,7 @@ import {useHistory} from 'react-router-dom'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 
 function AddEvent(rest) {
-
-   console.log('REST: \n', rest)
-
+   
    const history = useHistory()
 
    const [events, setEvents] = useState({
