@@ -221,22 +221,22 @@ function HomePage() {
         <div className="a-team-member">
           <h4>Erica</h4>
           <img src={erica} alt="Erica" />
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia fugiat possimus at error explicabo. Voluptas delectus itaque consequatur molestiae provident atque cupiditate labore cumque quos?</p>
+          <p>Backend Engineer</p>
         </div>
         <div className="a-team-member">
           <h4>Joon</h4>
           <img src={joon} alt="Joon" />
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia fugiat possimus at error explicabo. Voluptas delectus itaque consequatur molestiae provident atque cupiditate labore cumque quos?</p>
+          <p>Frontend Engineer</p>
         </div>
         <div className="a-team-member">
           <h4>James</h4>
           <img src={james} alt="James" />
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia fugiat possimus at error explicabo. Voluptas delectus itaque consequatur molestiae provident atque cupiditate labore cumque quos?</p>
+          <p>Frontend UI Engineer</p>
         </div>
         <div className="a-team-member">
           <h4>Caroline</h4>
           <img src={caroline} alt="Caroline" />
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia fugiat possimus at error explicabo. Voluptas delectus itaque consequatur molestiae provident atque cupiditate labore cumque quos?</p>
+          <p>Frontend UI Engineer</p>
         </div>
       </div>
     </StyledHomePage>
