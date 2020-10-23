@@ -54,6 +54,7 @@ const StyledGuest = styled.div`
         transform: all .2s;
         box-shadow: 3px 3px 5px black;
         margin-top: 2%;
+        cursor: pointer;
       }
       .disabled {
         color: rgba(16, 16, 16, 0.3);
@@ -83,7 +84,6 @@ function Guest({ setLoggedIn }) {
    console.log(guestInfo)
 
    useEffect(() => {
-
       axiosWithAuth()
          .get('/api/guest')
          .then(res => {
@@ -117,14 +117,11 @@ function Guest({ setLoggedIn }) {
       e.preventDefault()
       e.persist()
 
-      // const guestId = parseInt(localStorage.getItem('id'))
-
       const food = { rsvp: info.rsvp, foodId: info.foodId }
   
       axiosWithAuth()
          .put('/api/guest', food)
          .then(res => {
-            console.log(res)
             setErrors("")
             setLoggedIn(false)
             localStorage.removeItem('token')
@@ -154,9 +151,7 @@ function Guest({ setLoggedIn }) {
       e.persist()
 
       if(e.target.name === 'foodId'){
-
          handleFoodChange(e)
-
       } else {
 
          // Check if the current targeting input is checkbox or not

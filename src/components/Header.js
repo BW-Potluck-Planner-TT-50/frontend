@@ -8,6 +8,7 @@ const StyledHeader = styled.div`
   box-shadow: 1px 1px 3px black;
   position: relative;
   z-index: 2;
+  height: 20vh;
   .header-container {
     display: flex;
     justify-content: space-between;

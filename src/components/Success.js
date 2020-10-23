@@ -1,10 +1,44 @@
 import React from 'react'
+import styled from 'styled-components'
+
+const StyledSuccess = styled.div`
+  background-color: #202C59;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  .success-message-container {
+    background-color: #F0A202;
+    box-shadow: 3px 3px 3px black;
+    padding: 5% 3%;
+    min-width: 35%;
+    color: white;
+    text-shadow: 1px 1px 1px black;
+    text-align: center;
+    .main-success {
+      font-size: 3rem;
+    }
+    h1 {
+      max-width: 400px;
+      margin: 0px auto;
+      margin-bottom: 3%;
+    }
+    h2 {
+      max-width: 400px;
+      margin: 0px auto;
+    }
+  }
+`
 
 function Success() {
    return (
-      <div className='success'>
-         <h1>Thank You</h1>
-      </div>
+      <StyledSuccess>
+        <div className="success-message-container">
+          <h1 className="main-success">Success!</h1>
+          <h1>You Have Been Registered And Your Food Choice Has Been Accepted</h1>
+          <h2>Thank you for RSVPing and we look forward to seeing you at the event!</h2>
+        </div>
+      </StyledSuccess>
    )
 }
 
