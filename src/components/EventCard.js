@@ -19,6 +19,38 @@ const StyledEventCard = styled.div`
     color: white;
     padding: 1%;
     height: 70%;
+    .RSVP-guest {
+      padding: 2%;
+      display: flex;
+      flex-direction: column;
+      width: 20%;
+      h3 {
+        text-align: center;
+      }
+      .rsvp-stuff {
+        background-color: #F18805;
+        box-shadow: inset 3px 3px 5px black;
+        overflow-y: auto;
+        height: 80%;
+        p {
+          padding: 4%;
+          box-shadow: inset 3px 3px 5px black;
+          margin: 0px;
+        }
+        &::-webkit-scrollbar {
+          width: 1em;
+        }
+        
+        &::-webkit-scrollbar-track {
+          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        &::-webkit-scrollbar-thumb {
+          background-color: darkgrey;
+          outline: 1px solid slategrey;
+        }
+      }
+    }
     strong {
       text-decoration: underline;
     }
@@ -34,7 +66,7 @@ const StyledEventCard = styled.div`
       padding: 2%;
       display: flex;
       flex-direction: column;
-      width: 30%;
+      width: 20%;
       form {
         text-align: center;
         margin: 4%;
@@ -93,7 +125,7 @@ const StyledEventCard = styled.div`
       padding: 2%;
       display: flex;
       flex-direction: column;
-      width: 30%;
+      width: 20%;
       form {
         text-align: center;
         margin: 4%;
@@ -300,16 +332,6 @@ const EventCard = () => {
   return (
     <StyledEventCard>
       <div className='event___card event-box'>
-        <div className='RSVP-guest'>
-          {
-            rsvp_guest.map((eachGuest) => {
-              if(eachGuest){
-                return (<p key={eachGuest.id}>{`${eachGuest.name} is bringing a ${eachGuest.food}`}</p>)
-              }
-              return''
-            })
-          }
-        </div>
         <div className="event-info">
           <h2>{potEvent.name}</h2>
           <h3><strong>Date:</strong>  {moment(potEvent.date).format("dddd, MMMM Do YYYY")}</h3>
@@ -366,6 +388,19 @@ const EventCard = () => {
             <input autoComplete="off" placeholder="Food Name" name='name' onChange={handleFoodChange} value={food.name}/>
             <button>Add Food</button>
           </form>
+        </div>
+        <div className='RSVP-guest'>
+          <div className="rsvp-stuff">
+            {
+              rsvp_guest.map((eachGuest) => {
+                if(eachGuest){
+                  return (<p key={eachGuest.id}>{`${eachGuest.name} is bringing a ${eachGuest.food}`}</p>)
+                }
+                return''
+              })
+            }
+          </div>
+          <h3>↑ RSVP List ↑</h3>
         </div>
       </div>
     </StyledEventCard>
