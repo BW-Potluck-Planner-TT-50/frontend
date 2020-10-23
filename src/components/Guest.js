@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import styled from 'styled-components'
+import { useHistory } from 'react-router-dom'
 import * as yup from 'yup'
 
 const StyledGuest = styled.div`
@@ -65,7 +66,9 @@ const StyledGuest = styled.div`
   }
 `
 
-function Guest() {
+function Guest({ setLoggedIn }) {
+
+   const history = useHistory()
 
    const [info, setInfo] = useState({
       rsvp: false,
@@ -79,9 +82,6 @@ function Guest() {
    const [foodList, setFoodList] = useState([])
    const [errors, setErrors] = useState("")
 
-   console.log(foodList)
-
-   console.log(foodList)
    useEffect(() => {
 
       axiosWithAuth()
@@ -123,12 +123,14 @@ function Guest() {
 
       const food = { rsvp: info.rsvp, foodId: info.foodId }
   
-      // Not working
       axiosWithAuth()
          .put('/api/guest', food)
          .then(res => {
             console.log(res)
             setErrors("")
+            setLoggedIn(false)
+            localStorage.removeItem('token')
+            history.push('/success')
          })
          .catch(err => {
             setErrors("You must confirm attendance and select a food")
