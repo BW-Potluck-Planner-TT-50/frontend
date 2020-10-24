@@ -42,6 +42,10 @@ const StyledHomePage = styled.main`
   .role-container {
     display: flex;
     justify-content: space-between;
+    @media(max-width: 500px) {
+      flex-direction: column;
+      align-items: center;
+    }
     .organizer, .guest {
       width: 40%;
       padding: 2%;
@@ -49,6 +53,10 @@ const StyledHomePage = styled.main`
       background-color: #D95D39;
       box-shadow: 3px 3px 5px black;
       border-radius: 10px;
+      @media(max-width: 500px) {
+        width: 95%;
+        margin-bottom: 3.5%;
+      }
       h3 {
         color: white;
         font-size: 2.3rem;
@@ -124,20 +132,38 @@ const StyledHomePage = styled.main`
       padding: 2%;
       margin: 2%;
       box-shadow: 3px 3px 5px black;
+      @media(max-width: 500px) {
+        flex-direction: column;
+        align-items: center;
+        margin: 10% 2%;
+      }
       .marketing-item-content {
         width: 60%;
+        @media(max-width: 500px) {
+          width: 95%;
+          text-align: center;
+        }
       }
       h4 {
         font-size: 1.8rem;
+        @media(max-width: 500px) {
+          font-size: 1.2rem;
+        }
       }
       p {
         font-size: 1.6rem;
         font-family: Georgia, 'Times New Roman', Times, serif;
         margin-top: 0px;
+        @media(max-width: 500px) {
+          font-size: 1rem;
+        }
       }
       img {
         width: 35%;
         box-shadow: 3px 3px 5px black;
+        @media(max-width: 500px) {
+          width: 95%;
+        }
       }
     }
   }

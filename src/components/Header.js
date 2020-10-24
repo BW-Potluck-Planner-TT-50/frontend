@@ -14,12 +14,26 @@ const StyledHeader = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 2% 5%;
+    @media(max-width: 500px) {
+      flex-direction: column;
+      img {
+        max-height: 10vh;
+      }
+    }
   }
   .nav-container {
     width: 70%;
+    @media(max-width: 500px) {
+      margin-top: 3%;
+      width: 95%;
+    }
     nav {
       display: flex;
       justify-content: flex-end;
+      @media(max-width: 500px) {
+        justify-content: center;
+        align-items: center;
+      }
     }
   }
   .active {
@@ -37,6 +51,11 @@ const StyledHeader = styled.div`
     padding: 3% 5%;
     transition: all .3s;
     text-shadow: 1px 1px 3px black;
+    @media(max-width: 500px) {
+      font-size: 1.1rem;
+      text-align: center;
+      padding: 1% 3%;
+    }
     &:hover {
       text-shadow: 3px 3px 5px black;
     }

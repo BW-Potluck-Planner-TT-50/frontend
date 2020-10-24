@@ -28,12 +28,21 @@ const StyledRegister = styled.div`
           font-size: 1.2rem;
           width: 400px;
           margin: 0px auto;
+          @media(max-width: 500px) {
+            width: 200px;
+            font-size: 1rem;
+          }
         }
         input {
           margin: 3%;
           padding: 2%;
           text-align: center;
           font-size: 1.5rem;
+          @media(max-width: 500px) {
+            margin: 2%;
+            padding: .5%;
+            font-size: 1rem;
+          }
         }
         button {
           padding: 2% 5%;
@@ -41,6 +50,12 @@ const StyledRegister = styled.div`
           background-color: #581F18;
           color: white;
           margin-bottom: 4%;
+          cursor: pointer;
+          @media(max-width: 500px) {
+            padding: .5% 2.5%;
+            font-size: 1rem;
+            margin-top: 2%;
+          }
         }
         .disabled {
           color: rgba(16, 16, 16, 0.3);
@@ -54,6 +69,11 @@ const StyledRegister = styled.div`
           font-size: 1.2rem;
           width: 350px;
           margin: 0 auto;
+          @media(max-width: 500px) {
+            width: 200px;
+            font-size: 1rem;
+            margin-top: 2%;
+          }
         }
       }
     }
