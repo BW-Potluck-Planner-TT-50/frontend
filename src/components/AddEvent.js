@@ -1,7 +1,12 @@
 import React, { useState } from 'react'
 import {useHistory} from 'react-router-dom'
-import { axiosWithAuth } from '../utils/axiosWithAuth'
 import styled from 'styled-components'
+
+// action
+import { addEvent } from '../store/action/eventAction'
+
+// Redux hook
+import { useDispatch } from 'react-redux'
 
 const StyledAddEvent = styled.div`
   background-color: #202C59;
@@ -40,7 +45,9 @@ const StyledAddEvent = styled.div`
   }
 `
 
-function AddEvent(rest) {
+function AddEvent() {
+
+  const dispatch = useDispatch()
 
    const history = useHistory()
    const [events, setEvents] = useState({
@@ -60,18 +67,9 @@ function AddEvent(rest) {
    const handleSubmit = (e) => {
       e.preventDefault()
 
-      axiosWithAuth()
-         .post('/api/events', events)
-         .then(res => {
-            rest.addToEventList(res.data)
-            setEvents({
-               name: '',
-               date:'',
-               time: '',
-               location: '',
-            })
-            history.push('/events')
-         })
+      dispatch(addEvent(events))
+
+      history.push('/events')
    }
 
   return (

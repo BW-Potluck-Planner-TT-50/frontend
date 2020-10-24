@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 //Components
 import Header from './components/Header'
@@ -14,54 +14,45 @@ import HomePage from './components/HomePage'
 import Success from './components/Success'
 
 //Utils
-import { GuestPrivateRoute } from './utils/PrivateRoute'
 import { Route, Switch } from 'react-router-dom'
-import { axiosWithAuth } from './utils/axiosWithAuth'
+
+// action
+import { fetchEvents } from './store/action/eventAction'
+
+// Redux
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 function App() {
 
-  const [loggedIn, setLoggedIn] = useState(localStorage.getItem('token'))
-  const [isOrganizer, setIsOrganizer] = useState(JSON.parse(localStorage.getItem('organizer')))
-  const [eventList, setEventList] = useState([]);
-  
+  const dispatch = useDispatch()
 
+  const [
+    loggedIn, 
+    isOrganizer, 
+    eventList
+  ] = useSelector( state => 
+    [
+      state.loggedIn, 
+      state.isOrganizer, 
+      state.eventList
+    ])
+  
+  console.log('LOGGED_IN STATUS: \n', loggedIn, '\n\nORGANIZER_STATUS: \n', isOrganizer, '\n\nCURRENT EVENT LIST: \n', eventList)
+  
   useEffect(() => {
     
-
-      axiosWithAuth()
-        .get('/api/events')
-        .then(res => {
-          setEventList(res.data)
-        })
-        .catch(err => {
-          console.log(err)
-        })
+    dispatch(fetchEvents())
     
-  },[loggedIn])
+  },[])
 
 
-  const deleteFromEventList = (id) => {
-    axiosWithAuth()
-        .get(`/api/events/`)
-        .then(res => {
-           console.log(res)
-           setEventList(eventList.filter( eachEvent => {
-             return eachEvent.id !== id
-           }))
-        })
-  }
-
-  const addToEventList = (events) => {
-    setEventList([...eventList, events])
-  }
-  
   return (
     <div className="App">
       <Header 
         loggedIn={loggedIn} 
-        setLoggedIn={setLoggedIn}
         isOrganizer={isOrganizer}
-      />
+        />
 
       <Switch>
 
@@ -69,53 +60,43 @@ function App() {
           <HomePage />
         </Route>
 
-        {/* <GuestPrivateRoute exact path='/register' component={Register}/> */}
         <Route exact path="/register">
           <Register />
         </Route>
 
-        {/* <GuestPrivateRoute 
-          exact path='/join-event' 
-          component={EventGuest} 
-          setIsOrganizer={setIsOrganizer} 
-          setLoggedIn={setLoggedIn}
-        /> */}
         <Route exact path='/join-event'>
-          <EventGuest setIsOrganizer={setIsOrganizer} setLoggedIn={setLoggedIn}/>
+          <EventGuest />
         </Route>
 
+
         <Route exact path='/plan'>
-          <Guest setLoggedIn={setLoggedIn} />
+          <Guest /> 
         </Route>
+
 
         <Route exact path='/success'>
           <Success />
         </Route>
 
-        {/* <GuestPrivateRoute 
-          exact path='/login' 
-          component={Login} 
-          setLoggedIn={setLoggedIn} 
-          setIsOrganizer={setIsOrganizer}
-        /> */}
+
 
         <Route exact path="/login">
-          <Login setLoggedIn={setLoggedIn} setIsOrganizer={setIsOrganizer}/>
+          <Login />
         </Route>
+
 
         <Route exact path='/events'>
           <Event 
             eventList={eventList} 
-            deleteFromEventList={deleteFromEventList}
-          />
+            />
         </Route>
 
         <Route exact path='/update-event/:id'>
-          <UpdateEvent eventList={eventList} setEventList={setEventList} />
+          <UpdateEvent eventList={eventList} /> 
         </Route>
 
         <Route exact path='/add-events'>
-          <AddEvent addToEventList={addToEventList} />
+          <AddEvent />
         </Route>  
 
         <Route exact path='/view-events/:id'>

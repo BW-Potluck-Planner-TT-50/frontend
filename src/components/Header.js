@@ -3,6 +3,12 @@ import { NavLink, useHistory } from 'react-router-dom'
 import Potluck from '../images/potluck.png'
 import styled from 'styled-components'
 
+// action
+import { loggedInStatus } from '../store/action/eventAction'
+
+// redux hook
+import { useDispatch } from 'react-redux'
+
 const StyledHeader = styled.div`
   background-color: #F18805;
   box-shadow: 1px 1px 3px black;
@@ -61,6 +67,7 @@ const StyledHeader = styled.div`
 
 function Header(props) {
 
+  const dispatch = useDispatch()
   const history = useHistory()
 
   return(
@@ -91,7 +98,7 @@ function Header(props) {
                 localStorage.removeItem('token')
                 localStorage.removeItem("organizer")
                 history.push('/login')
-                props.setLoggedIn(false)  
+                dispatch(loggedInStatus(false))  
             }}>Logout</button>
           </nav>
         </div>
@@ -109,7 +116,7 @@ function Header(props) {
                 localStorage.removeItem('token')
                 localStorage.removeItem("organizer")
                 history.push('/login')
-                props.setLoggedIn(false)  
+                dispatch(loggedInStatus(false)) 
             }}>Logout</button>
           </nav>
         </div>

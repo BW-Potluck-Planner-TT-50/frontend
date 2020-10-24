@@ -4,6 +4,12 @@ import { axiosWithAuth } from '../utils/axiosWithAuth'
 import styled from 'styled-components'
 import moment from 'moment'
 
+// action
+import { updateEvent } from '../store/action/eventAction'
+
+// redux hook
+import { useDispatch } from 'react-redux'
+
 const StyledUpdateEvent = styled.div`
   background-color: #202C59;
   height: 80vh;
@@ -49,7 +55,9 @@ const StyledUpdateEvent = styled.div`
   }
 `
 
-export default function UpdateEvent({eventList, setEventList}){
+export default function UpdateEvent(){
+  
+  const dispatch = useDispatch()
    const params = useParams()
    const history = useHistory()
    const [events, setEvents] = useState({
@@ -75,21 +83,13 @@ export default function UpdateEvent({eventList, setEventList}){
    }
 
    const handleSubmit = (e) => {
+
       e.preventDefault()
 
-      axiosWithAuth()
-         .put(`/api/events/${params.id}`, events)
-         .then(res => {
-            const newEventList = eventList.map(eachEvent => {
-               if(eachEvent.id === events.id){
-                  return res.data
-               } else {
-                  return eachEvent
-               }
-            })
-            setEventList(newEventList)
-            history.push('/events')
-         })
+      dispatch(updateEvent(params.id, events))
+    
+      history.push('/events')
+      
    }
 
   return (

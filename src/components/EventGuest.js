@@ -4,6 +4,13 @@ import styled from 'styled-components'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import * as yup from 'yup'
 
+// action
+import { loggedInStatus } from '../store/action/eventAction'
+import { isOrganizerStatus } from '../store/action/eventAction'
+
+// redux hooks
+import { useDispatch } from 'react-redux'
+
 const StyledEventGuest = styled.div`
   background-color: #202C59;
   height: 80vh;
@@ -72,7 +79,9 @@ const schema = yup.object().shape({
 })
 
 
-function EventGuest(rest) {
+function EventGuest() {
+
+  const dispatch = useDispatch()
 
   const [form, setForm] = useState({
     name: "",
@@ -80,7 +89,6 @@ function EventGuest(rest) {
   })
 
   const history = useHistory()
-  const { setIsOrganizer, setLoggedIn } = rest
 
   const [disabled, setDisabled] = useState(true)
   const [errors, setErrors] = useState({  invite_code: "", incorrectLogin: "" })
@@ -117,8 +125,8 @@ function EventGuest(rest) {
         })
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("organizer", false);
-        setLoggedIn(true)
-        setIsOrganizer(false)
+        dispatch(loggedInStatus(true))
+        dispatch(isOrganizerStatus(false))
         
         history.push("/plan");
       })
