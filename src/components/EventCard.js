@@ -327,11 +327,8 @@ const EventCard = () => {
    }
 
    // Guest CRUD
-
-   
-
   const deleteGuest = (id) => {
-     console.log(id)
+
       axiosWithAuth()
         .delete(`/api/events/guest-list/${id}`)
         .then(res => {

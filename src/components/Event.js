@@ -1,8 +1,13 @@
 import React from "react";
-import { axiosWithAuth } from '../utils/axiosWithAuth'
 import { Link } from "react-router-dom"
 import moment from 'moment'
 import styled from 'styled-components'
+
+// action
+import { deleteEvent } from '../store/action/eventAction'
+
+// redux hook
+import { useDispatch } from 'react-redux'
 
 const StyledEvents = styled.div`
   background-color: #202C59;
@@ -102,24 +107,14 @@ const StyledEvents = styled.div`
   }
 `
 
-function Event({ deleteFromEventList, eventList }) {
+function Event({ eventList }) { 
 
-  const deleteEvent = (id) => {
-    
-    axiosWithAuth()
-    .delete(`/api/events/${id}`)
-    .then(res => {
-      console.log(res.data)
-    })
-    
-    deleteFromEventList(id)
-    
-  }
-  console.log(eventList)
+  const dispatch = useDispatch()
+
   const eventConfirmation = (id) => {
     const result = window.confirm('Are you sure to delete ?')
     if(result){
-      deleteEvent(id)
+      dispatch(deleteEvent(id))
     }
   }
    return (

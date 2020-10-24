@@ -6,6 +6,13 @@ import * as yup from "yup";
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
+// action
+import { loggedInStatus } from '../store/action/eventAction'
+import { isOrganizerStatus } from '../store/action/eventAction'
+
+// redux hook
+import { useDispatch } from 'react-redux'
+
 const StyledLogin = styled.div`
   background-color: #D95D39;
   min-height: 80vh;
@@ -90,9 +97,10 @@ const errorStrings = {
     password: "",
 };
 
-function Login(rest)
+function Login()
 {
-    const { setLoggedIn , setIsOrganizer } = rest
+  const dispatch = useDispatch()
+    
     const [userData, setUserData] = useState(blankData);
     const [formErrors, setFormErrors] = useState(errorStrings);
     const [disabled, setDisabled] = useState(true);
@@ -114,8 +122,8 @@ function Login(rest)
             {
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("organizer", true);
-                setLoggedIn(true)
-                setIsOrganizer(true)
+                dispatch(loggedInStatus(true))
+                dispatch(isOrganizerStatus(true))
                 setUserData(blankData)
                 history.push("/events");
             })

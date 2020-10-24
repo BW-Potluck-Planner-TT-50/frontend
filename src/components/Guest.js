@@ -3,6 +3,12 @@ import { axiosWithAuth } from '../utils/axiosWithAuth'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 
+// action
+import { loggedInStatus } from '../store/action/eventAction'
+
+// redux hooks
+import { useDispatch } from 'react-redux'
+
 const StyledGuest = styled.div`
   background-color: #202C59;
   height: 80vh;
@@ -84,13 +90,13 @@ const StyledGuest = styled.div`
   }
 `
 
-function Guest({ setLoggedIn }) {
+function Guest() {
 
+   const dispatch = useDispatch()
    const history = useHistory()
 
    const [info, setInfo] = useState({
       rsvp: false,
-      // guest_id: '',
       foodId: '',
    })
 
@@ -98,7 +104,6 @@ function Guest({ setLoggedIn }) {
    const [foodList, setFoodList] = useState([])
    const [errors, setErrors] = useState("")
 
-   // const eventInfo = { eventId: parseInt(guestInfo.event_id) }
    console.log(guestInfo)
 
    useEffect(() => {
@@ -119,16 +124,6 @@ function Guest({ setLoggedIn }) {
          .catch(err => {
             console.log(err)
          })
-
-      // axiosWithAuth()
-      //    .get('/api/guest/events', eventInfo)
-      //    .then(res => {
-      //       console.log(res.data)
-      //    })
-      //    .catch(err => {
-      //       console.log(err)
-      //    })
-
    },[info])
 
    const handleSubmit = (e) => {
@@ -141,7 +136,7 @@ function Guest({ setLoggedIn }) {
          .put('/api/guest', food)
          .then(res => {
             setErrors("")
-            setLoggedIn(false)
+            dispatch(loggedInStatus(false))
             localStorage.removeItem('token')
             history.push('/success')
          })
