@@ -17,15 +17,26 @@ const StyledSuccess = styled.div`
     text-align: center;
     .main-success {
       font-size: 3rem;
+      @media(max-width: 500px) {
+        font-size: 1.4rem;
+      }
     }
     h1 {
       max-width: 400px;
       margin: 0px auto;
       margin-bottom: 3%;
+      @media(max-width: 500px) {
+        max-width: 200px;
+        font-size: 1.2rem;
+      }
     }
     h2 {
       max-width: 400px;
       margin: 0px auto;
+      @media(max-width: 500px) {
+        max-width: 200px;
+        font-size: 1rem;
+      }
     }
   }
 `

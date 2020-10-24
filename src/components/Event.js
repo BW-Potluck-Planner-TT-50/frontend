@@ -41,6 +41,10 @@ const StyledEvents = styled.div`
     align-items: center;
     color: white;
     padding: 1%;
+    @media(max-width: 500px) {
+      flex-direction: column;
+      padding-bottom: 7%;
+    }
     .name-container {
       width: 100%;
       text-align: center;
@@ -58,6 +62,10 @@ const StyledEvents = styled.div`
       height: 100px;
       font-size: 2rem;
       text-shadow: 1px 1px 3px black;
+      @media(max-width: 500px) {
+        font-size: 1.5rem;
+        height: 50px;
+      }
       &:hover {
         text-shadow: 3px 3px 5px black;
       }
@@ -83,6 +91,10 @@ const StyledEvents = styled.div`
       font-size: 2rem;
       cursor: pointer;
       text-shadow: 1px 1px 3px black;
+      @media(max-width: 500px) {
+        font-size: 1.5rem;
+        height: 50px;
+      }
       &:hover {
         text-shadow: 3px 3px 5px black;
       }

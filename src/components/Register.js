@@ -21,7 +21,7 @@ const StyledRegister = styled.div`
         min-width: 35%;
         color: white;
         text-shadow: 1px 1px 1px black;
-        .errors {
+        .error {
           height: 20px;
           color: red;
           font-weight: bold;
@@ -31,6 +31,7 @@ const StyledRegister = styled.div`
           @media(max-width: 500px) {
             width: 200px;
             font-size: 1rem;
+            height: 40px;
           }
         }
         input {

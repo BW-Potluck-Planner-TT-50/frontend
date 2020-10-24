@@ -72,6 +72,11 @@ const StyledHeader = styled.div`
     font-family: 'Times New Roman';
     transition: all .3s;
     text-shadow: 1px 1px 3px black;
+    @media(max-width: 500px) {
+      font-size: 1.1rem;
+      text-align: center;
+      padding: 1% 3%;
+    }
     &:hover {
       text-shadow: 3px 3px 5px black;
     }

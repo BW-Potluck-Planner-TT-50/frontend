@@ -21,7 +21,7 @@ const StyledLogin = styled.div`
         min-width: 35%;
         color: white;
         text-shadow: 1px 1px 1px black;
-        .errors {
+        .error {
           height: 20px;
           color: red;
           font-weight: bold;
@@ -29,8 +29,10 @@ const StyledLogin = styled.div`
           width: 400px;
           margin: 0px auto;
           @media(max-width: 500px) {
-            width: 200px;
+            width: 250px;
             font-size: 1rem;
+            margin-top: 2%;
+            height: 40px;
           }
         }
         input {

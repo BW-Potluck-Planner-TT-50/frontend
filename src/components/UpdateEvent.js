@@ -25,12 +25,21 @@ const StyledUpdateEvent = styled.div`
       margin: 3% 3% 0% 3%;
       text-align: center;
       font-size: 1.5rem;
+      @media(max-width: 500px) {
+        margin: 2%;
+        font-size: 1rem;
+      }
     }
     input {
       margin: 0% 3% 3% 3%;
       padding: 2%;
       text-align: center;
       font-size: 1.5rem;
+      @media(max-width: 500px) {
+        margin: 2%;
+        padding: .5%;
+        font-size: 1rem;
+      }
     }
     button {
       padding: 2% 5%;
@@ -41,6 +50,11 @@ const StyledUpdateEvent = styled.div`
       box-shadow: 1px 1px 3px black;
       transition: all .2s;
       cursor: pointer;
+      @media(max-width: 500px) {
+        padding: .5% 2.5%;
+        font-size: 1rem;
+        margin-top: 2%;
+      }
       &:hover {
         box-shadow: 3px 3px 5px black;
         background-color: #D95D39;

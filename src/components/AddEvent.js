@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 const StyledAddEvent = styled.div`
   background-color: #202C59;
-  height: 80vh;
+  min-height: 80vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,6 +22,11 @@ const StyledAddEvent = styled.div`
       padding: 2%;
       text-align: center;
       font-size: 1.5rem;
+      @media(max-width: 500px) {
+        margin: 2%;
+        padding: .5%;
+        font-size: 1rem;
+      }
     }
     button {
       padding: 2% 5%;
@@ -32,6 +37,11 @@ const StyledAddEvent = styled.div`
       box-shadow: 1px 1px 3px black;
       transition: all .2s;
       cursor: pointer;
+      @media(max-width: 500px) {
+        padding: .5% 2.5%;
+        font-size: 1rem;
+        margin-top: 2%;
+      }
       &:hover {
         box-shadow: 3px 3px 5px black;
         background-color: #D95D39;
