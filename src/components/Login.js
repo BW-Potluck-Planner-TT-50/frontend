@@ -21,19 +21,30 @@ const StyledLogin = styled.div`
         min-width: 35%;
         color: white;
         text-shadow: 1px 1px 1px black;
-        .errors {
+        .error {
           height: 20px;
           color: red;
           font-weight: bold;
           font-size: 1.2rem;
           width: 400px;
           margin: 0px auto;
+          @media(max-width: 500px) {
+            width: 250px;
+            font-size: 1rem;
+            margin-top: 2%;
+            height: 40px;
+          }
         }
         input {
           margin: 3%;
           padding: 2%;
           text-align: center;
           font-size: 1.5rem;
+          @media(max-width: 500px) {
+            margin: 2%;
+            padding: .5%;
+            font-size: 1rem;
+          }
         }
         button {
           padding: 2% 5%;
@@ -42,6 +53,11 @@ const StyledLogin = styled.div`
           color: white;
           margin-bottom: 4%;
           cursor: pointer;
+          @media(max-width: 500px) {
+            padding: .5% 2.5%;
+            font-size: 1rem;
+            margin-top: 2%;
+          }
         }
         .disabled {
           color: rgba(16, 16, 16, 0.3);
@@ -56,6 +72,11 @@ const StyledLogin = styled.div`
           font-size: 1.2rem;
           width: 350px;
           margin: 0 auto;
+          @media(max-width: 500px) {
+            width: 200px;
+            font-size: 1rem;
+            margin-top: 2%;
+          }
         }
       }
 `

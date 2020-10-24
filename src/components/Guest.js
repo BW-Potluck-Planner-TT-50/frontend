@@ -18,8 +18,8 @@ const StyledGuest = styled.div`
     min-width: 45%;
     color: white;
     text-shadow: 1px 1px 1px black;
-    h1 {
-
+    @media(max-width: 500px) {
+      padding: 1%;
     }
     form {
       input, label {
@@ -27,16 +27,27 @@ const StyledGuest = styled.div`
         margin-bottom: 6%;
         text-align: center;
         font-size: 2rem;
+        @media(max-width: 500px) {
+          font-size: 1rem;
+        }
       }
       input[type="checkbox"] {
         width:30px;
         height:30px;
         vertical-align: top;
+        @media(max-width: 500px) {
+          width:25px;
+          height:25px;
+          vertical-align: top;
+        }
       }
       select {
         margin-left: 2%;
         text-align: center;
         font-size: 1.5rem;
+        @media(max-width: 500px) {
+          font-size: 1rem;
+        }
       }
       .login-error {
         height: 20px;
@@ -45,6 +56,10 @@ const StyledGuest = styled.div`
         font-weight: bold;
         font-size: 1.2rem;
         margin: 0px auto;
+        @media(max-width: 500px) {
+          font-size: 1rem;
+          width: 200px;
+        }
       }
       button {
         padding: 2% 5%;
@@ -55,6 +70,9 @@ const StyledGuest = styled.div`
         box-shadow: 3px 3px 5px black;
         margin-top: 2%;
         cursor: pointer;
+        @media(max-width: 500px) {
+          font-size: 1rem;
+        }
       }
       .disabled {
         color: rgba(16, 16, 16, 0.3);

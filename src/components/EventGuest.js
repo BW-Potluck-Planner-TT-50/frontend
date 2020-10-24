@@ -8,60 +8,85 @@ const StyledEventGuest = styled.div`
   background-color: #202C59;
   height: 80vh;
   width: 100%;
-  .form-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    text-align: center;
-    form {
-      background-color: #F0A202;
-      box-shadow: 3px 3px 5px black;
-      padding: 3%;
-      min-width: 35%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  form {
+    background-color: #F0A202;
+    box-shadow: 3px 3px 5px black;
+    padding: 3%;
+    min-width: 35%;
+    color: white;
+    text-shadow: 1px 1px 1px black;
+    h1 {
+      @media(max-width: 500px) {
+        width: 200px;
+        font-size: 1.2rem;
+      }
+    }
+    h2 {
+      margin: 0px auto;
+      width: 350px;
+      @media(max-width: 500px) {
+        width: 200px;
+        font-size: 1.1rem;
+      }
+    }
+    .errors {
+      height: 20px;
+      color: red;
+      font-weight: bold;
+      font-size: 1.2rem;
+      width: 400px;
+      margin: 0px auto;
+      @media(max-width: 500px) {
+        width: 200px;
+        font-size: 1rem;
+      }
+    }
+    input {
+      padding: 2%;
+      text-align: center;
+      font-size: 1.5rem;
+      @media(max-width: 500px) {
+        margin: 2%;
+        padding: .5%;
+        font-size: 1rem;
+      }
+    }
+    .login-error {
+      height: 20px;
+      width: 350px;
+      color: red;
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin: 0px auto;
+      @media(max-width: 500px) {
+        width: 200px;
+        font-size: 1rem;
+      }
+    }
+    button {
+      padding: 2% 5%;
+      font-size: 2rem;
+      background-color: #202C59;
       color: white;
-      text-shadow: 1px 1px 1px black;
-      h2 {
-        margin: 0px auto;
-        width: 350px;
+      transform: all .2s;
+      box-shadow: 3px 3px 5px black;
+      margin-top: 3%;
+      cursor: pointer;
+      @media(max-width: 500px) {
+        padding: .5% 2.5%;
+        font-size: 1rem;
+        margin-top: 2%;
       }
-      .errors {
-        height: 20px;
-        color: red;
-        font-weight: bold;
-        font-size: 1.2rem;
-        width: 400px;
-        margin: 0px auto;
-      }
-      input {
-        padding: 2%;
-        text-align: center;
-        font-size: 1.5rem;
-      }
-      .login-error {
-        height: 20px;
-        width: 350px;
-        color: red;
-        font-weight: bold;
-        font-size: 1.2rem;
-        margin: 0px auto;
-      }
-      button {
-        padding: 2% 5%;
-        font-size: 2rem;
-        background-color: #202C59;
-        color: white;
-        transform: all .2s;
-        box-shadow: 3px 3px 5px black;
-        margin-top: 3%;
-        cursor: pointer;
-      }
-      .disabled {
-        color: rgba(16, 16, 16, 0.3);
-        background-color: rgba(239, 239, 239, 0.3);
-        border: 0px solid transparent;
-        box-shadow: 0px 0px 0px black;
-      }
+    }
+    .disabled {
+      color: rgba(16, 16, 16, 0.3);
+      background-color: rgba(239, 239, 239, 0.3);
+      border: 0px solid transparent;
+      box-shadow: 0px 0px 0px black;
     }
   }
 `
@@ -133,23 +158,20 @@ function EventGuest(rest) {
 
   return (
     <StyledEventGuest>
-      <div className="form-container">
-        <form onSubmit={handleSubmit}>
-          <h1>Join An Event!</h1>
-          <h2>Enter Your Name and Event Code Below</h2>
-          <div className="errors">{errors.name}</div>
-          <div>
-            <input autoComplete="off" placeholder="Name" name="name" value={form.name} onChange={handleChange} />
-          </div>
-          <div className="errors">{errors.invite_code}</div>
-          <div>
-            <input autoComplete="off" placeholder="Event Code" name="invite_code" value={form.invite_code} onChange={handleChange} />
-          </div>
-          <div className="login-error">{errors.incorrectLogin}</div>
-          <button disabled={disabled} id="submit">Submit</button>
-        </form>
-      </div>
-      
+      <form onSubmit={handleSubmit}>
+        <h1>Join An Event!</h1>
+        <h2>Enter Your Name and Event Code Below</h2>
+        <div className="errors">{errors.name}</div>
+        <div>
+          <input autoComplete="off" placeholder="Name" name="name" value={form.name} onChange={handleChange} />
+        </div>
+        <div className="errors">{errors.invite_code}</div>
+        <div>
+          <input autoComplete="off" placeholder="Event Code" name="invite_code" value={form.invite_code} onChange={handleChange} />
+        </div>
+        <div className="login-error">{errors.incorrectLogin}</div>
+        <button disabled={disabled} id="submit">Submit</button>
+      </form>
     </StyledEventGuest>
   )
 }

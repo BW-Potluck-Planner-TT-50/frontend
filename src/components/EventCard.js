@@ -9,7 +9,7 @@ const StyledEventCard = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80vh;
+  min-height: 80vh;
   .event-box {
     background-color: #581F18;
     box-shadow: 3px 3px 5px black;
@@ -19,19 +19,32 @@ const StyledEventCard = styled.div`
     color: white;
     padding: 1%;
     height: 70%;
+    @media(max-width: 500px) {
+      height: unset;
+      flex-direction: column;
+    }
     .RSVP-guest {
       padding: 2%;
       display: flex;
       flex-direction: column;
       width: 20%;
+      @media(max-width: 500px) {
+        align-items: center;
+        width: 95%;
+      }
       h3 {
         text-align: center;
+        text-decoration: underline;
       }
       .rsvp-stuff {
         background-color: #F18805;
         box-shadow: inset 3px 3px 5px black;
         overflow-y: auto;
         height: 80%;
+        @media(max-width: 500px) {
+          height: 200px;
+          width: 100%;
+        }
         p {
           padding: 4%;
           box-shadow: inset 3px 3px 5px black;
@@ -61,12 +74,24 @@ const StyledEventCard = styled.div`
       text-align: center;
       padding: 2%;
       width: 40%;
+      @media(max-width: 500px) {
+        align-items: center;
+        width: 95%;
+      }
     }
     .food-box {
       padding: 2%;
       display: flex;
       flex-direction: column;
       width: 20%;
+      @media(max-width: 500px) {
+        align-items: center;
+        width: 95%;
+      }
+      h3 {
+        text-align: center;
+        text-decoration: underline;
+      }
       form {
         text-align: center;
         margin: 4%;
@@ -101,6 +126,10 @@ const StyledEventCard = styled.div`
         box-shadow: inset 3px 3px 5px black;
         overflow-y: auto;
         height: 80%;
+        @media(max-width: 500px) {
+          height: 200px;
+          width: 100%;
+        }
         &::-webkit-scrollbar {
           width: 1em;
         }
@@ -126,6 +155,14 @@ const StyledEventCard = styled.div`
       display: flex;
       flex-direction: column;
       width: 20%;
+      @media(max-width: 500px) {
+        align-items: center;
+        width: 95%;
+      }
+      h3 {
+        text-align: center;
+        text-decoration: underline;
+      }
       form {
         text-align: center;
         margin: 4%;
@@ -160,6 +197,10 @@ const StyledEventCard = styled.div`
         box-shadow: inset 3px 3px 5px black;
         overflow-y: auto;
         height: 80%;
+        @media(max-width: 500px) {
+          height: 200px;
+          width: 100%;
+        }
         &::-webkit-scrollbar {
           width: 1em;
         }
@@ -340,6 +381,7 @@ const EventCard = () => {
           <h3><strong>Invite Code:</strong>  {potEvent.invite_code}</h3>
         </div>
         <div className="guest-box">
+          <h3>Guest List</h3>
           <div className="guests">
             {
               guestList.map((eachGuest) => {
@@ -365,6 +407,7 @@ const EventCard = () => {
           </form>
         </div>
         <div className="food-box">
+          <h3>Food</h3>
           <div className="food">
             {
               foodList.map((eachFood) => {
@@ -390,6 +433,7 @@ const EventCard = () => {
           </form>
         </div>
         <div className='RSVP-guest'>
+          <h3>Attendance List</h3>
           <div className="rsvp-stuff">
             {
               rsvp_guest.map((eachGuest) => {
