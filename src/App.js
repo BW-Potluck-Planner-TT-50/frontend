@@ -38,13 +38,17 @@ function App() {
       state.eventList
     ])
   
-  console.log('LOGGED_IN STATUS: \n', loggedIn, '\n\nORGANIZER_STATUS: \n', isOrganizer, '\n\nCURRENT EVENT LIST: \n', eventList)
+  console.log(
+    'LOGGED_IN STATUS: \n', loggedIn, 
+    '\n\nORGANIZER_STATUS: \n', isOrganizer, 
+    '\n\nCURRENT EVENT LIST: \n', eventList
+  )
   
   useEffect(() => {
     
     dispatch(fetchEvents())
     
-  },[])
+  },[dispatch, isOrganizer])
 
 
   return (
