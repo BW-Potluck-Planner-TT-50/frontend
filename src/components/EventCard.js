@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import styled from 'styled-components'
 import moment from 'moment'
+// import sendmail from 'sendmail'
 
 const StyledEventCard = styled.div`
   background-color: #202C59;
@@ -344,6 +345,8 @@ const EventCard = () => {
                   return (
                     <div className="dynamic-info" key={eachGuest.name}>
                       <div>{eachGuest.name}</div>
+                      <div>confirmed</div>
+                      
                     </div>
                   )
                 }
@@ -357,8 +360,15 @@ const EventCard = () => {
             }
           </div>
           <form onSubmit={handleGuestSubmit}>
-            <input autoComplete="off" placeholder="Guest Name" name='name' onChange={handleGuestChange} value={guest.name}/>
-            <button>Add Guest</button>
+            <input autoComplete="off" placeholder="name" name='name' onChange={handleGuestChange} value={guest.name}/>
+            <button>Add Name</button>
+            {/* <button onClick={() => sendmail({
+                      from: 'ghghgngngkgk@gmail.com',
+                      to: 'sunkist5691@gmail.com',
+                      subject: 'test sendmail',
+                      html: 'Mail of test sendmail ',})}>
+                Send
+            </button> */}
           </form>
         </div>
         <div className="food-box">
@@ -369,6 +379,7 @@ const EventCard = () => {
                   return (
                     <div className="dynamic-info" key={eachFood.name}>
                       <div>{eachFood.name}</div>
+                      <div>confirmed</div>
                     </div>
                   )
                 }
@@ -382,7 +393,7 @@ const EventCard = () => {
             }
           </div>
           <form onSubmit={handleFoodSubmit}>
-            <input autoComplete="off" placeholder="Food Name" name='name' onChange={handleFoodChange} value={food.name}/>
+            <input autoComplete="off" placeholder="food" name='name' onChange={handleFoodChange} value={food.name}/>
             <button>Add Food</button>
           </form>
         </div>
@@ -391,7 +402,7 @@ const EventCard = () => {
             {
               rsvp_guest.map((eachGuest) => {
                 if(eachGuest){
-                  return (<p key={eachGuest.id}>{`${eachGuest.name} is bringing a ${eachGuest.food}`}</p>)
+                  return (<p key={eachGuest.id}>{`${eachGuest.name} / ${eachGuest.food}`}</p>)
                 }
                 return''
               })
