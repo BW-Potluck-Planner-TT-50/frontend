@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
+import * as yup from 'yup'
 
 // action
 import { loggedInStatus } from '../store/action/eventAction'
@@ -90,58 +91,63 @@ const StyledGuest = styled.div`
   }
 `
 
+const schema = yup.object().shape({
+  rsvp: yup.boolean().oneOf([true], "You must agree to attend the event"),
+  food: yup.string().required('Selecting a food you will bring is required'),
+})
+
 function Guest() {
 
    const dispatch = useDispatch()
    const history = useHistory()
 
-   const [info, setInfo] = useState({
-      rsvp: false,
-      foodId: '',
+   const [guestInfo, setGuestInfo] = useState({
+     rsvp: false,
+     food: '',
+     name: ''
    })
 
-   const [guestInfo, setGuestInfo] = useState('')
-   const [foodList, setFoodList] = useState([])
-   const [errors, setErrors] = useState("")
+   const [disabled, setDisabled] = useState(true)
+   const [errors, setErrors] = useState({ rsvp: "", food: "" })
 
-   console.log(guestInfo)
+   const setFormErrors = (name, value) => {
+    yup.reach(schema, name).validate(value)
+        .then(() => setErrors({ ...errors, [name]: '' }))
+        .catch(err => setErrors({ ...errors, [name]: err.errors[0] }))
+}
+
 
    useEffect(() => {
       axiosWithAuth()
-         .get('/api/guest')
+         .get('/api/guest/guest')
          .then(res => {
             setGuestInfo(res.data[0])
+            console.log(res.data[0])
          })
          .catch(err => {
             console.log(err)
          })
+   }, [])
 
-      axiosWithAuth()
-         .get('/api/guest/food')
-         .then(res => {
-            setFoodList(res.data)
-         })
-         .catch(err => {
-            console.log(err)
-         })
-   },[info])
+   useEffect(() => {
+    schema
+      .isValid(guestInfo)
+      .then(valid => {
+        const submit = document.querySelector('#submit')
+        !valid ? submit.classList.add('disabled') : submit.classList.remove('disabled')
+        setDisabled(!valid)
+      })
+  }, [guestInfo])
 
    const handleSubmit = (e) => {
       e.preventDefault()
-      e.persist()
-
-      const food = { rsvp: info.rsvp, foodId: info.foodId }
-  
       axiosWithAuth()
-         .put('/api/guest', food)
-         .then(res => {
+         .put('/api/guest/guest', { rsvp: guestInfo.rsvp, food: guestInfo.food })
+         .then(() => {
             setErrors("")
             dispatch(loggedInStatus(false))
             localStorage.removeItem('token')
             history.push('/success')
-         })
-         .catch(err => {
-            setErrors("You must confirm attendance and select a food")
          })
          .catch(err => {
             console.log(err)
@@ -155,28 +161,11 @@ function Guest() {
          handleSubmit(e)
       }
    }
-   const handleFoodChange = e => {
-      setInfo({ ...info, [e.target.name]: parseInt(e.target.value) })
-   }
  
-
    const handleChange = (e) => {
-      e.persist()
-
-      if(e.target.name === 'foodId'){
-         handleFoodChange(e)
-      } else {
-
-         // Check if the current targeting input is checkbox or not
-         let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
-   
-         // const selectedFood = foodList.find((eachFood) => value === eachFood.name)
-         
-         setInfo({...info, [e.target.name]: value })
-         // selectedFood ? setInfo({...info, [e.target.name]: selectedFood.id}) :
-      }
-      
-      
+    let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
+    setFormErrors(e.target.name, value)
+    setGuestInfo({...guestInfo, [e.target.name]: value })
    }
 
    return (
@@ -188,32 +177,20 @@ function Guest() {
             <div className="input-container">
               <label htmlFor='rsvp'>
                 I will be attending the event 
-                <input id='rsvp' type='checkbox' name='rsvp' checked={info.rsvp} onChange={handleChange} />
+                <input id='rsvp' type='checkbox' name='rsvp' checked={guestInfo.rsvp} onChange={handleChange} />
               </label>
             </div>
             {/* DROP DOWN FOOD ITEMS */}
             <div className="input-container">
-              <label htmlFor='foodId'>
+              <label htmlFor='food'>
                 I will be bringing 
-                <select id='foodId' name='foodId' onChange={handleChange} value={info.foodId}>
-                  <option value=''>-- Select Food Item --</option>
-                  {
-                     foodList.map((eachFood) => {
-                        if(eachFood.guest_id === null){
-                           return (
-                              <option key={eachFood.id} id={eachFood.id} value={eachFood.id}>{eachFood.name}</option>
-                           )
-                        }
-                        return null
-                     })
-
-                  }
-                </select>
+                <input id='food' name='food' onChange={handleChange} value={guestInfo.food} />
               </label>
             </div>
-                <div className="login-error">{errors}</div>
+                <div className="login-error">{errors.rsvp}</div>
+                <div className="login-error">{errors.food}</div>
             <div className="input-container">
-              <button>Confirm</button>
+              <button id="submit" disabled={disabled}>Confirm</button>
             </div>
           </form>
         </div>

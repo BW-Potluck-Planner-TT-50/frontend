@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom"
 import moment from 'moment'
 import styled from 'styled-components'
+import { fetchEvents } from '../store/action/eventAction'
 
 // action
 import { deleteEvent } from '../store/action/eventAction'
@@ -111,8 +112,14 @@ function Event({ eventList }) {
 
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    
+    dispatch(fetchEvents())
+    
+  },[dispatch])
+
   const eventConfirmation = (id) => {
-    const result = window.confirm('Are you sure to delete ?')
+    const result = window.confirm('Are you sure you want to delete this event?')
     if(result){
       dispatch(deleteEvent(id))
     }

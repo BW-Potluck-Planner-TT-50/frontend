@@ -82,6 +82,7 @@ const StyledRegister = styled.div`
 
 const schema = yup.object().shape({
     username: yup.string().required('Name is required').min(5, 'Name needs to be 5 chars min'),
+    email: yup.string().email().required('Email is required'),
     password: yup.string().required('Password is required').min(8, 'Password needs to be 8 chars min').matches(/[A-Z]/, 'Passwords must include an uppercase letter').matches(/[a-z]/, 'Passwords must include a lowercase letter').matches(/\d/, 'Passwords must include a number').matches(/\W/, 'Passwords must include a special character')
 })
 
@@ -90,21 +91,20 @@ function Register() {
 
   const [registerForm, setRegisterForm] = useState({
     username: "",
-    password: ""
+    password: "",
+    email: ""
   })
 
   const [disabled, setDisabled] = useState(true)
-  const [errors, setErrors] = useState({  username: "", password: "" })
+  const [errors, setErrors] = useState({  username: "", password: "", email: "" })
 
-    const setFormErrors = (name, value) =>
-    {
-        yup.reach(schema, name).validate(value)
-            .then(() => setErrors({ ...errors, [name]: '' }))
-            .catch(err => setErrors({ ...errors, [name]: err.errors[0] }))
-    }
+  const setFormErrors = (name, value) => {
+      yup.reach(schema, name).validate(value)
+          .then(() => setErrors({ ...errors, [name]: '' }))
+          .catch(err => setErrors({ ...errors, [name]: err.errors[0] }))
+  }
 
-    function handleChange(e)
-    {
+    function handleChange(e) {
         const { value, name } = e.target
         setFormErrors(name, value)
         setRegisterForm({
@@ -130,6 +130,7 @@ function Register() {
 
     axiosWithAuth()
       .post('/api/auth/register', {
+        email: registerForm.email,
         username: registerForm.username.trim(),
         password: registerForm.password.trim()
       })
@@ -143,6 +144,7 @@ function Register() {
       setRegisterForm({
         username: '',
         password: '',
+        email: ''
       })
   }
 
@@ -151,6 +153,10 @@ function Register() {
           <div className="register-container">
             <form onSubmit={submit}>
               <h1>Register</h1>
+              <div>
+                <input autoComplete="off" placeholder="Email" name="email" value={registerForm.email} onChange={handleChange} />
+                <div className="error" style={{ color: "red" }}>{errors.email}</div>
+              </div>
               <div>
                 <input autoComplete="off" placeholder="Username" name="username" value={registerForm.username} onChange={handleChange} />
                 <div className="error" style={{ color: "red" }}>{errors.username}</div>

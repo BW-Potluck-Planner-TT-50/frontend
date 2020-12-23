@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 //Components
 import Header from './components/Header'
@@ -15,18 +15,9 @@ import Success from './components/Success'
 
 //Utils
 import { Route, Switch } from 'react-router-dom'
-
-// action
-import { fetchEvents } from './store/action/eventAction'
-
-// Redux
 import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
 
 function App() {
-
-  const dispatch = useDispatch()
-
   const [
     loggedIn, 
     isOrganizer, 
@@ -37,14 +28,6 @@ function App() {
       state.isOrganizer, 
       state.eventList
     ])
-  
-  console.log('LOGGED_IN STATUS: \n', loggedIn, '\n\nORGANIZER_STATUS: \n', isOrganizer, '\n\nCURRENT EVENT LIST: \n', eventList)
-  
-  useEffect(() => {
-    
-    dispatch(fetchEvents())
-    
-  },[])
 
 
   return (
@@ -92,7 +75,7 @@ function App() {
         </Route>
 
         <Route exact path='/update-event/:id'>
-          <UpdateEvent eventList={eventList} /> 
+          <UpdateEvent /> 
         </Route>
 
         <Route exact path='/add-events'>

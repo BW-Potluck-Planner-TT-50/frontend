@@ -7,8 +7,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 // action
-import { loggedInStatus } from '../store/action/eventAction'
-import { isOrganizerStatus } from '../store/action/eventAction'
+import { loggedInStatus, isOrganizerStatus } from '../store/action/eventAction'
 
 // redux hook
 import { useDispatch } from 'react-redux'
@@ -89,11 +88,11 @@ const StyledLogin = styled.div`
 `
 
 const blankData = {
-    username: "",
+    email: "",
     password: "",
 };
 const errorStrings = {
-    username: "",
+    email: "",
     password: "",
 };
 
@@ -134,7 +133,7 @@ function Login()
         yup
             .reach(schema, name)
             .validate(value)
-            .then((valid) =>
+            .then(() =>
             {
                 setFormErrors({
                     ...formErrors,
@@ -162,8 +161,8 @@ function Login()
           <form onSubmit={submit}>
             <h1>Login</h1>
             <div>
-              <input type="text" name="username" placeholder="Username" value={userData.username} onChange={change} />
-              <div className="error" style={{ color: "red" }}>{formErrors.username}</div>
+              <input type="text" name="email" placeholder="Email" value={userData.email} onChange={change} />
+              <div className="error" style={{ color: "red" }}>{formErrors.email}</div>
             </div>
             <div> 
               <input type="password" name="password" placeholder="Password" value={userData.password} onChange={change} />
