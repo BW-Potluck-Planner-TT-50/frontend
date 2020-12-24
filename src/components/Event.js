@@ -1,14 +1,13 @@
-import React, { useEffect } from "react";
+/* eslint-disable no-alert */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable react/prop-types */
+import React, { useEffect } from "react"
 import { Link } from "react-router-dom"
-import moment from 'moment'
-import styled from 'styled-components'
-import { fetchEvents } from '../store/action/eventAction'
-
-// action
-import { deleteEvent } from '../store/action/eventAction'
-
-// redux hook
-import { useDispatch } from 'react-redux'
+import moment from "moment"
+import styled from "styled-components"
+import { useDispatch } from "react-redux"
+import { fetchEvents, deleteEvent } from "../store/action/eventAction"
 
 const StyledEvents = styled.div`
   background-color: #202C59;
@@ -108,48 +107,46 @@ const StyledEvents = styled.div`
   }
 `
 
-function Event({ eventList }) { 
-
+function Event({ eventList }) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    
     dispatch(fetchEvents())
-    
-  },[dispatch])
+  }, [dispatch])
 
   const eventConfirmation = (id) => {
-    const result = window.confirm('Are you sure you want to delete this event?')
-    if(result){
+    const result = window.confirm("Are you sure you want to delete this event?")
+    if (result) {
       dispatch(deleteEvent(id))
     }
   }
-   return (
-      <StyledEvents className="save-wrapper">
-        {
-          eventList.length !== 0 ?
-          eventList.map((eachEvent) => (
-            <div key={eachEvent.id} className='each___events event-box'>
+  return (
+    <StyledEvents className="save-wrapper">
+      {
+        eventList.length !== 0
+          ? eventList.map((eachEvent) => (
+            <div key={eachEvent.id} className="each___events event-box">
               <div className="name-container">
                 <h2>{eachEvent.name}</h2>
                 <p>{moment(eachEvent.date).format("dddd, MMMM Do YYYY")}</p>
               </div>
               <Link className="view-button" to={`/view-events/${eachEvent.id}`}>View</Link>
               <Link className="edit-button" to={`/update-event/${eachEvent.id}`}>Edit</Link>
-              <div className="delete-button" onClick={()=> eventConfirmation(eachEvent.id)}>Delete</div>
+              <div className="delete-button" onClick={() => eventConfirmation(eachEvent.id)}>Delete</div>
             </div>
-          )) : 
-          <div className="no-events">
-            <h1>You Haven't Created Any Events Yet</h1>
-            <h2>To Get Started Just Click The Event Below</h2>
-            <div>
-              <Link to="/add-events">Add Events</Link>
+          ))
+          : (
+            <div className="no-events">
+              <h1>You Haven&apos;t Created Any Events Yet</h1>
+              <h2>To Get Started Just Click The Event Below</h2>
+              <div>
+                <Link to="/add-events">Add Events</Link>
+              </div>
             </div>
-
-          </div>
-        }
-      </StyledEvents>
-   )
+          )
+      }
+    </StyledEvents>
+  )
 }
 
 export default Event

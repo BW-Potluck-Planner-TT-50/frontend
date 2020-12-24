@@ -1,14 +1,14 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import buffet from '../images/buffet.jpg'
-import james from '../images/james.jpg'
-import caroline from '../images/caroline.jpg'
-import erica from '../images/erica.png'
-import joon from '../images/joon.jpg'
-import guests from '../images/guests.png'
-import manage from '../images/manage.png'
-import addEvent from '../images/addevent.png'
+import React from "react"
+import styled from "styled-components"
+import { Link } from "react-router-dom"
+import buffet from "../images/buffet.jpg"
+import james from "../images/james.jpg"
+import caroline from "../images/caroline.jpg"
+import erica from "../images/erica.png"
+import joon from "../images/joon.jpg"
+import guests from "../images/guests.png"
+import manage from "../images/manage.png"
+import addEvent from "../images/addevent.png"
 
 const StyledHomePage = styled.main`
   background-color: #202C59;
@@ -204,7 +204,13 @@ function HomePage() {
       <div className="role-container">
         <div className="organizer">
           <h3>Organizers</h3>
-          <p>As a Potluck Planner organizer you can create a potluck event and manage things including, the general event information, the guestlist, and even food options for people to bring with them. Everything thing is up to you as the organizer and the customizations are endless!</p>
+          <p>
+            As a Potluck Planner organizer you can create a potluck event
+            and manage things including,
+            the general event information, the guestlist, and even food options
+            for people to bring with them.
+            Everything thing is up to you as the organizer and the customizations are endless!
+          </p>
           <div className="link-container">
             <Link to="/register">Register</Link>
             <Link to="/login">Login</Link>
@@ -212,7 +218,12 @@ function HomePage() {
         </div>
         <div className="guest">
           <h3>Guests</h3>
-          <p>If you are here to join an event all that's required is your name and an event code! Your organizer can provide you with a unique event code that you you can then RSVP to the event and select from the list of available food items to bring with you! Need to make a change in the menu, log back in and you can edit your selection!</p>
+          <p>
+            If you are here to join an event all that&apos;s required is your name and an event
+            code! Your organizer can provide you with a unique event code that you you can then
+            RSVP to the event and select from the list of available food items to bring with you!
+            Need to make a change in the menu, log back in and you can edit your selection!
+          </p>
           <div className="link-container">
             <Link to="/join-event">Join Event</Link>
           </div>
@@ -224,13 +235,22 @@ function HomePage() {
           <img src={addEvent} alt="Create a new event page" />
           <div className="marketing-item-content">
             <h4>Create Events</h4>
-            <p>It has never been easier to create a new event, all you need to do is provide some basic event information and then you are off and running with the capability to manage the event listing or create as many other events as you need!</p>
+            <p>
+              It has never been easier to create a new event, all you need to do is provide some
+              basic event information and then you are off and running with the capability to manage
+              the event listing or create as many other events as you need!
+            </p>
           </div>
         </div>
         <div className="marketing-item">
           <div className="marketing-item-content">
             <h4>Manage The Guest List and Food</h4>
-            <p>After you have created an event you can build out your guest list and food options for them to pick from. This provides more control over the process and helps make sure that everyone is bringing different food items and the Potluck event has everything it needs!</p>
+            <p>
+              After you have created an event you can build out your guest list and food options for
+              them to pick from. This provides more control over the process and helps make sure
+              that everyone is bringing different food items and the Potluck event has everything
+              it needs!
+            </p>
           </div>
           <img src={manage} alt="Manage a potluck event page" />
         </div>
@@ -238,31 +258,32 @@ function HomePage() {
           <img src={guests} alt="..." />
           <div className="marketing-item-content">
             <h4>Easy RSVP For Guests</h4>
-            <p>It is so eady for guests to RSVP and select the food item they will bring to the event. As an organizer all you need to do is to add them to the event guestlist then provide them with the unique event code, making it much quicker and easier than mailed invites.</p>
+            <p>
+              It is so eady for guests to RSVP and select the food item they will bring to the
+              event. As an organizer all you need to do is to add them to the event guestlist
+              then provide them with the unique event code, making it much quicker and easier
+              than mailed invites.
+            </p>
           </div>
         </div>
       </div>
-      <h2 className="get-started">Meet The Team!</h2>
+      <h2 className="get-started">Meet The Development Team!</h2>
       <div className="the-team-container">
         <div className="a-team-member">
           <h4>Erica</h4>
           <img src={erica} alt="Erica" />
-          <p>Backend Engineer</p>
         </div>
         <div className="a-team-member">
           <h4>Joon</h4>
           <img src={joon} alt="Joon" />
-          <p>Frontend Engineer</p>
         </div>
         <div className="a-team-member">
           <h4>James</h4>
           <img src={james} alt="James" />
-          <p>Frontend UI Engineer</p>
         </div>
         <div className="a-team-member">
           <h4>Caroline</h4>
           <img src={caroline} alt="Caroline" />
-          <p>Frontend UI Engineer</p>
         </div>
       </div>
     </StyledHomePage>

@@ -1,13 +1,14 @@
-import React from 'react'
-import { NavLink, useHistory } from 'react-router-dom'
-import Potluck from '../images/potluck.png'
-import styled from 'styled-components'
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-nested-ternary */
+import React from "react"
+import { NavLink, useHistory } from "react-router-dom"
+import styled from "styled-components"
+import { useDispatch } from "react-redux"
+import Potluck from "../images/potluck.png"
 
 // action
-import { loggedInStatus } from '../store/action/eventAction'
-
-// redux hook
-import { useDispatch } from 'react-redux'
+import { loggedInStatus } from "../store/action/eventAction"
 
 const StyledHeader = styled.div`
   background-color: #F18805;
@@ -90,61 +91,79 @@ const StyledHeader = styled.div`
 `
 
 function Header(props) {
-
   const dispatch = useDispatch()
   const history = useHistory()
 
-  return(
+  return (
     <StyledHeader>
       {
-      !props.loggedIn ? 
-      <div className="header-container">
-        <div className="logoContainer">
-          <img src={Potluck} alt="Potluck Planner Logo"/>
-        </div>
-        <div className="nav-container">
-          <nav>
-            <NavLink to="/login" activeClassName="active">Login</NavLink>
-            <NavLink to="/register" activeClassName="active">Register</NavLink>
-            <NavLink to="/join-event" activeClassName="active">Join An Event</NavLink>
-          </nav>
-        </div>
+      !props.loggedIn
+        ? (
+          <div className="header-container">
+            <div className="logoContainer">
+              <img src={Potluck} alt="Potluck Planner Logo" />
+            </div>
+            <div className="nav-container">
+              <nav>
+                <NavLink to="/login" activeClassName="active">Login</NavLink>
+                <NavLink to="/register" activeClassName="active">Register</NavLink>
+                <NavLink to="/join-event" activeClassName="active">Join An Event</NavLink>
+              </nav>
+            </div>
 
-      </div> : ((!props.isOrganizer) ?
-      <div className="header-container">
-        <div className="logoContainer">
-          <img src={Potluck} alt="Potluck Planner Logo"/>
-        </div>
-        <div className="nav-container">
-          <nav>
-            <NavLink to="/plan" activeClassName="active">My Event</NavLink>
-            <button className="logout-button" onClick={() => {
-                localStorage.removeItem('token')
-                localStorage.removeItem("organizer")
-                history.push('/login')
-                dispatch(loggedInStatus(false))  
-            }}>Logout</button>
-          </nav>
-        </div>
-      </div> :
-      <div className="header-container">
-        <div className="logoContainer">
-          <img src={Potluck} alt="Potluck Planner Logo"/>
-        </div>
-        <div className="nav-container">
-          <nav>
-            <NavLink to="/events" activeClassName="active">Events</NavLink>
+          </div>
+        ) : ((!props.isOrganizer)
+          ? (
+            <div className="header-container">
+              <div className="logoContainer">
+                <img src={Potluck} alt="Potluck Planner Logo" />
+              </div>
+              <div className="nav-container">
+                <nav>
+                  <NavLink to="/plan" activeClassName="active">My Event</NavLink>
+                  <button
+                    type="button"
+                    className="logout-button"
+                    onClick={() => {
+                      localStorage.removeItem("token")
+                      localStorage.removeItem("organizer")
+                      history.push("/login")
+                      dispatch(loggedInStatus(false))
+                    }}
+                  >
+                    Logout
+                  </button>
+                </nav>
+              </div>
+            </div>
+          )
+          : (
+            <div className="header-container">
+              <div className="logoContainer">
+                <img src={Potluck} alt="Potluck Planner Logo" />
+              </div>
+              <div className="nav-container">
+                <nav>
+                  <NavLink to="/events" activeClassName="active">Events</NavLink>
 
-            <NavLink to='/add-events' activeClassName='active'>Add Event</NavLink>
-            <button className="logout-button" onClick={() => {
-                localStorage.removeItem('token')
-                localStorage.removeItem("organizer")
-                history.push('/login')
-                dispatch(loggedInStatus(false)) 
-            }}>Logout</button>
-          </nav>
-        </div>
-      </div>)
+                  <NavLink to="/add-events" activeClassName="active">Add Event</NavLink>
+                  <button
+                    type="button"
+                    className="logout-button"
+                    onClick={() => {
+                      localStorage.removeItem("token")
+                      localStorage.removeItem("organizer")
+                      history.push("/login")
+                      dispatch(loggedInStatus(false))
+                    }}
+                  >
+                    Logout
+
+                  </button>
+                </nav>
+              </div>
+            </div>
+          ))
       }
     </StyledHeader>
   )

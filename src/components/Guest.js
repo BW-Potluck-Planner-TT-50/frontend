@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react'
-import { axiosWithAuth } from '../utils/axiosWithAuth'
-import styled from 'styled-components'
-import { useHistory } from 'react-router-dom'
-import * as yup from 'yup'
+/* eslint-disable no-alert */
+import React, { useState, useEffect } from "react"
+import styled from "styled-components"
+import { useHistory } from "react-router-dom"
+import * as yup from "yup"
 
 // action
-import { loggedInStatus } from '../store/action/eventAction'
+import { useDispatch } from "react-redux"
+import { loggedInStatus } from "../store/action/eventAction"
 
 // redux hooks
-import { useDispatch } from 'react-redux'
+import axiosWithAuth from "../utils/axiosWithAuth"
 
 const StyledGuest = styled.div`
   background-color: #202C59;
@@ -98,128 +99,165 @@ const StyledGuest = styled.div`
 
 const schema = yup.object().shape({
   rsvp: yup.boolean().oneOf([true], "You must agree to attend the event"),
-  food: yup.string().required('Selecting a food you will bring is required'),
+  food: yup.string().required("Selecting a food you will bring is required"),
 })
 
 function Guest() {
-
-   const dispatch = useDispatch()
-   const history = useHistory()
-
-   const [guestInfo, setGuestInfo] = useState({
-     rsvp: false,
-     food: '',
-     email: ''
-   })
-
-   const [eventInfo, setEventInfo] = useState({
-     name: "",
-     date: "",
-     time: "",
-     location: ""
-   })
-
-   const [disabled, setDisabled] = useState(true)
-   const [errors, setErrors] = useState({ rsvp: "", food: "" })
-
-   const setFormErrors = (name, value) => {
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const [guestInfo, setGuestInfo] = useState({
+    rsvp: false,
+    food: "",
+    email: "",
+  })
+  const [eventInfo, setEventInfo] = useState({
+    name: "",
+    date: "",
+    time: "",
+    location: "",
+  })
+  const [currentFood, setCurrentFood] = useState([])
+  const [disabled, setDisabled] = useState(true)
+  const [errors, setErrors] = useState({ rsvp: "", food: "" })
+  const setFormErrors = (name, value) => {
     yup.reach(schema, name).validate(value)
-        .then(() => setErrors({ ...errors, [name]: '' }))
-        .catch(err => setErrors({ ...errors, [name]: err.errors[0] }))
-}
+      .then(() => setErrors({ ...errors, [name]: "" }))
+      .catch((err) => setErrors({ ...errors, [name]: err.errors[0] }))
+  }
 
+  useEffect(() => {
+    axiosWithAuth()
+      .get("/api/guest/guest")
+      .then((res) => {
+        setGuestInfo({ ...res.data[0], food: res.data[0].food === null ? "" : res.data[0].food })
+        return res
+      })
+      .then((res) => {
+        axiosWithAuth()
+          .get(`/api/events/${res.data[0].event_id}`)
+          .then((response) => {
+            setEventInfo(response.data)
+          })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
 
-   useEffect(() => {
+  useEffect(() => {
+    if (eventInfo.id !== undefined) {
       axiosWithAuth()
-         .get('/api/guest/guest')
-         .then(res => {
-            setGuestInfo({ ...res.data[0], food: res.data[0].food === null ? "" : res.data[0].food})
-            return res
-         })
-         .then(res => {
-           axiosWithAuth()
-            .get(`/api/events/${res.data[0].event_id}`)
-            .then(response => {
-              console.log(response)
-              setEventInfo(response.data)
-            })
-         })
-         .catch(err => {
-            console.log(err)
-         })
-   }, [])
+        .get(`/api/events/${eventInfo.id}/guest-list`)
+        .then((finalResponse) => {
+          console.log(finalResponse.data)
+          const guest = finalResponse.data.filter((i) => i.food !== null && i.id !== guestInfo.id)
+          const formattedFood = guest.map((food) => food.food)
+          setCurrentFood(formattedFood)
+        })
+    }
+  }, [eventInfo, guestInfo.id])
 
-   useEffect(() => {
+  useEffect(() => {
     schema
       .isValid(guestInfo)
-      .then(valid => {
-        const submit = document.querySelector('#submit')
-        !valid ? submit.classList.add('disabled') : submit.classList.remove('disabled')
+      .then((valid) => {
+        const submit = document.querySelector("#submit")
+        if (!valid) {
+          submit.classList.add("disabled")
+        } else {
+          submit.classList.remove("disabled")
+        }
         setDisabled(!valid)
       })
   }, [guestInfo])
 
-   const handleSubmit = (e) => {
-      e.preventDefault()
-      axiosWithAuth()
-         .put('/api/guest/guest', { rsvp: guestInfo.rsvp, food: guestInfo.food })
-         .then(() => {
-            setErrors("")
-            dispatch(loggedInStatus(false))
-            localStorage.removeItem('token')
-            history.push('/success')
-         })
-         .catch(err => {
-            console.log(err)
-         })
-   }
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    axiosWithAuth()
+      .put("/api/guest/guest", { rsvp: guestInfo.rsvp, food: guestInfo.food })
+      .then(() => {
+        setErrors("")
+        dispatch(loggedInStatus(false))
+        localStorage.removeItem("token")
+        history.push("/success")
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
-   const confirmation = (e) => {
-      const result = window.confirm('You will not be able to make any changes after the confirmation. \nAre you sure to confirm?')
-      e.persist()
-      if(result){
-         handleSubmit(e)
-      }
-   }
- 
-   const handleChange = (e) => {
-    let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
+  const confirmation = (e) => {
+    const result = window.confirm("You will not be able to make any changes after the confirmation. \nAre you sure to confirm?")
+    e.persist()
+    if (result) {
+      handleSubmit(e)
+    }
+  }
+
+  const handleChange = (e) => {
+    const value = e.target.type === "checkbox" ? e.target.checked : e.target.value
     setFormErrors(e.target.name, value)
-    setGuestInfo({...guestInfo, [e.target.name]: value })
-   }
+    setGuestInfo({ ...guestInfo, [e.target.name]: value })
+  }
 
-   return (
-      <StyledGuest className='guest'>
-        <div className="guest-select-box">
-        <h1>Welcome {guestInfo.email.split("@")[0]}</h1>
-        <h1 className="event-info"><strong>Event Name:</strong> {eventInfo.name}</h1>
-        <h1 className="event-info"><strong>Event Date:</strong> {eventInfo.date}</h1>
-        <h1 className="event-info"><strong>Event Time:</strong> {eventInfo.time}</h1>
-        <h1 className="event-info"><strong>Event Location:</strong> {eventInfo.location}</h1>
-          <form onSubmit={confirmation}>
-            {/* RSVP STATUS */}
-            <div className="input-container">
-              <label htmlFor='rsvp'>
-                I will be attending the event 
-                <input id='rsvp' type='checkbox' name='rsvp' checked={guestInfo.rsvp} onChange={handleChange} />
-              </label>
-            </div>
-            {/* DROP DOWN FOOD ITEMS */}
-            <div className="input-container">
-              <label htmlFor='food'>
-                I will be bringing 
-                <input id='food' name='food' onChange={handleChange} value={guestInfo.food} />
-              </label>
-            </div>
-                <div className="login-error">{errors.rsvp}</div>
-                <div className="login-error">{errors.food}</div>
-            <div className="input-container">
-              <button id="submit" disabled={disabled}>Confirm</button>
-            </div>
-          </form>
-        </div>
-      </StyledGuest>
-   )
+  return (
+    <StyledGuest className="guest">
+      <div className="guest-select-box">
+        <h1>
+          Welcome
+          {" "}
+          {guestInfo.email.split("@")[0]}
+        </h1>
+        <h1 className="event-info">
+          <strong>Event Name:</strong>
+          {" "}
+          {eventInfo.name}
+        </h1>
+        <h1 className="event-info">
+          <strong>Event Date:</strong>
+          {" "}
+          {eventInfo.date}
+        </h1>
+        <h1 className="event-info">
+          <strong>Event Time:</strong>
+          {" "}
+          {eventInfo.time}
+        </h1>
+        <h1 className="event-info">
+          <strong>Event Location:</strong>
+          {" "}
+          {eventInfo.location}
+        </h1>
+        <form onSubmit={confirmation}>
+          {/* RSVP STATUS */}
+          <div className="input-container">
+            <label htmlFor="rsvp">
+              I will be attending the event
+              <input id="rsvp" type="checkbox" name="rsvp" checked={guestInfo.rsvp} onChange={handleChange} />
+            </label>
+          </div>
+          <div>
+            <p>
+              <strong>Food already being brought:</strong>
+              {" "}
+              {currentFood.length > 0 ? currentFood.join(", ") : "(No Food Claimed Yet)"}
+            </p>
+          </div>
+          <div className="input-container">
+            <label htmlFor="food">
+              I will be bringing
+              <input id="food" name="food" onChange={handleChange} value={guestInfo.food} />
+            </label>
+          </div>
+          <div className="login-error">{errors.rsvp}</div>
+          <div className="login-error">{errors.food}</div>
+          <div className="input-container">
+            <button type="submit" id="submit" disabled={disabled}>Confirm</button>
+          </div>
+        </form>
+      </div>
+    </StyledGuest>
+  )
 }
 
 export default Guest

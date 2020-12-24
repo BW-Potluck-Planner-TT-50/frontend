@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react"
+import styled from "styled-components"
 
 const StyledSuccess = styled.div`
   background-color: #202C59;
@@ -42,15 +42,15 @@ const StyledSuccess = styled.div`
 `
 
 function Success() {
-   return (
-      <StyledSuccess>
-        <div className="success-message-container">
-          <h1 className="main-success">Success!</h1>
-          <h1>You Have Been Registered And Your Food Choice Has Been Accepted</h1>
-          <h2>Thank you for RSVPing and we look forward to seeing you at the event!</h2>
-        </div>
-      </StyledSuccess>
-   )
+  return (
+    <StyledSuccess>
+      <div className="success-message-container">
+        <h1 className="main-success">Success!</h1>
+        <h1>You Have Been Registered And Your Food Choice Has Been Accepted</h1>
+        <h2>Thank you for RSVPing and we look forward to seeing you at the event!</h2>
+      </div>
+    </StyledSuccess>
+  )
 }
 
 export default Success

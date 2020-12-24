@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
-import styled from 'styled-components'
-import { axiosWithAuth } from '../utils/axiosWithAuth'
-import * as yup from 'yup'
+import React, { useState, useEffect } from "react"
+import { useHistory } from "react-router-dom"
+import styled from "styled-components"
+import * as yup from "yup"
+import { useDispatch } from "react-redux"
+import axiosWithAuth from "../utils/axiosWithAuth"
 
 // action
-import { loggedInStatus, isOrganizerStatus } from '../store/action/eventAction'
+import { loggedInStatus, isOrganizerStatus } from "../store/action/eventAction"
 
 // redux hooks
-import { useDispatch } from 'react-redux'
 
 const StyledEventGuest = styled.div`
   background-color: #202C59;
@@ -98,12 +98,10 @@ const StyledEventGuest = styled.div`
 `
 
 const schema = yup.object().shape({
-  inviteCode: yup.string().required("You Must Enter An Event Code To Continue").min(7, "Must be at least 7 characters")
+  inviteCode: yup.string().required("You Must Enter An Event Code To Continue").min(7, "Must be at least 7 characters"),
 })
 
-
 function EventGuest() {
-
   const dispatch = useDispatch()
 
   const [form, setForm] = useState({
@@ -113,24 +111,28 @@ function EventGuest() {
   const history = useHistory()
 
   const [disabled, setDisabled] = useState(true)
-  const [errors, setErrors] = useState({  inviteCode: "", incorrectLogin: "" })
-  
+  const [errors, setErrors] = useState({ inviteCode: "", incorrectLogin: "" })
+
   const setFormErrors = (name, value) => {
     yup.reach(schema, name).validate(value)
-    .then(() => setErrors({...errors, [name]: '', incorrectLogin: ""}))
-    .catch(err => setErrors({...errors, [name]: err.errors[0], incorrectLogin: ""}))
+      .then(() => setErrors({ ...errors, [name]: "", incorrectLogin: "" }))
+      .catch((err) => setErrors({ ...errors, [name]: err.errors[0], incorrectLogin: "" }))
   }
 
   function handleChange(e) {
-    const { value, name} = e.target
+    const { value, name } = e.target
     setFormErrors(name, value)
-    setForm({ ...form, [name]: value})
+    setForm({ ...form, [name]: value })
   }
 
   useEffect(() => {
-    schema.isValid(form).then(valid => {
-      const submit = document.querySelector('#submit')
-      !valid ? submit.classList.add('disabled') : submit.classList.remove('disabled')
+    schema.isValid(form).then((valid) => {
+      const submit = document.querySelector("#submit")
+      if (!valid) {
+        submit.classList.add("disabled")
+      } else {
+        submit.classList.remove("disabled")
+      }
       setDisabled(!valid)
     })
   }, [form])
@@ -139,27 +141,25 @@ function EventGuest() {
     e.preventDefault()
     axiosWithAuth()
       .post("/api/auth-guest/login", form)
-      .then((res) =>
-      {
+      .then((res) => {
         setErrors({
           ...errors,
-          incorrectLogin: ""
+          incorrectLogin: "",
         })
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("organizer", false);
+        localStorage.setItem("token", res.data.token)
+        localStorage.setItem("organizer", false)
         dispatch(loggedInStatus(true))
         dispatch(isOrganizerStatus(false))
-        
-        history.push("/plan");
+
+        history.push("/plan")
       })
-      .catch(err => {
+      .catch(() => {
         setErrors({
           ...errors,
-          incorrectLogin: "Invalid event code"
+          incorrectLogin: "Invalid event code",
         })
       })
-  };
-  
+  }
 
   return (
     <StyledEventGuest>
@@ -171,7 +171,7 @@ function EventGuest() {
           <input autoComplete="off" placeholder="Event Code" name="inviteCode" value={form.inviteCode} onChange={handleChange} />
         </div>
         <div className="login-error">{errors.incorrectLogin}</div>
-        <button disabled={disabled} id="submit">Submit</button>
+        <button type="submit" disabled={disabled} id="submit">Submit</button>
       </form>
     </StyledEventGuest>
   )

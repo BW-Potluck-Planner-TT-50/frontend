@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import { axiosWithAuth } from "../utils/axiosWithAuth";
-import { useHistory } from "react-router";
-import schema from "./loginValidation";
-import * as yup from "yup";
-import { Link } from 'react-router-dom'
-import styled from 'styled-components'
+import React, { useState } from "react"
+import { useHistory } from "react-router"
+import * as yup from "yup"
+import { Link } from "react-router-dom"
+import styled from "styled-components"
 
 // action
-import { loggedInStatus, isOrganizerStatus } from '../store/action/eventAction'
 
 // redux hook
-import { useDispatch } from 'react-redux'
+import { useDispatch } from "react-redux"
+import schema from "./loginValidation"
+import axiosWithAuth from "../utils/axiosWithAuth"
+import { loggedInStatus, isOrganizerStatus } from "../store/action/eventAction"
 
 const StyledLogin = styled.div`
   background-color: #D95D39;
@@ -88,92 +88,85 @@ const StyledLogin = styled.div`
 `
 
 const blankData = {
-    email: "",
-    password: "",
-};
-const errorStrings = {
-    email: "",
-    password: "",
-};
-
-function Login()
-{
-  const dispatch = useDispatch()
-    
-    const [userData, setUserData] = useState(blankData);
-    const [formErrors, setFormErrors] = useState(errorStrings);
-    const [disabled, setDisabled] = useState(true);
-    let history = useHistory();
-
-    const change = (evt) =>
-    {
-        const { name, value } = evt.target;
-        validate(name, value);
-        setUserData({ ...userData, [name]: value });
-    };
-
-    const submit = (evt) =>
-    {
-        evt.preventDefault();
-        axiosWithAuth()
-            .post("/api/auth/login", userData)
-            .then((res) =>
-            {
-                localStorage.setItem("token", res.data.token);
-                localStorage.setItem("organizer", true);
-                dispatch(loggedInStatus(true))
-                dispatch(isOrganizerStatus(true))
-                setUserData(blankData)
-                history.push("/events");
-            })
-    };
-
-    const validate = (name, value) =>
-    {
-        yup
-            .reach(schema, name)
-            .validate(value)
-            .then(() =>
-            {
-                setFormErrors({
-                    ...formErrors,
-                    [name]: "",
-                });
-                const submitBtnStyle = document.querySelector('#submit')
-                submitBtnStyle.classList.remove('disabled')
-                setDisabled(false)
-            })
-
-            .catch((err) =>
-            {
-                setFormErrors({
-                    ...formErrors,
-                    [name]: err.errors[0],
-                });
-                const submitBtnStyle = document.querySelector('#submit')
-                submitBtnStyle.classList.add('disabled')
-                setDisabled(true)
-            });
-    };
-
-    return (
-        <StyledLogin>
-          <form onSubmit={submit}>
-            <h1>Login</h1>
-            <div>
-              <input type="text" name="email" placeholder="Email" value={userData.email} onChange={change} />
-              <div className="error" style={{ color: "red" }}>{formErrors.email}</div>
-            </div>
-            <div> 
-              <input type="password" name="password" placeholder="Password" value={userData.password} onChange={change} />
-              <div className="error" style={{ color: "red" }}>{formErrors.password}</div>
-            </div>
-            <div>
-                <button id="submit" className="disabled" disabled={disabled}>Submit</button>
-            </div>
-            <Link to="/register">Don't have an account? Click Here To Create One</Link>
-          </form>
-      </StyledLogin>
-    );
+  email: "",
+  password: "",
 }
-export default Login 
+const errorStrings = {
+  email: "",
+  password: "",
+}
+
+function Login() {
+  const dispatch = useDispatch()
+
+  const [userData, setUserData] = useState(blankData)
+  const [formErrors, setFormErrors] = useState(errorStrings)
+  const [disabled, setDisabled] = useState(true)
+  const history = useHistory()
+
+  const validate = (name, value) => {
+    yup
+      .reach(schema, name)
+      .validate(value)
+      .then(() => {
+        setFormErrors({
+          ...formErrors,
+          [name]: "",
+        })
+        const submitBtnStyle = document.querySelector("#submit")
+        submitBtnStyle.classList.remove("disabled")
+        setDisabled(false)
+      })
+
+      .catch((err) => {
+        setFormErrors({
+          ...formErrors,
+          [name]: err.errors[0],
+        })
+        const submitBtnStyle = document.querySelector("#submit")
+        submitBtnStyle.classList.add("disabled")
+        setDisabled(true)
+      })
+  }
+
+  const change = (evt) => {
+    const { name, value } = evt.target
+    validate(name, value)
+    setUserData({ ...userData, [name]: value })
+  }
+
+  const submit = (evt) => {
+    evt.preventDefault()
+    axiosWithAuth()
+      .post("/api/auth/login", userData)
+      .then((res) => {
+        localStorage.setItem("token", res.data.token)
+        localStorage.setItem("organizer", true)
+        dispatch(loggedInStatus(true))
+        dispatch(isOrganizerStatus(true))
+        setUserData(blankData)
+        history.push("/events")
+      })
+  }
+
+  return (
+    <StyledLogin>
+      <form onSubmit={submit}>
+        <h1>Login</h1>
+        <div>
+          <input type="text" name="email" placeholder="Email" value={userData.email} onChange={change} />
+          <div className="error" style={{ color: "red" }}>{formErrors.email}</div>
+        </div>
+        <div>
+          <input type="password" name="password" placeholder="Password" value={userData.password} onChange={change} />
+          <div className="error" style={{ color: "red" }}>{formErrors.password}</div>
+        </div>
+        <div>
+          <button type="submit" id="submit" className="disabled" disabled={disabled}>Submit</button>
+        </div>
+        <Link to="/register">Don&apos;t have an account? Click Here To Create One</Link>
+      </form>
+    </StyledLogin>
+  )
+}
+export default Login

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { axiosWithAuth } from '../utils/axiosWithAuth'
-import { Link, useHistory } from 'react-router-dom'
-import * as yup from 'yup'
-import styled from 'styled-components'
+import React, { useState, useEffect } from "react"
+import { Link, useHistory } from "react-router-dom"
+import * as yup from "yup"
+import styled from "styled-components"
+import axiosWithAuth from "../utils/axiosWithAuth"
 
 const StyledRegister = styled.div`
   background-color: #D95D39;
@@ -81,9 +81,12 @@ const StyledRegister = styled.div`
 `
 
 const schema = yup.object().shape({
-    username: yup.string().required('Name is required').min(5, 'Name needs to be 5 chars min'),
-    email: yup.string().email().required('Email is required'),
-    password: yup.string().required('Password is required').min(8, 'Password needs to be 8 chars min').matches(/[A-Z]/, 'Passwords must include an uppercase letter').matches(/[a-z]/, 'Passwords must include a lowercase letter').matches(/\d/, 'Passwords must include a number').matches(/\W/, 'Passwords must include a special character')
+  username: yup.string().required("Name is required").min(5, "Name needs to be 5 chars min"),
+  email: yup.string().email().required("Email is required"),
+  password: yup.string().required("Password is required").min(8, "Password needs to be 8 chars min").matches(/[A-Z]/, "Passwords must include an uppercase letter")
+    .matches(/[a-z]/, "Passwords must include a lowercase letter")
+    .matches(/\d/, "Passwords must include a number")
+    .matches(/\W/, "Passwords must include a special character"),
 })
 
 function Register() {
@@ -92,87 +95,89 @@ function Register() {
   const [registerForm, setRegisterForm] = useState({
     username: "",
     password: "",
-    email: ""
+    email: "",
   })
 
   const [disabled, setDisabled] = useState(true)
-  const [errors, setErrors] = useState({  username: "", password: "", email: "" })
+  const [errors, setErrors] = useState({ username: "", password: "", email: "" })
 
   const setFormErrors = (name, value) => {
-      yup.reach(schema, name).validate(value)
-          .then(() => setErrors({ ...errors, [name]: '' }))
-          .catch(err => setErrors({ ...errors, [name]: err.errors[0] }))
+    yup.reach(schema, name).validate(value)
+      .then(() => setErrors({ ...errors, [name]: "" }))
+      .catch((err) => setErrors({ ...errors, [name]: err.errors[0] }))
   }
 
-    function handleChange(e) {
-        const { value, name } = e.target
-        setFormErrors(name, value)
-        setRegisterForm({
-            ...registerForm,
-            [name]: value
-        })
-    }
-
+  function handleChange(e) {
+    const { value, name } = e.target
+    setFormErrors(name, value)
+    setRegisterForm({
+      ...registerForm,
+      [name]: value,
+    })
+  }
 
   useEffect(() => {
     schema
       .isValid(registerForm)
-      .then(valid => {
-        const submit = document.querySelector('#submit')
-        !valid ? submit.classList.add('disabled') : submit.classList.remove('disabled')
+      .then((valid) => {
+        const submitButton = document.querySelector("#submit")
+        if (!valid) {
+          submitButton.classList.add("disabled")
+        } else {
+          submitButton.classList.remove("disabled")
+        }
         setDisabled(!valid)
       })
   }, [registerForm])
 
   function submit(e) {
-
     e.preventDefault()
 
     axiosWithAuth()
-      .post('/api/auth/register', {
+      .post("/api/auth/register", {
         email: registerForm.email,
         username: registerForm.username.trim(),
-        password: registerForm.password.trim()
+        password: registerForm.password.trim(),
       })
-      .then(res => {
-        localStorage.setItem('token', res.data.payload)
-        history.push('/login')
+      .then((res) => {
+        localStorage.setItem("token", res.data.payload)
+        history.push("/login")
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
       })
-      setRegisterForm({
-        username: '',
-        password: '',
-        email: ''
-      })
+    setRegisterForm({
+      username: "",
+      password: "",
+      email: "",
+    })
   }
 
-    return (
-        <StyledRegister>
-          <div className="register-container">
-            <form onSubmit={submit}>
-              <h1>Register</h1>
-              <div>
-                <input autoComplete="off" placeholder="Email" name="email" value={registerForm.email} onChange={handleChange} />
-                <div className="error" style={{ color: "red" }}>{errors.email}</div>
-              </div>
-              <div>
-                <input autoComplete="off" placeholder="Username" name="username" value={registerForm.username} onChange={handleChange} />
-                <div className="error" style={{ color: "red" }}>{errors.username}</div>
-              </div>
-              <div> 
-                <input autoComplete="off" name="password" placeholder="Password" type="password" value={registerForm.password} onChange={handleChange} />
-                <div className="error" style={{ color: "red" }}>{errors.password}</div>
-              </div>
-              <div>
-                  <button id="submit" disabled={disabled}>Submit</button>
-              </div>
-              <Link to="/login">Already Have An Account? Click Here To Login</Link>
-            </form>
+  return (
+    <StyledRegister>
+      <div className="register-container">
+        <form onSubmit={submit}>
+          <h1>Register</h1>
+          <div>
+            <input autoComplete="off" placeholder="Email" name="email" value={registerForm.email} onChange={handleChange} />
+            <div className="error" style={{ color: "red" }}>{errors.email}</div>
           </div>
-        </StyledRegister>
-    )
+          <div>
+            <input autoComplete="off" placeholder="Username" name="username" value={registerForm.username} onChange={handleChange} />
+            <div className="error" style={{ color: "red" }}>{errors.username}</div>
+          </div>
+          <div>
+            <input autoComplete="off" name="password" placeholder="Password" type="password" value={registerForm.password} onChange={handleChange} />
+            <div className="error" style={{ color: "red" }}>{errors.password}</div>
+          </div>
+          <div>
+            <button type="submit" id="submit" disabled={disabled}>Submit</button>
+          </div>
+          <Link to="/login">Already Have An Account? Click Here To Login</Link>
+        </form>
+      </div>
+    </StyledRegister>
+  )
 }
 
 export default Register

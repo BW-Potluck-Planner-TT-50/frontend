@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react'
-import { useParams, useHistory } from 'react-router-dom'
-import { axiosWithAuth } from '../utils/axiosWithAuth'
-import styled from 'styled-components'
-import moment from 'moment'
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import React, { useState, useEffect } from "react"
+import { useParams, useHistory } from "react-router-dom"
+import styled from "styled-components"
+import moment from "moment"
 
 // action
-import { updateEvent } from '../store/action/eventAction'
+import { useDispatch } from "react-redux"
+import { updateEvent } from "../store/action/eventAction"
 
 // redux hook
-import { useDispatch } from 'react-redux'
+import axiosWithAuth from "../utils/axiosWithAuth"
 
 const StyledUpdateEvent = styled.div`
   background-color: #202C59;
@@ -69,75 +70,72 @@ const StyledUpdateEvent = styled.div`
   }
 `
 
-export default function UpdateEvent(){
-  
+export default function UpdateEvent() {
   const dispatch = useDispatch()
-   const params = useParams()
-   const history = useHistory()
-   const [events, setEvents] = useState({
-      name: '',
-      date:'',
-      time: '',
-      location: '',
-   })
+  const params = useParams()
+  const history = useHistory()
+  const [events, setEvents] = useState({
+    name: "",
+    date: "",
+    time: "",
+    location: "",
+  })
 
-   useEffect(() => {
-      axiosWithAuth()
-         .get(`/api/events/${params.id}`)
-         .then(res => {
-            setEvents(res.data)
-         })
-   },[params.id])
-
-   const handleChange = (e) => {
-      setEvents({
-         ...events,
-         [e.target.name]: e.target.value,
+  useEffect(() => {
+    axiosWithAuth()
+      .get(`/api/events/${params.id}`)
+      .then((res) => {
+        setEvents(res.data)
       })
-   }
+  }, [params.id])
 
-   const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    setEvents({
+      ...events,
+      [e.target.name]: e.target.value,
+    })
+  }
 
-      e.preventDefault()
+  const handleSubmit = (e) => {
+    e.preventDefault()
 
-      dispatch(updateEvent(params.id, events))
-    
-      history.push('/events')
-      
-   }
+    dispatch(updateEvent(params.id, events))
+
+    history.push("/events")
+  }
 
   return (
-      <StyledUpdateEvent className='update___events'>
-        <form onSubmit={handleSubmit}>
-          <h1>Update Events</h1>
-            <div>
-              <label htmlFor='name'>Event Name</label>
-            </div>
-            <div>
-              <input name='name' value={events.name} onChange={handleChange} />
-            </div>
-            <div>
-              <label htmlFor='date'>Date</label>
-            </div>
-            <div>
-              <input name='date' value={moment(events.date).format("dddd, MMMM Do YYYY")} onChange={handleChange} />
-            </div>
-            <div>
-              <label htmlFor='time'>Time</label>
-            </div>
-            <div>
-              <input name='time' value={events.time} onChange={handleChange} />
-            </div>
-            <div>
-              <label htmlFor='location'>Location</label>
-            </div>
-            <div>
-              <input name='location' value={events.location} onChange={handleChange} />
-            </div>
-            <div>
-              <button type='submit'>Update</button>
-            </div>
-         </form>
-      </StyledUpdateEvent>
-   )
+    <StyledUpdateEvent className="update___events">
+      <form onSubmit={handleSubmit}>
+        <h1>Update Events</h1>
+        <div>
+          <label htmlFor="name">Event Name</label>
+        </div>
+        <div>
+          <input name="name" value={events.name} onChange={handleChange} />
+        </div>
+        <div>
+          <label htmlFor="date">Date</label>
+        </div>
+        <div>
+          <input name="date" value={moment(events.date).format("dddd, MMMM Do YYYY")} onChange={handleChange} />
+        </div>
+        <div>
+          <label htmlFor="time">Time</label>
+        </div>
+        <div>
+          <input name="time" value={events.time} onChange={handleChange} />
+        </div>
+        <div>
+          <label htmlFor="location">Location</label>
+        </div>
+        <div>
+          <input name="location" value={events.location} onChange={handleChange} />
+        </div>
+        <div>
+          <button type="submit">Update</button>
+        </div>
+      </form>
+    </StyledUpdateEvent>
+  )
 }

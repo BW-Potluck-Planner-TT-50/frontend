@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
-import {useHistory} from 'react-router-dom'
-import styled from 'styled-components'
+import React, { useState } from "react"
+import { useHistory } from "react-router-dom"
+import styled from "styled-components"
 
 // action
-import { addEvent } from '../store/action/eventAction'
+import { useDispatch } from "react-redux"
+import { addEvent } from "../store/action/eventAction"
 
 // Redux hook
-import { useDispatch } from 'react-redux'
 
 const StyledAddEvent = styled.div`
   background-color: #202C59;
@@ -56,50 +56,49 @@ const StyledAddEvent = styled.div`
 `
 
 function AddEvent() {
-
   const dispatch = useDispatch()
 
-   const history = useHistory()
-   const [events, setEvents] = useState({
-      name: '',
-      date:'',
-      time: '',
-      location: '',
-   })
+  const history = useHistory()
+  const [events, setEvents] = useState({
+    name: "",
+    date: "",
+    time: "",
+    location: "",
+  })
 
-   const handleChange = (e) => {
-      setEvents({
-         ...events,
-         [e.target.name]: e.target.value,
-      })
-   }
+  const handleChange = (e) => {
+    setEvents({
+      ...events,
+      [e.target.name]: e.target.value,
+    })
+  }
 
-   const handleSubmit = (e) => {
-      e.preventDefault()
+  const handleSubmit = (e) => {
+    e.preventDefault()
 
-      dispatch(addEvent(events))
+    dispatch(addEvent(events))
 
-      history.push('/events')
-   }
+    history.push("/events")
+  }
 
   return (
-    <StyledAddEvent className='add___events'>
+    <StyledAddEvent className="add___events">
       <form onSubmit={handleSubmit}>
         <h1>Add An Event</h1>
         <div>
-          <input name='name' placeholder="Event Name" value={events.name} onChange={handleChange} />
+          <input name="name" placeholder="Event Name" value={events.name} onChange={handleChange} />
         </div>
         <div>
-          <input name='date' placeholder="Event Date" value={events.date} onChange={handleChange} />
+          <input name="date" placeholder="Event Date" value={events.date} onChange={handleChange} />
         </div>
         <div>
-          <input name='time' placeholder="Event Time" value={events.time} onChange={handleChange} />
+          <input name="time" placeholder="Event Time" value={events.time} onChange={handleChange} />
         </div>
         <div>
-          <input name='location' placeholder="Event Location" value={events.location} onChange={handleChange} />
+          <input name="location" placeholder="Event Location" value={events.location} onChange={handleChange} />
         </div>
         <div>
-          <button type='submit'>Add</button>
+          <button type="submit">Add</button>
         </div>
       </form>
     </StyledAddEvent>

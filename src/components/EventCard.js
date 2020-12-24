@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { axiosWithAuth } from '../utils/axiosWithAuth'
-import styled from 'styled-components'
-import moment from 'moment'
-import DeleteIcon from '@material-ui/icons/Delete'
-import MailOutlineIcon from '@material-ui/icons/MailOutline'
+/* eslint-disable no-alert */
+import React, { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
+import styled from "styled-components"
+import moment from "moment"
+import DeleteIcon from "@material-ui/icons/Delete"
+import MailOutlineIcon from "@material-ui/icons/MailOutline"
+import axiosWithAuth from "../utils/axiosWithAuth"
 
 const StyledEventCard = styled.div`
   background-color: #202C59;
@@ -178,78 +179,57 @@ const StyledEventCard = styled.div`
 `
 
 const EventCard = () => {
+  const params = useParams()
 
-   const params = useParams()
+  // Initial State
+  const [potEvent, setPotEvent] = useState("")
 
-   // Initial State
-   const [potEvent, setPotEvent] = useState('')
+  const [guest, setGuest] = useState({
+    id: "",
+    email: "",
+  })
 
-   const [guest, setGuest] = useState({
-      id: '',
-      email: '',
-   })
+  const [guestList, setGuestList] = useState([])
 
-   const [guestList, setGuestList] = useState([])
+  const rsvpGuest = guestList.filter((eachGuest) => eachGuest.rsvp)
 
-   const rsvp_guest = guestList.filter((eachGuest) => {
-      return eachGuest.rsvp
-    })
+  // fetch initial food and guest list
+  useEffect(() => {
+    // get event information
+    axiosWithAuth()
+      .get(`/api/events/${params.id}`)
+      .then((res) => {
+        setPotEvent(res.data)
+      })
 
-   // fetch initial food and guest list
-   useEffect(() => {
+    axiosWithAuth()
+      .get(`/api/events/${params.id}/guest-list`)
+      .then((res) => {
+        setGuestList(res.data)
+      })
+  }, [params.id])
 
-      // get event information
-      axiosWithAuth()
-         .get(`/api/events/${params.id}`)
-         .then(res => {
-            setPotEvent(res.data)
-         })
-
-      axiosWithAuth()
-         .get(`/api/events/${params.id}/guest-list`)
-         .then(res => {
-            setGuestList(res.data)
-           
-         })
-
-   },[params.id])
-
-   // Guest CRUD
+  // Guest CRUD
   const deleteGuest = (id) => {
-
-      axiosWithAuth()
-        .delete(`/api/events/guest-list/${id}`)
-        .then(res => {
-          console.log(res)
-        })
-        setGuestList(guestList.filter((eachGuest) => eachGuest.id !== id))
-   }
+    axiosWithAuth()
+      .delete(`/api/events/guest-list/${id}`)
+      .then((res) => {
+        console.log(res)
+      })
+    setGuestList(guestList.filter((eachGuest) => eachGuest.id !== id))
+  }
 
   const handleGuestChange = (e) => {
-      setGuest({
-         ...guest,
-         [e.target.name]: e.target.value
-      })
-   }
+    setGuest({
+      ...guest,
+      [e.target.name]: e.target.value,
+    })
+  }
 
   const guestConfirmation = (id) => {
-    const result = window.confirm('Are you sure to delete?') 
-    if(result){
+    const result = window.confirm("Are you sure to delete?")
+    if (result) {
       deleteGuest(id)
-    }
-  }
-
-  const emailConfirmation = (id) => {
-    const result = window.confirm('Are you sure you want to send out all the invite emails?') 
-    if(result){
-      sendAllEmailInvites(id)
-    }
-  }
-
-  const singleEmailConfirmation = (id) => {
-    const result = window.confirm('Are you sure you want to send out this invite email?') 
-    if(result){
-      sendSingleEmailInvite(id)
     }
   }
 
@@ -259,7 +239,7 @@ const EventCard = () => {
       .then(() => {
         // set success message
       })
-      .catch(err => {
+      .catch(() => {
         // set error message
       })
   }
@@ -270,43 +250,68 @@ const EventCard = () => {
       .then(() => {
         // set success message
       })
-      .catch(err => {
+      .catch(() => {
         // set error message
       })
   }
 
-   const handleGuestSubmit = (e) => {
+  const emailConfirmation = (id) => {
+    const result = window.confirm("Are you sure you want to send out all the invite emails?")
+    if (result) {
+      sendAllEmailInvites(id)
+    }
+  }
 
-      e.preventDefault()
-    
-      axiosWithAuth()
-         .post(`/api/events/${params.id}/guest-list`, guest)
-         .then(res => {
-           setGuestList([...guestList, res.data])
-         })
-      
-      setGuest({
-         ...guest,
-         email: '',
+  const singleEmailConfirmation = (id) => {
+    const result = window.confirm("Are you sure you want to send out this invite email?")
+    if (result) {
+      sendSingleEmailInvite(id)
+    }
+  }
+
+  const handleGuestSubmit = (e) => {
+    e.preventDefault()
+
+    axiosWithAuth()
+      .post(`/api/events/${params.id}/guest-list`, guest)
+      .then((res) => {
+        setGuestList([...guestList, res.data])
       })
-   }
+
+    setGuest({
+      ...guest,
+      email: "",
+    })
+  }
 
   return (
     <StyledEventCard>
-      <div className='event___card event-box'>
+      <div className="event___card event-box">
         <div className="event-info">
           <h2>{potEvent.name}</h2>
-          <h3><strong>Date:</strong>  {moment(potEvent.date).format("dddd, MMMM Do YYYY")}</h3>
-          <h3><strong>Time:</strong>  {potEvent.time}</h3>
-          <h3><strong>Location:</strong>  {potEvent.location}</h3>
-          <button onClick={e => emailConfirmation(potEvent.id)} className="send-all-emails">Send Invites</button>
+          <h3>
+            <strong>Date:</strong>
+            {" "}
+            {moment(potEvent.date).format("dddd, MMMM Do YYYY")}
+          </h3>
+          <h3>
+            <strong>Time:</strong>
+            {" "}
+            {potEvent.time}
+          </h3>
+          <h3>
+            <strong>Location:</strong>
+            {" "}
+            {potEvent.location}
+          </h3>
+          <button type="button" onClick={() => emailConfirmation(potEvent.id)} className="send-all-emails">Send Invites</button>
         </div>
         <div className="guest-box">
           <h3>Guest List</h3>
           <div className="guests">
             {
               guestList.map((eachGuest) => {
-                if(eachGuest.rsvp === true){
+                if (eachGuest.rsvp === true) {
                   return (
                     <div className="dynamic-info" key={eachGuest.id}>
                       <div>{eachGuest.name}</div>
@@ -314,27 +319,25 @@ const EventCard = () => {
                   )
                 }
                 return (
-                    <div className="dynamic-info" key={eachGuest.id}>
-                      <div>{eachGuest.email}</div>
-                      <MailOutlineIcon className="email-button" onClick={() => singleEmailConfirmation(eachGuest.id)} />
-                      <DeleteIcon className="delete-button" onClick={() => guestConfirmation(eachGuest.id)} />
-                    </div>
+                  <div className="dynamic-info" key={eachGuest.id}>
+                    <div>{eachGuest.email}</div>
+                    <MailOutlineIcon className="email-button" onClick={() => singleEmailConfirmation(eachGuest.id)} />
+                    <DeleteIcon className="delete-button" onClick={() => guestConfirmation(eachGuest.id)} />
+                  </div>
                 )
               })
             }
           </div>
           <form onSubmit={handleGuestSubmit}>
-            <input autoComplete="off" placeholder="Guest Email" name='email' onChange={handleGuestChange} value={guest.email}/>
-            <button>Add Guest</button>
+            <input autoComplete="off" placeholder="Guest Email" name="email" onChange={handleGuestChange} value={guest.email} />
+            <button type="submit">Add Guest</button>
           </form>
         </div>
-        <div className='RSVP-guest'>
+        <div className="RSVP-guest">
           <h3>Attendance List</h3>
           <div className="rsvp-stuff">
             {
-              rsvp_guest.map((eachGuest) => {
-                return (<p key={eachGuest.id}>{`${eachGuest.name} is bringing a ${eachGuest.food}`}</p>)
-              })
+              rsvpGuest.map((eachGuest) => (<p key={eachGuest.id}>{`${eachGuest.email} is bringing ${eachGuest.food}`}</p>))
             }
           </div>
           <h3>↑ RSVP List ↑</h3>
