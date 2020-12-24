@@ -25,10 +25,15 @@ const StyledGuest = styled.div`
     min-width: 45%;
     color: white;
     text-shadow: 1px 1px 1px black;
+    .event-info {
+      margin: 0px;
+      padding: 0px;
+    }
     @media(max-width: 500px) {
       padding: 1%;
     }
     form {
+      margin-top: 15px;
       input, label {
         padding: 3%;
         margin-bottom: 6%;
@@ -104,7 +109,14 @@ function Guest() {
    const [guestInfo, setGuestInfo] = useState({
      rsvp: false,
      food: '',
-     name: ''
+     email: ''
+   })
+
+   const [eventInfo, setEventInfo] = useState({
+     name: "",
+     date: "",
+     time: "",
+     location: ""
    })
 
    const [disabled, setDisabled] = useState(true)
@@ -121,8 +133,16 @@ function Guest() {
       axiosWithAuth()
          .get('/api/guest/guest')
          .then(res => {
-            setGuestInfo(res.data[0])
-            console.log(res.data[0])
+            setGuestInfo({ ...res.data[0], food: res.data[0].food === null ? "" : res.data[0].food})
+            return res
+         })
+         .then(res => {
+           axiosWithAuth()
+            .get(`/api/events/${res.data[0].event_id}`)
+            .then(response => {
+              console.log(response)
+              setEventInfo(response.data)
+            })
          })
          .catch(err => {
             console.log(err)
@@ -171,7 +191,11 @@ function Guest() {
    return (
       <StyledGuest className='guest'>
         <div className="guest-select-box">
-        <h1>Welcome {guestInfo.name}</h1>
+        <h1>Welcome {guestInfo.email.split("@")[0]}</h1>
+        <h1 className="event-info"><strong>Event Name:</strong> {eventInfo.name}</h1>
+        <h1 className="event-info"><strong>Event Date:</strong> {eventInfo.date}</h1>
+        <h1 className="event-info"><strong>Event Time:</strong> {eventInfo.time}</h1>
+        <h1 className="event-info"><strong>Event Location:</strong> {eventInfo.location}</h1>
           <form onSubmit={confirmation}>
             {/* RSVP STATUS */}
             <div className="input-container">
