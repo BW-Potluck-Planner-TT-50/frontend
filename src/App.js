@@ -34,51 +34,39 @@ function App() {
         loggedIn={loggedIn}
         isOrganizer={isOrganizer}
       />
-
       <Switch>
-
         <Route exact path="/">
           <HomePage />
         </Route>
-
         <Route exact path="/register">
           <Register />
         </Route>
-
         <Route exact path="/join-event">
           <EventGuest />
         </Route>
-
         <Route exact path="/plan">
           <Guest />
         </Route>
-
         <Route exact path="/success">
           <Success />
         </Route>
-
         <Route exact path="/login">
           <Login />
         </Route>
-
         <Route exact path="/events">
           <Event
             eventList={eventList}
           />
         </Route>
-
         <Route exact path="/update-event/:id">
           <UpdateEvent />
         </Route>
-
         <Route exact path="/add-events">
           <AddEvent />
         </Route>
-
         <Route exact path="/view-events/:id">
           <EventCard />
         </Route>
-
       </Switch>
     </div>
   )

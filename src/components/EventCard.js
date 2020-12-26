@@ -275,6 +275,7 @@ const EventCard = () => {
     axiosWithAuth()
       .post(`/api/events/${params.id}/guest-list`, guest)
       .then((res) => {
+        console.log(res.data)
         setGuestList([...guestList, res.data])
       })
 
@@ -314,7 +315,7 @@ const EventCard = () => {
                 if (eachGuest.rsvp === true) {
                   return (
                     <div className="dynamic-info" key={eachGuest.id}>
-                      <div>{eachGuest.name}</div>
+                      <div>{eachGuest.email}</div>
                     </div>
                   )
                 }
