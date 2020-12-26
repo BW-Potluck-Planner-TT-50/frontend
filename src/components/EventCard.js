@@ -185,7 +185,6 @@ const EventCard = () => {
   const [potEvent, setPotEvent] = useState("")
 
   const [guest, setGuest] = useState({
-    id: "",
     email: "",
   })
 
