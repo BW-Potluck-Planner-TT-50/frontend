@@ -33,7 +33,7 @@ const StyledLogin = styled.div`
           font-weight: bold;
           font-size: 1.2rem;
           width: 400px;
-          margin: 0px auto;
+          margin: 0px auto 5px auto;
           @media(max-width: 500px) {
             width: 250px;
             font-size: 1rem;
@@ -98,10 +98,10 @@ const errorStrings = {
 
 function Login() {
   const dispatch = useDispatch()
-
   const [userData, setUserData] = useState(blankData)
   const [formErrors, setFormErrors] = useState(errorStrings)
   const [disabled, setDisabled] = useState(true)
+  const [failure, setFailure] = useState("")
   const history = useHistory()
 
   const validate = (name, value) => {
@@ -130,6 +130,9 @@ function Login() {
   }
 
   const change = (evt) => {
+    if (failure !== "") {
+      setFailure("")
+    }
     const { name, value } = evt.target
     validate(name, value)
     setUserData({ ...userData, [name]: value })
@@ -147,6 +150,10 @@ function Login() {
         setUserData(blankData)
         history.push("/events")
       })
+      .catch(() => {
+        setUserData(blankData)
+        setFailure("Incorrect login or password")
+      })
   }
 
   return (
@@ -159,7 +166,7 @@ function Login() {
         </div>
         <div>
           <input type="password" name="password" placeholder="Password" value={userData.password} onChange={change} />
-          <div className="error" style={{ color: "red" }}>{formErrors.password}</div>
+          <div className="error" style={{ color: "red" }}>{`${formErrors.password}${failure}`}</div>
         </div>
         <div>
           <button type="submit" id="submit" className="disabled" disabled={disabled}>Submit</button>

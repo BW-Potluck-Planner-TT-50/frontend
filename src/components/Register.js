@@ -50,6 +50,7 @@ const StyledRegister = styled.div`
           font-size: 2rem;
           background-color: #581F18;
           color: white;
+          margin-top: 5px;
           margin-bottom: 4%;
           cursor: pointer;
           @media(max-width: 500px) {
@@ -91,23 +92,23 @@ const schema = yup.object().shape({
 
 function Register() {
   const history = useHistory()
-
   const [registerForm, setRegisterForm] = useState({
     username: "",
     password: "",
     email: "",
   })
-
   const [disabled, setDisabled] = useState(true)
   const [errors, setErrors] = useState({ username: "", password: "", email: "" })
-
+  const [failure, setFailure] = useState("")
   const setFormErrors = (name, value) => {
     yup.reach(schema, name).validate(value)
       .then(() => setErrors({ ...errors, [name]: "" }))
       .catch((err) => setErrors({ ...errors, [name]: err.errors[0] }))
   }
-
   function handleChange(e) {
+    if (failure !== "") {
+      setFailure("")
+    }
     const { value, name } = e.target
     setFormErrors(name, value)
     setRegisterForm({
@@ -115,7 +116,6 @@ function Register() {
       [name]: value,
     })
   }
-
   useEffect(() => {
     schema
       .isValid(registerForm)
@@ -132,7 +132,6 @@ function Register() {
 
   function submit(e) {
     e.preventDefault()
-
     axiosWithAuth()
       .post("/api/auth/register", {
         email: registerForm.email,
@@ -143,8 +142,8 @@ function Register() {
         localStorage.setItem("token", res.data.payload)
         history.push("/login")
       })
-      .catch((err) => {
-        console.log(err)
+      .catch(() => {
+        setFailure("The email submitted is already registered")
       })
     setRegisterForm({
       username: "",
@@ -168,7 +167,7 @@ function Register() {
           </div>
           <div>
             <input autoComplete="off" name="password" placeholder="Password" type="password" value={registerForm.password} onChange={handleChange} />
-            <div className="error" style={{ color: "red" }}>{errors.password}</div>
+            <div className="error" style={{ color: "red" }}>{`${errors.password}${failure}`}</div>
           </div>
           <div>
             <button type="submit" id="submit" disabled={disabled}>Submit</button>

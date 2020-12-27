@@ -13,6 +13,22 @@ const StyledEventCard = styled.div`
   justify-content: center;
   align-items: center;
   min-height: 80vh;
+  .success-message {
+    position: absolute;
+    text-align: center;
+    bottom: 20px;
+    color: green;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  .failure-message {
+    position: absolute;
+    text-align: center;
+    bottom: 20px;
+    color: red;
+    font-weight: bold;
+    font-size: 20px;
+  }
   .event-box {
     background-color: #581F18;
     box-shadow: 3px 3px 5px black;
@@ -186,6 +202,8 @@ const EventCard = () => {
   })
   const [guestList, setGuestList] = useState([])
   const rsvpGuest = guestList.filter((eachGuest) => eachGuest.rsvp)
+  const [failure, setFailure] = useState("")
+  const [success, setSuccess] = useState("")
 
   // fetch initial guest list
   useEffect(() => {
@@ -214,6 +232,10 @@ const EventCard = () => {
   }
 
   const handleGuestChange = (e) => {
+    if (success !== "" || failure !== "") {
+      setSuccess("")
+      setFailure("")
+    }
     setGuest({
       ...guest,
       [e.target.name]: e.target.value,
@@ -224,6 +246,7 @@ const EventCard = () => {
     const result = window.confirm("Are you sure to delete?")
     if (result) {
       deleteGuest(id)
+      setSuccess("Guest deleted")
     }
   }
 
@@ -231,10 +254,10 @@ const EventCard = () => {
     axiosWithAuth()
       .get(`/api/email/all/${eventId}`)
       .then(() => {
-        // set success message
+        setSuccess("All invite emails delivered")
       })
       .catch(() => {
-        // set error message
+        setFailure("Failed to send email invites")
       })
   }
 
@@ -242,10 +265,10 @@ const EventCard = () => {
     axiosWithAuth()
       .get(`/api/email/single/${guestId}`)
       .then(() => {
-        // set success message
+        setSuccess("Invite email delivered")
       })
       .catch(() => {
-        // set error message
+        setFailure("Failed to send email invite")
       })
   }
 
@@ -265,7 +288,6 @@ const EventCard = () => {
 
   const handleGuestSubmit = (e) => {
     e.preventDefault()
-
     axiosWithAuth()
       .post(`/api/events/${params.id}/guest-list`, guest)
       .then(() => {
@@ -280,6 +302,10 @@ const EventCard = () => {
           ...guest,
           email: "",
         })
+        setSuccess("Guest added")
+      })
+      .catch(() => {
+        setFailure("Failed to add guest")
       })
   }
 
@@ -342,6 +368,8 @@ const EventCard = () => {
           <h3>↑ RSVP List ↑</h3>
         </div>
       </div>
+      <p className="success-message">{`${success}`}</p>
+      <p className="failure-message">{`${failure}`}</p>
     </StyledEventCard>
   )
 }
