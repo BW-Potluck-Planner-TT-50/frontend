@@ -4,7 +4,8 @@ import styled from "styled-components"
 
 // action
 import { useDispatch } from "react-redux"
-import { addEvent } from "../store/action/eventAction"
+import axiosWithAuth from "../utils/axiosWithAuth"
+import { fetchEvents } from "../store/action/eventAction"
 
 // Redux hook
 
@@ -75,9 +76,14 @@ function AddEvent() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-
-    dispatch(addEvent(events))
-
+    axiosWithAuth()
+      .post("/api/events", events)
+      .then(() => {
+        dispatch(fetchEvents())
+      })
+      .catch((err) => {
+        console.log(err.message)
+      })
     history.push("/events")
   }
 
