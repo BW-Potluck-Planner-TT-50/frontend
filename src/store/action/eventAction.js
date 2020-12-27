@@ -16,11 +16,6 @@ export const fetchEvents = () => (dispatch) => {
 export const addEvent = (events) => (dispatch) => {
   axiosWithAuth()
     .post("/api/events", events)
-    .then((res) => {
-      dispatch({
-        type: "ADD_EVENTS", payload: res.data,
-      })
-    })
     .catch((err) => {
       dispatch({ type: "ADD_EVENTS_FAILED", payload: err })
     })
