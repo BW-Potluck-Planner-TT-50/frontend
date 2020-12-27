@@ -180,19 +180,14 @@ const StyledEventCard = styled.div`
 
 const EventCard = () => {
   const params = useParams()
-
-  // Initial State
   const [potEvent, setPotEvent] = useState("")
-
   const [guest, setGuest] = useState({
     email: "",
   })
-
   const [guestList, setGuestList] = useState([])
-
   const rsvpGuest = guestList.filter((eachGuest) => eachGuest.rsvp)
 
-  // fetch initial food and guest list
+  // fetch initial guest list
   useEffect(() => {
     // get event information
     axiosWithAuth()
@@ -273,15 +268,19 @@ const EventCard = () => {
 
     axiosWithAuth()
       .post(`/api/events/${params.id}/guest-list`, guest)
-      .then((res) => {
-        console.log(res.data)
-        setGuestList([...guestList, res.data])
+      .then(() => {
+        axiosWithAuth()
+          .get(`/api/events/${params.id}/guest-list`)
+          .then((response) => {
+            setGuestList(response.data)
+          })
       })
-
-    setGuest({
-      ...guest,
-      email: "",
-    })
+      .then(() => {
+        setGuest({
+          ...guest,
+          email: "",
+        })
+      })
   }
 
   return (
