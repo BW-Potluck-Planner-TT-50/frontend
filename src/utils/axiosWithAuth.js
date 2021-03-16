@@ -7,7 +7,8 @@ const axiosWithAuth = () => {
     headers: {
       authorization: token,
     },
-    baseURL: "http://localhost:2319",
+    baseURL: "https://potluck-joon.herokuapp.com",
+    // local: "http://localhost:2319"
   });
 };
 
