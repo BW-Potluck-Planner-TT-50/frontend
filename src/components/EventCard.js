@@ -1,14 +1,14 @@
 /* eslint-disable no-alert */
-import React, { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
-import styled from "styled-components"
-import moment from "moment"
-import DeleteIcon from "@material-ui/icons/Delete"
-import MailOutlineIcon from "@material-ui/icons/MailOutline"
-import axiosWithAuth from "../utils/axiosWithAuth"
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import styled from "styled-components";
+import moment from "moment";
+import DeleteIcon from "@material-ui/icons/Delete";
+import MailOutlineIcon from "@material-ui/icons/MailOutline";
+import axiosWithAuth from "../utils/axiosWithAuth";
 
 const StyledEventCard = styled.div`
-  background-color: #202C59;
+  background-color: #202c59;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,7 +30,7 @@ const StyledEventCard = styled.div`
     font-size: 20px;
   }
   .event-box {
-    background-color: #581F18;
+    background-color: #581f18;
     box-shadow: 3px 3px 5px black;
     margin-bottom: 2%;
     display: flex;
@@ -43,16 +43,16 @@ const StyledEventCard = styled.div`
       padding: 4% 7%;
       box-shadow: 1px 1px 3px black;
       cursor: pointer;
-      background-color: #202C59;
+      background-color: #202c59;
       border: unset;
       color: white;
-      transition: all .2s;
+      transition: all 0.2s;
       &:hover {
         box-shadow: 3px 3px 5px black;
-        background-color: #F18805;
+        background-color: #f18805;
       }
     }
-    @media(max-width: 500px) {
+    @media (max-width: 500px) {
       height: unset;
       flex-direction: column;
     }
@@ -61,7 +61,7 @@ const StyledEventCard = styled.div`
       display: flex;
       flex-direction: column;
       width: 30%;
-      @media(max-width: 500px) {
+      @media (max-width: 500px) {
         align-items: center;
         width: 95%;
       }
@@ -70,13 +70,13 @@ const StyledEventCard = styled.div`
         text-decoration: underline;
       }
       .rsvp-stuff {
-        background-color: #F18805;
+        background-color: #f18805;
         box-shadow: inset 3px 3px 5px black;
         overflow-y: auto;
         height: 80%;
         max-height: 80%;
         overflow-y: auto;
-        @media(max-width: 500px) {
+        @media (max-width: 500px) {
           height: 200px;
           width: 100%;
         }
@@ -88,11 +88,11 @@ const StyledEventCard = styled.div`
         &::-webkit-scrollbar {
           width: 1em;
         }
-        
+
         &::-webkit-scrollbar-track {
           box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
         }
-        
+
         &::-webkit-scrollbar-thumb {
           background-color: darkgrey;
           outline: 1px solid slategrey;
@@ -109,7 +109,7 @@ const StyledEventCard = styled.div`
       text-align: center;
       padding: 2%;
       width: 25%;
-      @media(max-width: 500px) {
+      @media (max-width: 500px) {
         align-items: center;
         width: 95%;
       }
@@ -121,10 +121,11 @@ const StyledEventCard = styled.div`
       width: 40%;
       max-height: 100%;
       overflow-y: auto;
-      .email-button, .delete-button {
+      .email-button,
+      .delete-button {
         cursor: pointer;
       }
-      @media(max-width: 500px) {
+      @media (max-width: 500px) {
         align-items: center;
         width: 95%;
       }
@@ -148,13 +149,13 @@ const StyledEventCard = styled.div`
           padding: 4% 7%;
           box-shadow: 1px 1px 3px black;
           cursor: pointer;
-          background-color: #F18805;
+          background-color: #f18805;
           border: unset;
           color: white;
-          transition: all .2s;
+          transition: all 0.2s;
           &:hover {
             box-shadow: 3px 3px 5px black;
-            background-color: #202C59;
+            background-color: #202c59;
           }
         }
       }
@@ -162,22 +163,22 @@ const StyledEventCard = styled.div`
         cursor: pointer;
       }
       .guests {
-        background-color: #D95D39;
+        background-color: #d95d39;
         box-shadow: inset 3px 3px 5px black;
         overflow-y: auto;
         height: 80%;
-        @media(max-width: 500px) {
+        @media (max-width: 500px) {
           height: 200px;
           width: 100%;
         }
         &::-webkit-scrollbar {
           width: 1em;
         }
-        
+
         &::-webkit-scrollbar-track {
           box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
         }
-        
+
         &::-webkit-scrollbar-thumb {
           background-color: darkgrey;
           outline: 1px solid slategrey;
@@ -192,18 +193,18 @@ const StyledEventCard = styled.div`
       }
     }
   }
-`
+`;
 
 const EventCard = () => {
-  const params = useParams()
-  const [potEvent, setPotEvent] = useState("")
+  const params = useParams();
+  const [potEvent, setPotEvent] = useState("");
   const [guest, setGuest] = useState({
     email: "",
-  })
-  const [guestList, setGuestList] = useState([])
-  const rsvpGuest = guestList.filter((eachGuest) => eachGuest.rsvp)
-  const [failure, setFailure] = useState("")
-  const [success, setSuccess] = useState("")
+  });
+  const [guestList, setGuestList] = useState([]);
+  const rsvpGuest = guestList.filter((eachGuest) => eachGuest.rsvp);
+  const [failure, setFailure] = useState("");
+  const [success, setSuccess] = useState("");
 
   // fetch initial guest list
   useEffect(() => {
@@ -211,167 +212,185 @@ const EventCard = () => {
     axiosWithAuth()
       .get(`/api/events/${params.id}`)
       .then((res) => {
-        setPotEvent(res.data)
-      })
+        setPotEvent(res.data);
+      });
 
     axiosWithAuth()
       .get(`/api/events/${params.id}/guest-list`)
       .then((res) => {
-        setGuestList(res.data)
-      })
-  }, [params.id])
+        setGuestList(res.data);
+      });
+  }, [params.id]);
 
   // Guest CRUD
   const deleteGuest = (id) => {
     axiosWithAuth()
       .delete(`/api/events/guest-list/${id}`)
       .then((res) => {
-        console.log(res)
-      })
-    setGuestList(guestList.filter((eachGuest) => eachGuest.id !== id))
-  }
+        console.log(res);
+      });
+    setGuestList(guestList.filter((eachGuest) => eachGuest.id !== id));
+  };
 
   const handleGuestChange = (e) => {
     if (success !== "" || failure !== "") {
-      setSuccess("")
-      setFailure("")
+      setSuccess("");
+      setFailure("");
     }
     setGuest({
       ...guest,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
   const guestConfirmation = (id) => {
-    const result = window.confirm("Are you sure to delete?")
+    const result = window.confirm("Are you sure to delete?");
     if (result) {
-      deleteGuest(id)
-      setSuccess("Guest deleted")
+      deleteGuest(id);
+      setSuccess("Guest deleted");
     }
-  }
+  };
 
   const sendAllEmailInvites = (eventId) => {
     axiosWithAuth()
       .get(`/api/email/all/${eventId}`)
       .then(() => {
-        setSuccess("All invite emails delivered")
+        setSuccess("All invite emails delivered");
       })
       .catch(() => {
-        setFailure("Failed to send email invites")
-      })
-  }
+        setFailure("Failed to send email invites");
+      });
+  };
 
   const sendSingleEmailInvite = (guestId) => {
+    console.log(guestId);
     axiosWithAuth()
       .get(`/api/email/single/${guestId}`)
       .then(() => {
-        setSuccess("Invite email delivered")
+        setSuccess("Invite email delivered");
       })
       .catch(() => {
-        setFailure("Failed to send email invite")
-      })
-  }
+        setFailure("Failed to send email invite");
+      });
+  };
 
   const emailConfirmation = (id) => {
-    const result = window.confirm("Are you sure you want to send out all the invite emails?")
+    const result = window.confirm(
+      "Are you sure you want to send out all the invite emails?"
+    );
     if (result) {
-      sendAllEmailInvites(id)
+      sendAllEmailInvites(id);
     }
-  }
+  };
 
   const singleEmailConfirmation = (id) => {
-    const result = window.confirm("Are you sure you want to send out this invite email?")
+    const result = window.confirm(
+      "Are you sure you want to send out this invite email?"
+    );
     if (result) {
-      sendSingleEmailInvite(id)
+      sendSingleEmailInvite(id);
     }
-  }
+  };
 
   const handleGuestSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     axiosWithAuth()
       .post(`/api/events/${params.id}/guest-list`, guest)
       .then(() => {
         axiosWithAuth()
           .get(`/api/events/${params.id}/guest-list`)
           .then((response) => {
-            setGuestList(response.data)
-          })
+            setGuestList(response.data);
+          });
       })
       .then(() => {
         setGuest({
           ...guest,
           email: "",
-        })
-        setSuccess("Guest added")
+        });
+        setSuccess("Guest added");
       })
       .catch(() => {
-        setFailure("Failed to add guest")
-      })
-  }
+        setFailure("Failed to add guest");
+      });
+  };
 
   return (
     <StyledEventCard>
-      <div className="event___card event-box">
-        <div className="event-info">
+      <div className='event___card event-box'>
+        <div className='event-info'>
           <h2>{potEvent.name}</h2>
           <h3>
-            <strong>Date:</strong>
-            {" "}
+            <strong>Date:</strong>{" "}
             {moment(potEvent.date).format("dddd, MMMM Do YYYY")}
           </h3>
           <h3>
-            <strong>Time:</strong>
-            {" "}
-            {potEvent.time}
+            <strong>Time:</strong> {potEvent.time}
           </h3>
           <h3>
-            <strong>Location:</strong>
-            {" "}
-            {potEvent.location}
+            <strong>Location:</strong> {potEvent.location}
           </h3>
-          <button type="button" onClick={() => emailConfirmation(potEvent.id)} className="send-all-emails">Send Invites</button>
+          <button
+            type='button'
+            onClick={() => emailConfirmation(potEvent.id)}
+            className='send-all-emails'
+          >
+            Send Invites
+          </button>
         </div>
-        <div className="guest-box">
+        <div className='guest-box'>
           <h3>Guest List</h3>
-          <div className="guests">
-            {
-              guestList.map((eachGuest) => {
-                if (eachGuest.rsvp === true) {
-                  return (
-                    <div className="dynamic-info" key={eachGuest.id}>
-                      <div>{eachGuest.email}</div>
-                    </div>
-                  )
-                }
+          <div className='guests'>
+            {guestList.map((eachGuest) => {
+              if (eachGuest.rsvp === true) {
                 return (
-                  <div className="dynamic-info" key={eachGuest.id}>
+                  <div className='dynamic-info' key={eachGuest.id}>
                     <div>{eachGuest.email}</div>
-                    <MailOutlineIcon className="email-button" onClick={() => singleEmailConfirmation(eachGuest.id)} />
-                    <DeleteIcon className="delete-button" onClick={() => guestConfirmation(eachGuest.id)} />
                   </div>
-                )
-              })
-            }
+                );
+              }
+              return (
+                <div className='dynamic-info' key={eachGuest.id}>
+                  <div>{eachGuest.email}</div>
+                  <MailOutlineIcon
+                    className='email-button'
+                    onClick={() => singleEmailConfirmation(eachGuest.id)}
+                  />
+                  <DeleteIcon
+                    className='delete-button'
+                    onClick={() => guestConfirmation(eachGuest.id)}
+                  />
+                </div>
+              );
+            })}
           </div>
           <form onSubmit={handleGuestSubmit}>
-            <input autoComplete="off" placeholder="Guest Email" name="email" onChange={handleGuestChange} value={guest.email} />
-            <button type="submit">Add Guest</button>
+            <input
+              autoComplete='off'
+              placeholder='Guest Email'
+              name='email'
+              onChange={handleGuestChange}
+              value={guest.email}
+            />
+            <button type='submit'>Add Guest</button>
           </form>
         </div>
-        <div className="RSVP-guest">
+        <div className='RSVP-guest'>
           <h3>Attendance List</h3>
-          <div className="rsvp-stuff">
-            {
-              rsvpGuest.map((eachGuest) => (<p key={eachGuest.id}>{`${eachGuest.email} is bringing ${eachGuest.food}`}</p>))
-            }
+          <div className='rsvp-stuff'>
+            {rsvpGuest.map((eachGuest) => (
+              <p
+                key={eachGuest.id}
+              >{`${eachGuest.email} is bringing ${eachGuest.food}`}</p>
+            ))}
           </div>
           <h3>↑ RSVP List ↑</h3>
         </div>
       </div>
-      <p className="success-message">{`${success}`}</p>
-      <p className="failure-message">{`${failure}`}</p>
+      <p className='success-message'>{`${success}`}</p>
+      <p className='failure-message'>{`${failure}`}</p>
     </StyledEventCard>
-  )
-}
+  );
+};
 
-export default EventCard
+export default EventCard;

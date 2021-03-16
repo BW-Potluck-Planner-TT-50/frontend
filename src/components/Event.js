@@ -2,20 +2,20 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/prop-types */
-import React, { useEffect } from "react"
-import { Link } from "react-router-dom"
-import moment from "moment"
-import styled from "styled-components"
-import { useDispatch } from "react-redux"
-import { fetchEvents, deleteEvent } from "../store/action/eventAction"
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import moment from "moment";
+import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { fetchEvents, deleteEvent } from "../store/action/eventAction";
 
 const StyledEvents = styled.div`
-  background-color: #202C59;
+  background-color: #202c59;
   box-sizing: border-box;
   padding: 5%;
   min-height: 80vh;
   .no-events {
-    background-color: #581F18;
+    background-color: #581f18;
     box-shadow: 3px 3px 5px black;
     margin-bottom: 2%;
     text-align: center;
@@ -27,7 +27,7 @@ const StyledEvents = styled.div`
     div {
       padding: 3%;
       a {
-        background-color: #F0A202;
+        background-color: #f0a202;
         padding: 3% 5%;
         box-shadow: 3px 3px 5px black;
         color: white;
@@ -38,7 +38,7 @@ const StyledEvents = styled.div`
     }
   }
   .event-box {
-    background-color: #581F18;
+    background-color: #581f18;
     box-shadow: 3px 3px 5px black;
     margin-bottom: 2%;
     display: flex;
@@ -46,7 +46,7 @@ const StyledEvents = styled.div`
     align-items: center;
     color: white;
     padding: 1%;
-    @media(max-width: 500px) {
+    @media (max-width: 500px) {
       flex-direction: column;
       padding-bottom: 7%;
     }
@@ -67,7 +67,7 @@ const StyledEvents = styled.div`
       height: 100px;
       font-size: 2rem;
       text-shadow: 1px 1px 3px black;
-      @media(max-width: 500px) {
+      @media (max-width: 500px) {
         font-size: 1.5rem;
         height: 50px;
       }
@@ -76,15 +76,15 @@ const StyledEvents = styled.div`
       }
     }
     .view-button {
-      background-color: #D95D39;
+      background-color: #d95d39;
       box-shadow: inset 3px 3px 5px black;
     }
     .edit-button {
-      background-color: #F0A202;
+      background-color: #f0a202;
       box-shadow: inset 3px 3px 5px black;
     }
     .delete-button {
-      background-color: #F18805;
+      background-color: #f18805;
       box-shadow: inset 3px 3px 5px black;
       display: flex;
       text-align: center;
@@ -96,7 +96,7 @@ const StyledEvents = styled.div`
       font-size: 2rem;
       cursor: pointer;
       text-shadow: 1px 1px 3px black;
-      @media(max-width: 500px) {
+      @media (max-width: 500px) {
         font-size: 1.5rem;
         height: 50px;
       }
@@ -105,48 +105,57 @@ const StyledEvents = styled.div`
       }
     }
   }
-`
+`;
 
 function Event({ eventList }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchEvents())
-  }, [dispatch])
+    dispatch(fetchEvents());
+  }, [dispatch]);
 
   const eventConfirmation = (id) => {
-    const result = window.confirm("Are you sure you want to delete this event?")
+    const result = window.confirm(
+      "Are you sure you want to delete this event?"
+    );
     if (result) {
-      dispatch(deleteEvent(id))
+      dispatch(deleteEvent(id));
     }
-  }
+  };
   return (
-    <StyledEvents className="save-wrapper">
-      {
-        eventList.length !== 0
-          ? eventList.map((eachEvent) => (
-            <div key={eachEvent.id} className="each___events event-box">
-              <div className="name-container">
-                <h2>{eachEvent.name}</h2>
-                <p>{moment(eachEvent.date).format("dddd, MMMM Do YYYY")}</p>
-              </div>
-              <Link className="view-button" to={`/view-events/${eachEvent.id}`}>View</Link>
-              <Link className="edit-button" to={`/update-event/${eachEvent.id}`}>Edit</Link>
-              <div className="delete-button" onClick={() => eventConfirmation(eachEvent.id)}>Delete</div>
+    <StyledEvents className='save-wrapper'>
+      {eventList.length !== 0 ? (
+        eventList.map((eachEvent) => (
+          <div key={eachEvent.id} className='each___events event-box'>
+            <div className='name-container'>
+              <h2>{eachEvent.name}</h2>
+              <p>{moment(eachEvent.date).format("dddd, MMMM Do YYYY")}</p>
             </div>
-          ))
-          : (
-            <div className="no-events">
-              <h1>You Haven&apos;t Created Any Events Yet</h1>
-              <h2>To Get Started Just Click The Event Below</h2>
-              <div>
-                <Link to="/add-events">Add Events</Link>
-              </div>
+            <Link className='view-button' to={`/view-events/${eachEvent.id}`}>
+              View
+            </Link>
+            <Link className='edit-button' to={`/update-event/${eachEvent.id}`}>
+              Edit
+            </Link>
+            <div
+              className='delete-button'
+              onClick={() => eventConfirmation(eachEvent.id)}
+            >
+              Delete
             </div>
-          )
-      }
+          </div>
+        ))
+      ) : (
+        <div className='no-events'>
+          <h1>You Haven&apos;t Created Any Events Yet</h1>
+          <h2>To Get Started Just Click The Event Below</h2>
+          <div>
+            <Link to='/add-events'>Add Events</Link>
+          </div>
+        </div>
+      )}
     </StyledEvents>
-  )
+  );
 }
 
-export default Event
+export default Event;
