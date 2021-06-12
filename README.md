@@ -1,5 +1,9 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## About the Project
+This is an app that promote potluck events for people who want to share their dishes in their party.
+Anyone can host an event and invite people to bring their dishes.
+
 ## Available Scripts
 
 In the project directory, you can run:
